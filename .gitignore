@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+build/
+**/dist/
+**/build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+**/.env
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS / IDE
+*.log
+*.tmp
+
+# Docker
+docker-compose.override.yml
+**/Dockerfile.old
+**/*.env
+
+# Misc
+*.tsbuildinfo

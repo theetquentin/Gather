@@ -1,0 +1,29 @@
+# Normaliser les fins de ligne
+* text=auto
+
+# Forcer LF pour certains types de fichiers
+*.ts text eol=lf
+*.tsx text eol=lf
+*.mts text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+
+# Les images et fichiers binaires ne doivent pas être modifiés
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.eot binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
