@@ -3,7 +3,7 @@ import { IUser } from "../interfaces/interface.iuser";
 
 const userSchema = new Schema<IUser>(
   {
-    name: {
+    username: {
       type: String,
       required: true,
       minLength: 3,

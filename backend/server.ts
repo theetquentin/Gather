@@ -1,17 +1,11 @@
-import express from "express";
 import { connectDB } from "./config/database";
 import dotenv from "dotenv";
-// import router from "./routers/indexRouter.js";
+import { app } from "./app";
 
 dotenv.config();
 const { PORT } = process.env;
 
-const app = express();
-
-connectDB();
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+connectDB(process.env.MONGO_URI);
 
 app.listen(PORT, () =>
   console.log(`Server is running at http://localhost:${PORT}`),
