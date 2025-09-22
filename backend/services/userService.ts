@@ -1,4 +1,5 @@
 import * as argon2 from "argon2";
+import { Types } from "mongoose";
 import { IUser } from "../interfaces/interface.iuser";
 import {
   createUser,
@@ -28,9 +29,20 @@ export const fetchUsers = async () => {
 };
 
 export const fetchUserById = async (userId: string) => {
-  if (!userId) throw new Error("Renseignez l'id");
+  if (!userId) {
+    throw new Error("Il manque l'id");
+  }
+  // l'id en mongodb est de 24 caractères hexadécimaux, autre que ça lève cette erreur
+  if (!Types.ObjectId.isValid(userId)) {
+    throw new Error("Format de l'id invalide");
+  }
 
-  return await getUserById(userId);
+  const user = await getUserById(userId);
+
+  if (!user) {
+    throw new Error("Utilisateur non trouvé");
+  }
+  return user;
 };
 
 async function hashPassword(password: string): Promise<string> {

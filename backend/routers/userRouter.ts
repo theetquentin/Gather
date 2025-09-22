@@ -11,5 +11,4 @@ userRouter.get("/:userId", findUserById);
 userRouter.get("/", getUsers);
 userRouter.post("/", createUser);
 
-
 export default userRouter;
