@@ -20,3 +20,8 @@ export const countUsersByName = async (tag: string) => {
 export const countUsersByEmail = async (mail: string) => {
   return await User.countDocuments({ email: mail });
 };
+
+export const getUserByEmailWithPassword = async (mail: string) => {
+  // utile pour authentification
+  return await User.findOne({ email: mail }).select("+password");
+};
