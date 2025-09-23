@@ -5,8 +5,8 @@ export class LoginDto {
   email!: string;
 
   @IsString({ message: "Mot de passe requis" })
-  @MinLength(8, { message: "Le mot de passe doit contenir au moins 8 caractères" })
+  @MinLength(8, {
+    message: "Le mot de passe doit contenir au moins 8 caractères",
+  })
   password!: string;
 }
-
-

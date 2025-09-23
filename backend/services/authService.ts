@@ -43,5 +43,3 @@ export const loginAndIssueToken = async (email: string, password: string) => {
     },
   };
 };
-
-

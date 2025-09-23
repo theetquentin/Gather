@@ -12,6 +12,14 @@ export default defineConfig([
     rules: {
       "prettier/prettier": "error",
       "no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
       "no-console": "off",
     },
     languageOptions: { globals: globals.node },
