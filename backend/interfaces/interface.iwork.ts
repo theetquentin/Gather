@@ -6,6 +6,7 @@ export interface IWork {
   publishedAt: Date;
   type: string;
   genre: string;
+  images?: [];
   evaluations?: Types.ObjectId[]; // refs vers Evaluation
   createdAt: Date;
   updatedAt: Date;

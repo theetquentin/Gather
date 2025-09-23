@@ -23,6 +23,12 @@ const workSchema = new Schema<IWork>(
       type: String,
       required: true,
     },
+    images: [
+      {
+        type: [],
+        required: false,
+      },
+    ],
     evaluations: [
       {
         type: Schema.Types.ObjectId,

@@ -5,6 +5,7 @@ export interface IUser {
   email: string;
   password: string;
   role?: "admin" | "user" | "moderator";
+  profilePicture?: string;
   collections?: Types.ObjectId[];
   shared?: Types.ObjectId;
   createdAt?: Date;

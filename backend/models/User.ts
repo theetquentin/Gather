@@ -26,6 +26,10 @@ const userSchema = new Schema<IUser>(
       enum: ["admin", "user", "moderator"],
       default: "user",
     },
+    profilePicture: {
+      type: String,
+      default: null,
+    },
     collections: [
       {
         type: Schema.Types.ObjectId,
