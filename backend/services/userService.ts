@@ -21,7 +21,7 @@ export const createNewUser = async (data: IUser) => {
 
   const hpwd = await hashPassword(password);
 
-  return await createUser({ ...data, password: hpwd });
+  return await createUser({ username, email, password: hpwd });
 };
 
 export const fetchUsers = async () => {

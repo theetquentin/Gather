@@ -5,7 +5,7 @@ export interface ICollection {
   type: string;
   visibility?: "public" | "private" | "shared";
   userId: Types.ObjectId;
-  works: Types.ObjectId[];
+  works?: Types.ObjectId[];
   shared?: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;

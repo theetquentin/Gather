@@ -17,14 +17,11 @@ export const createUser = async (req: Request, res: Response) => {
     // 2. Valider l'instance du DTO
     const errors = await validate(userDto);
     if (errors.length > 0) {
-      // 3. Si des erreurs de validation sont trouvées, renvoyer une erreur 400
-      const validationErrors = errors
-        .map((err) => (err.constraints ? Object.values(err.constraints) : []))
-        .flat();
-      return res.status(400).json({
-        success: false,
-        errors: validationErrors,
-      });
+      const firstError = errors[0];
+      const firstMessage = firstError.constraints
+        ? Object.values(firstError.constraints)[0]
+        : "Données invalides";
+      return res.status(400).json({ success: false, errors: firstMessage });
     }
 
     // Après validation

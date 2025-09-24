@@ -2,7 +2,11 @@ import { IUser } from "../interfaces/interface.iuser";
 import User from "../models/User";
 
 export const createUser = async (data: IUser) => {
-  return await User.create({ ...data });
+  return await User.create({
+    username: data.username,
+    email: data.email,
+    password: data.password,
+  });
 };
 
 export const getAllUsers = async () => {

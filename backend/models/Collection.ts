@@ -1,6 +1,15 @@
 import { Schema, model } from "mongoose";
 import { ICollection } from "../interfaces/interface.icollection";
 
+enum CollectionType {
+  BOOK = "book",
+  MOVIE = "movie",
+  SERIES = "series",
+  MUSIC = "music",
+  GAME = "game",
+  OTHER = "other",
+}
+
 const collectionSchema = new Schema<ICollection>(
   {
     name: {
@@ -12,6 +21,7 @@ const collectionSchema = new Schema<ICollection>(
     type: {
       type: String,
       required: true,
+      enum: Object.values(CollectionType),
     },
     visibility: {
       type: String,
@@ -26,7 +36,6 @@ const collectionSchema = new Schema<ICollection>(
     works: [
       {
         type: Schema.Types.ObjectId,
-        required: true,
         ref: "Work",
       },
     ],
