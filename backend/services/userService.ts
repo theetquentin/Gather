@@ -45,7 +45,7 @@ export const fetchUserById = async (userId: string) => {
   return user;
 };
 
-async function hashPassword(password: string): Promise<string> {
+export async function hashPassword(password: string): Promise<string> {
   if (Array.isArray(password)) {
     throw new Error("Le mot de passe ne peut pas être un tableau.");
   }

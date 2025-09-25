@@ -20,7 +20,7 @@ const workSchema = new Schema<IWork>(
       required: true,
     },
     genre: {
-      type: String,
+      type: [],
       required: true,
     },
     images: [
@@ -29,10 +29,10 @@ const workSchema = new Schema<IWork>(
         required: false,
       },
     ],
-    evaluations: [
+    reviews: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Evaluation",
+        ref: "Review",
       },
     ],
   },

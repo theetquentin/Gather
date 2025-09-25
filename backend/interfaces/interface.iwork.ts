@@ -5,9 +5,9 @@ export interface IWork {
   author: string;
   publishedAt: Date;
   type: string;
-  genre: string;
-  images?: [];
-  evaluations?: Types.ObjectId[]; // refs vers Evaluation
+  genre: string[];
+  images?: string[];
+  reviews?: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,0 +1,1575 @@
+[
+  {
+    "title": "La Liste de Schindler",
+    "author": "Steven Spielberg",
+    "publishedAt": "1993-12-15T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame", "Biographie"],
+    "description": "L'histoire de l'industriel allemand Oskar Schindler qui, pendant la Seconde Guerre mondiale, sauva plus d'un millier de réfugiés juifs de l'Holocauste en les employant dans ses usines.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792160/works/la-liste-de-schindler.webp"
+    ]
+  },
+  {
+    "title": "Inception",
+    "author": "Christopher Nolan",
+    "publishedAt": "2010-07-14T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Science-Fiction", "Action"],
+    "description": "Dom Cobb est un voleur expérimenté, le meilleur dans l'art dangereux de l'extraction, l'infiltration dans les rêves de gens pendant leur sommeil. Il est confronté à la tâche inverse : l'inception.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792162/works/inception.webp"
+    ]
+  },
+  {
+    "title": "Le Parrain",
+    "author": "Francis Ford Coppola",
+    "publishedAt": "1972-03-14T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Crime", "Drame"],
+    "description": "Le patriarche vieillissant d'une dynastie mafieuse de New York transfère le contrôle de son empire clandestin à son fils réticent.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792162/works/le-parrain.webp"
+    ]
+  },
+  {
+    "title": "The Dark Knight : Le Chevalier Noir",
+    "author": "Christopher Nolan",
+    "publishedAt": "2008-07-16T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Action", "Crime"],
+    "description": "Avec l'aide du lieutenant Jim Gordon et du nouveau procureur Harvey Dent, Batman mène la guerre contre le crime, mais une vague de chaos est déclenchée par un nouveau cerveau criminel connu sous le nom du Joker.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792163/works/the-dark-knight-le-chevalier-noir.webp"
+    ]
+  },
+  {
+    "title": "Pulp Fiction",
+    "author": "Quentin Tarantino",
+    "publishedAt": "1994-09-10T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Crime", "Drame"],
+    "description": "Les vies entremêlées de deux tueurs à gages, d'un boxeur, de la femme d'un gangster et d'un duo de braqueurs de restaurant sont explorées dans quatre contes de violence et de rédemption.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792164/works/pulp-fiction.webp"
+    ]
+  },
+  {
+    "title": "Forrest Gump",
+    "author": "Robert Zemeckis",
+    "publishedAt": "1994-06-23T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame"],
+    "description": "Le récit de plusieurs décennies de la vie d'un homme simple d'esprit mais bien intentionné, témoin et acteur de plusieurs événements historiques importants du XXe siècle.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792165/works/forrest-gump.webp"
+    ]
+  },
+  {
+    "title": "Fight Club",
+    "author": "David Fincher",
+    "publishedAt": "1999-10-15T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame", "Crime"],
+    "description": "Un homme d'affaires insomniaque et un fabricant de savon insouciant créent un club de combat clandestin qui évolue en quelque chose de beaucoup, beaucoup plus grand.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792166/works/fight-club.webp"
+    ]
+  },
+  {
+    "title": "Matrix",
+    "author": "Lana Wachowski, Lilly Wachowski",
+    "publishedAt": "1999-03-30T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Science-Fiction", "Action"],
+    "description": "Un programmeur informatique découvre la vérité troublante derrière sa réalité et son rôle dans la guerre contre ses contrôleurs d'intelligence artificielle.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792167/works/matrix.webp"
+    ]
+  },
+  {
+    "title": "Les Évadés",
+    "author": "Frank Darabont",
+    "publishedAt": "1994-09-23T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame"],
+    "description": "Deux hommes emprisonnés se lient d'amitié au fil des années, trouvant du réconfort et une rédemption ultime par des actes de décence commune.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792167/works/les-evades.webp"
+    ]
+  },
+  {
+    "title": "Le Seigneur des Anneaux : La Communauté de l'Anneau",
+    "author": "Peter Jackson",
+    "publishedAt": "2001-12-18T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Science-Fiction", "Action"],
+    "description": "Un hobbit hérite d'un anneau puissant, et entreprend une quête périlleuse pour le détruire dans le feu du Mont Destin avant que le seigneur des ténèbres Sauron ne le réclame.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792168/works/le-seigneur-des-anneaux-la-communaute-de-l-anneau.webp"
+    ]
+  },
+  {
+    "title": "Titanic",
+    "author": "James Cameron",
+    "publishedAt": "1997-12-18T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame"],
+    "description": "Une histoire d'amour épique, racontée lors du voyage inaugural malheureux du R.M.S. Titanic.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792168/works/titanic.webp"
+    ]
+  },
+  {
+    "title": "Avatar",
+    "author": "James Cameron",
+    "publishedAt": "2009-12-15T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Science-Fiction", "Action"],
+    "description": "Un marine paraplégique est envoyé sur la lune Pandora lors d'une mission unique, mais se retrouve déchiré entre l'exécution des ordres et la protection du nouveau monde qu'il ressent comme sien.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792169/works/avatar.webp"
+    ]
+  },
+  {
+    "title": "Interstellar",
+    "author": "Christopher Nolan",
+    "publishedAt": "2014-11-05T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Science-Fiction", "Drame"],
+    "description": "Dans un futur où la Terre est ravagée par le changement climatique, un groupe d'explorateurs interstellaires doit voyager au-delà de notre galaxie pour découvrir si l'humanité a un avenir parmi les étoiles.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792170/works/interstellar.webp"
+    ]
+  },
+  {
+    "title": "Gladiator",
+    "author": "Ridley Scott",
+    "publishedAt": "2000-05-04T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Action", "Drame"],
+    "description": "Un général romain est trahi et sa famille est assassinée par un empereur corrompu. Il revient à Rome en tant que gladiateur pour se venger.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792171/works/gladiator.webp"
+    ]
+  },
+  {
+    "title": "Le Voyage de Chihiro",
+    "author": "Hayao Miyazaki",
+    "publishedAt": "2001-07-20T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Animation", "Science-Fiction"],
+    "description": "Au cours d'un déménagement, une petite fille de 10 ans se retrouve dans un monde peuplé de dieux, sorcières et esprits. Elle doit se surpasser pour sauver ses parents transformés en porcs.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792172/works/le-voyage-de-chihiro.webp"
+    ]
+  },
+  {
+    "title": "Django Unchained",
+    "author": "Quentin Tarantino",
+    "publishedAt": "2012-12-25T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Action", "Drame"],
+    "description": "Un esclave affranchi fait équipe avec un chasseur de primes allemand pour sauver sa femme d'un propriétaire de plantation cruel au Mississippi.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792173/works/django-unchained.webp"
+    ]
+  },
+  {
+    "title": "Inglourious Basterds",
+    "author": "Quentin Tarantino",
+    "publishedAt": "2009-08-19T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Action", "Drame"],
+    "description": "En France occupée, un groupe de soldats juifs américains se prépare à exécuter les chefs du Troisième Reich dans une opération audacieuse.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792174/works/inglourious-basterds.webp"
+    ]
+  },
+  {
+    "title": "La Ligne Verte",
+    "author": "Frank Darabont",
+    "publishedAt": "1999-12-10T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame", "Science-Fiction"],
+    "description": "Un gardien de prison dans le couloir de la mort dans les années 1930 rencontre un détenu qui a un don mystérieux qui va changer sa vie.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792175/works/la-ligne-verte.webp"
+    ]
+  },
+  {
+    "title": "Le Fabuleux Destin d'Amélie Poulain",
+    "author": "Jean-Pierre Jeunet",
+    "publishedAt": "2001-04-25T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Comédie", "Drame"],
+    "description": "Amélie, serveuse dans un bar de Montmartre, décide d'améliorer la vie de ceux qui l'entourent. Elle découvre alors l'amour en cherchant à percer le mystère d'un homme étrange.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792176/works/le-fabuleux-destin-d-amelie-poulain.webp"
+    ]
+  },
+  {
+    "title": "Parasite",
+    "author": "Bong Joon-ho",
+    "publishedAt": "2019-05-30T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Crime", "Drame"],
+    "description": "La famille de Ki-taek, sans emploi, s'intéresse au mode de vie aisé de la riche famille Park. Ils s'immiscent peu à peu dans leur vie, entraînant une succession d'événements incontrôlables.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792177/works/parasite.webp"
+    ]
+  },
+  {
+    "title": "Reservoir Dogs",
+    "author": "Quentin Tarantino",
+    "publishedAt": "1992-09-02T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Crime"],
+    "description": "Six criminels inconnus les uns des autres sont engagés pour un braquage. Lorsque celui-ci tourne au massacre, la paranoïa s'installe.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792179/works/reservoir-dogs.webp"
+    ]
+  },
+  {
+    "title": "Eternal Sunshine of the Spotless Mind",
+    "author": "Michel Gondry",
+    "publishedAt": "2004-03-19T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Science-Fiction", "Drame"],
+    "description": "Un couple se soumet à une procédure pour effacer mutuellement leur mémoire après une rupture. L'homme change d'avis et essaie de préserver au moins un souvenir de sa bien-aimée.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792181/works/eternal-sunshine-of-the-spotless-mind.webp"
+    ]
+  },
+  {
+    "title": "Amadeus",
+    "author": "Miloš Forman",
+    "publishedAt": "1984-09-06T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Biographie", "Drame"],
+    "description": "La vie de Wolfgang Amadeus Mozart, racontée par son rival, Antonio Salieri, qui est tourmenté par le talent de Mozart.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792183/works/amadeus.webp"
+    ]
+  },
+  {
+    "title": "Old Boy",
+    "author": "Park Chan-wook",
+    "publishedAt": "2003-11-21T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Action", "Crime"],
+    "description": "Après avoir été emprisonné pendant quinze ans sans aucune explication, un homme se lance dans une quête de vengeance contre son ravisseur.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792184/works/old-boy.webp"
+    ]
+  },
+  {
+    "title": "Whiplash",
+    "author": "Damien Chazelle",
+    "publishedAt": "2014-10-10T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame"],
+    "description": "Un jeune batteur de jazz s'inscrit dans un conservatoire de musique de premier plan où son professeur impitoyable le pousse à la limite de ses capacités.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792185/works/whiplash.webp"
+    ]
+  },
+  {
+    "title": "Prisoners",
+    "author": "Denis Villeneuve",
+    "publishedAt": "2013-09-20T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Crime", "Drame"],
+    "description": "Lorsqu'Anna et Joy, deux fillettes, disparaissent, le père d'Anna décide d'enquêter lui-même après que l'homme qu'il soupçonne soit libéré par la police.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792186/works/prisoners.webp"
+    ]
+  },
+  {
+    "title": "Seven",
+    "author": "David Fincher",
+    "publishedAt": "1995-09-22T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Crime"],
+    "description": "Deux détectives, un vétéran et un nouveau venu, enquêtent sur un tueur en série qui utilise les sept péchés capitaux comme motifs de ses meurtres.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792187/works/seven.webp"
+    ]
+  },
+  {
+    "title": "Mad Max: Fury Road",
+    "author": "George Miller",
+    "publishedAt": "2015-05-14T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Action", "Science-Fiction"],
+    "description": "Dans un monde post-apocalyptique, une femme se rebelle contre un tyran au nom de la survie, et s'associe à Max, un vagabond taciturne.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792188/works/mad-max-fury-road.webp"
+    ]
+  },
+  {
+    "title": "Drive",
+    "author": "Nicolas Winding Refn",
+    "publishedAt": "2011-09-16T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Crime", "Action"],
+    "description": "Un cascadeur et mécanicien de Los Angeles, qui travaille aussi comme chauffeur pour des braquages, se retrouve dans le viseur de dangereux criminels.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792189/works/drive.webp"
+    ]
+  },
+  {
+    "title": "Huit et demi",
+    "author": "Federico Fellini",
+    "publishedAt": "1963-02-14T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame", "Comédie"],
+    "description": "Un réalisateur de films subit un blocage créatif et cherche l'inspiration pour son prochain projet, plongeant dans ses souvenirs et ses fantasmes.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792190/works/huit-et-demi.webp"
+    ]
+  },
+  {
+    "title": "Le Bon, la Brute et le Truand",
+    "author": "Sergio Leone",
+    "publishedAt": "1966-12-23T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Action", "Drame"],
+    "description": "Trois hommes se lancent dans une chasse au trésor pour retrouver de l'or confédéré, au milieu de la guerre de Sécession, sans se faire confiance mutuellement.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792191/works/le-bon-la-brute-et-le-truand.webp"
+    ]
+  },
+  {
+    "title": "V pour Vendetta",
+    "author": "James McTeigue",
+    "publishedAt": "2006-03-17T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Action", "Science-Fiction"],
+    "description": "Dans une Grande-Bretagne futuriste et totalitaire, un combattant de la liberté masqué s'efforce de faire tomber le gouvernement fasciste, aidé par une jeune femme qu'il a sauvée.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792192/works/v-pour-vendetta.webp"
+    ]
+  },
+  {
+    "title": "La Cité de Dieu",
+    "author": "Fernando Meirelles, Kátia Lund",
+    "publishedAt": "2002-08-30T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Crime", "Drame"],
+    "description": "Deux jeunes hommes grandissent dans la Cité de Dieu, une favela violente de Rio de Janeiro, mais suivent des chemins très différents : l'un devient photographe, l'autre dealer.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792193/works/la-cite-de-dieu.webp"
+    ]
+  },
+  {
+    "title": "Requiem for a Dream",
+    "author": "Darren Aronofsky",
+    "publishedAt": "2000-10-27T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame"],
+    "description": "Quatre personnes sont victimes de l'abus de substances, leur vie se transformant en une spirale cauchemardesque de dépendance.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792194/works/requiem-for-a-dream.webp"
+    ]
+  },
+  {
+    "title": "Snatch",
+    "author": "Guy Ritchie",
+    "publishedAt": "2000-08-23T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Comédie", "Crime"],
+    "description": "Deux histoires parallèles impliquant une recherche de diamant volé, des promoteurs de combats de boxe et la foule londonienne.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792195/works/snatch.webp"
+    ]
+  },
+  {
+    "title": "Le Pianiste",
+    "author": "Roman Polanski",
+    "publishedAt": "2002-09-25T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Biographie", "Drame"],
+    "description": "Le récit du pianiste juif polonais Władysław Szpilman qui lutte pour survivre au ghetto de Varsovie pendant la Seconde Guerre mondiale.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792196/works/le-pianiste.webp"
+    ]
+  },
+  {
+    "title": "Gran Torino",
+    "author": "Clint Eastwood",
+    "publishedAt": "2008-12-12T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame", "Crime"],
+    "description": "Un vétéran de la guerre de Corée, bourru et raciste, tente de réhabiliter son jeune voisin, un adolescent Hmong qui a tenté de voler sa voiture de collection.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792198/works/gran-torino.webp"
+    ]
+  },
+  {
+    "title": "Million Dollar Baby",
+    "author": "Clint Eastwood",
+    "publishedAt": "2004-12-15T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame"],
+    "description": "Un entraîneur de boxe vieillissant prend sous son aile une boxeuse amateur déterminée à réaliser son rêve de devenir professionnelle.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792199/works/million-dollar-baby.webp"
+    ]
+  },
+  {
+    "title": "No Country for Old Men",
+    "author": "Joel Coen, Ethan Coen",
+    "publishedAt": "2007-11-09T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Crime", "Action"],
+    "description": "Un chasseur s'empare de deux millions de dollars sur le site d'une fusillade sanglante, ce qui le met sur la piste d'un tueur psychopathe.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792201/works/no-country-for-old-men.webp"
+    ]
+  },
+  {
+    "title": "Le Dîner de Cons",
+    "author": "Francis Veber",
+    "publishedAt": "1998-04-15T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Comédie"],
+    "description": "Chaque semaine, Pierre Brochant et ses amis organisent un dîner où chacun doit amener un 'con', dont on se moquera. Mais ce soir, l'invité de Pierre va bouleverser sa vie.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792202/works/le-diner-de-cons.webp"
+    ]
+  },
+  {
+    "title": "La Haine",
+    "author": "Mathieu Kassovitz",
+    "publishedAt": "1995-05-31T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame", "Crime"],
+    "description": "Vingt-quatre heures dans la vie de trois jeunes hommes de banlieue après une bavure policière. Un film culte sur le malaise social en France.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792203/works/la-haine.webp"
+    ]
+  },
+  {
+    "title": "Le Professionnel",
+    "author": "Luc Besson",
+    "publishedAt": "1994-09-14T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Crime", "Action"],
+    "description": "Léon, un tueur à gages, prend sous son aile Mathilda, une jeune fille dont la famille a été assassinée par un agent corrompu de la DEA.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792204/works/le-professionnel.webp"
+    ]
+  },
+  {
+    "title": "Amélie Poulain",
+    "author": "Jean-Pierre Jeunet",
+    "publishedAt": "2001-04-25T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Comédie", "Drame"],
+    "description": "Amélie, serveuse dans un bar de Montmartre, décide d'améliorer la vie de ceux qui l'entourent. Elle découvre alors l'amour en cherchant à percer le mystère d'un homme étrange.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792204/works/amelie-poulain.webp"
+    ]
+  },
+  {
+    "title": "Les Bronzés font du ski",
+    "author": "Patrice Leconte",
+    "publishedAt": "1979-11-21T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Comédie"],
+    "description": "L'équipe du Splendid revient pour des vacances à la montagne, subissant les joies et les déboires du ski et des sports d'hiver.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792206/works/les-bronzes-font-du-ski.webp"
+    ]
+  },
+  {
+    "title": "La Grande Vadrouille",
+    "author": "Gérard Oury",
+    "publishedAt": "1966-12-08T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Comédie", "Action"],
+    "description": "Pendant l'Occupation, deux Français aident des aviateurs anglais abattus à traverser la France pour rejoindre la zone libre.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792207/works/la-grande-vadrouille.webp"
+    ]
+  },
+  {
+    "title": "OSS 117 : Le Caire, nid d'espions",
+    "author": "Michel Hazanavicius",
+    "publishedAt": "2006-04-12T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Comédie", "Action"],
+    "description": "En 1955, l'agent secret français Hubert Bonisseur de La Bath, alias OSS 117, est envoyé au Caire pour enquêter sur la disparition de son collègue.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792207/works/oss-117-le-caire-nid-d-espions.webp"
+    ]
+  },
+  {
+    "title": "Gazon maudit",
+    "author": "Josiane Balasko",
+    "publishedAt": "1995-02-08T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Comédie", "Drame"],
+    "description": "La vie d'un couple est bouleversée par l'arrivée d'une femme homosexuelle qui séduit l'épouse et s'installe dans leur foyer.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792208/works/gazon-maudit.webp"
+    ]
+  },
+  {
+    "title": "Un prophète",
+    "author": "Jacques Audiard",
+    "publishedAt": "2009-08-26T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Drame", "Crime"],
+    "description": "L'ascension de Malik, un jeune homme de 19 ans incarcéré, qui devient un parrain de la pègre grâce à son intelligence et sa brutalité.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792209/works/un-prophete.webp"
+    ]
+  },
+  {
+    "title": "Bienvenue chez les Ch'tis",
+    "author": "Dany Boon",
+    "publishedAt": "2008-02-20T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Comédie"],
+    "description": "Philippe Abrams, directeur de la Poste, est muté contre son gré à Bergues, dans le Nord de la France, où il découvre la culture ch'ti.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792210/works/bienvenue-chez-les-ch-tis.webp"
+    ]
+  },
+  {
+    "title": "Intouchables",
+    "author": "Olivier Nakache, Éric Toledano",
+    "publishedAt": "2011-11-02T00:00:00.000Z",
+    "type": "movie",
+    "genre": ["Comédie", "Drame", "Biographie"],
+    "description": "L'histoire de l'amitié inattendue entre un riche aristocrate tétraplégique et un jeune de banlieue qui devient son auxiliaire de vie.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792210/works/intouchables.webp"
+    ]
+  },
+  {
+    "title": "Le Petit Prince",
+    "author": "Antoine de Saint-Exupéry",
+    "publishedAt": "1943-04-06T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Philosophie", "Fantastique"],
+    "description": "Un conte poétique et philosophique qui, sous l'apparence d'une histoire pour enfants, aborde des thèmes profonds comme l'amitié, l'amour, la perte et le sens de la vie.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793671/works/le-petit-prince.webp"
+    ]
+  },
+  {
+    "title": "1984",
+    "author": "George Orwell",
+    "publishedAt": "1949-06-08T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Science-Fiction"],
+    "description": "1984 raconte l'histoire de Winston Smith. Cet homme, comme beaucoup d'autres, vit dans une ville d'Océanie, un pays dirigé par un régime totalitaire.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793672/works/1984.webp"
+    ]
+  },
+  {
+    "title": "Vingt Mille Lieues sous les mers",
+    "author": "Jules Verne",
+    "publishedAt": "1870-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Science-Fiction", "Aventure"],
+    "description": "Le professeur Aronnax et ses compagnons sont faits prisonniers par le capitaine Nemo, commandant du sous-marin le Nautilus, et explorent les fonds marins.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793673/works/vingt-mille-lieues-sous-les-mers.webp"
+    ]
+  },
+  {
+    "title": "Les Misérables",
+    "author": "Victor Hugo",
+    "publishedAt": "1862-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame", "Historique"],
+    "description": "Une fresque épique des bas-fonds de Paris au XIXe siècle, racontant l'histoire de Jean Valjean et son parcours vers la rédemption.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793673/works/les-miserables.webp"
+    ]
+  },
+  {
+    "title": "Le Compte de Monte-Cristo",
+    "author": "Alexandre Dumas",
+    "publishedAt": "1844-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Aventure", "Drame"],
+    "description": "L'histoire d'Edmond Dantès, emprisonné injustement, qui s'échappe pour se venger sous le titre du riche et mystérieux Comte de Monte-Cristo.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793674/works/le-compte-de-monte-cristo.webp"
+    ]
+  },
+  {
+    "title": "Germinal",
+    "author": "Émile Zola",
+    "publishedAt": "1885-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame"],
+    "description": "Un tableau sombre et réaliste de la vie des mineurs dans le Nord de la France, dépeignant les conditions de travail et la lutte des classes.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793675/works/germinal.webp"
+    ]
+  },
+  {
+    "title": "L'Étranger",
+    "author": "Albert Camus",
+    "publishedAt": "1942-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Philosophie", "Drame"],
+    "description": "Le récit de Meursault, un Français froid et détaché, face à l'absurdité de l'existence et à la société qui le juge pour son indifférence.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793676/works/l-etranger.webp"
+    ]
+  },
+  {
+    "title": "Orgueil et Préjugés",
+    "author": "Jane Austen",
+    "publishedAt": "1813-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Romance", "Drame"],
+    "description": "Le récit de Mme Bennet, une mère de cinq filles, prête à tout pour dénicher un gendre fortuné qui épouserait l'une de ses enfants",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793677/works/orgueil-et-prejuges.webp"
+    ]
+  },
+  {
+    "title": "Gatsby le Magnifique",
+    "author": "F. Scott Fitzgerald",
+    "publishedAt": "1925-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame", "Romance"],
+    "description": "Le récit d'un mystérieux millionaire Jay Gatsby, dans sa quête pour reconquérir son amour, Daisy Buchanan.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793679/works/gatsby-le-magnifique.webp"
+    ]
+  },
+  {
+    "title": "Harry Potter à l'école des sorciers",
+    "author": "J.K. Rowling",
+    "publishedAt": "1997-06-26T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Fantastique", "Aventure"],
+    "description": "Le premier roman de la série, qui suit Harry Potter alors qu'il découvre qu'il est un sorcier, se fait de nouveaux amis et commence son éducation à l'école de sorcellerie de Hogwarts (Poudlard).",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793680/works/harry-potter-a-l-ecole-des-sorciers.webp"
+    ]
+  },
+  {
+    "title": "Le Nom de la rose",
+    "author": "Umberto Eco",
+    "publishedAt": "1980-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Historique", "Drame"],
+    "description": "En 1327, dans une abbaye italienne, une série de meurtres mystérieux se produit. Le franciscain Guillaume de Baskerville mène l'enquête.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793681/works/le-nom-de-la-rose.webp"
+    ]
+  },
+  {
+    "title": "Voyage au bout de la nuit",
+    "author": "Louis-Ferdinand Céline",
+    "publishedAt": "1932-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame", "Historique"],
+    "description": "Le voyage désabusé et cynique du narrateur, Bardamu, à travers la Première Guerre mondiale, les colonies africaines, l'Amérique et les banlieues françaises.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793683/works/voyage-au-bout-de-la-nuit.webp"
+    ]
+  },
+  {
+    "title": "Madame Bovary",
+    "author": "Gustave Flaubert",
+    "publishedAt": "1856-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame", "Romance"],
+    "description": "L'histoire tragique d'Emma Bovary, une femme qui cherche l'évasion de sa vie conjugale ennuyeuse à travers des romances adultères et un style de vie dispendieux.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793684/works/madame-bovary.webp"
+    ]
+  },
+  {
+    "title": "Les Fleurs du Mal",
+    "author": "Charles Baudelaire",
+    "publishedAt": "1857-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame"],
+    "description": "Un recueil de poèmes célébrant la beauté au milieu de la décadence et de l'érotisme. Le livre a été partiellement censuré lors de sa publication.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793685/works/les-fleurs-du-mal.webp"
+    ]
+  },
+  {
+    "title": "Le Père Goriot",
+    "author": "Honoré de Balzac",
+    "publishedAt": "1835-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame"],
+    "description": "Un récit qui explore la nature de la famille, du mariage et de la classe sociale dans la France du XIXe siècle à travers l'histoire du Père Goriot.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793686/works/le-pere-goriot.webp"
+    ]
+  },
+  {
+    "title": "Moby Dick",
+    "author": "Herman Melville",
+    "publishedAt": "1851-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Aventure", "Drame"],
+    "description": "La quête obsessionnelle du capitaine Ahab pour chasser Moby Dick, un cachalot blanc géant.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793688/works/moby-dick.webp"
+    ]
+  },
+  {
+    "title": "Jane Eyre",
+    "author": "Charlotte Brontë",
+    "publishedAt": "1847-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Romance", "Fantastique"],
+    "description": "L'histoire de Jane Eyre, une gouvernante sans éclat mais à la volonté forte qui tombe amoureuse de son mystérieux employeur, M. Rochester.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793689/works/jane-eyre.webp"
+    ]
+  },
+  {
+    "title": "Crime et Châtiment",
+    "author": "Fiodor Dostoïevski",
+    "publishedAt": "1866-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Philosophie", "Drame"],
+    "description": "L'histoire de Raskolnikov, un étudiant pauvre qui assassine une vieille prêteuse sur gages et lutte avec la culpabilité et le châtiment.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793691/works/crime-et-chatiment.webp"
+    ]
+  },
+  {
+    "title": "La Peste",
+    "author": "Albert Camus",
+    "publishedAt": "1947-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Philosophie", "Drame"],
+    "description": "L'histoire des efforts du docteur Bernard Rieux et d'autres pour combattre la peste bubonique qui ravage la ville d'Oran.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793692/works/la-peste.webp"
+    ]
+  },
+  {
+    "title": "Au Bonheur des Dames",
+    "author": "Émile Zola",
+    "publishedAt": "1883-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame"],
+    "description": "Le roman dépeint l'essor des grands magasins à Paris et leur impact sur le petit commerce, raconté à travers les yeux de Denise Baudu.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793693/works/au-bonheur-des-dames.webp"
+    ]
+  },
+  {
+    "title": "La Chute",
+    "author": "Albert Camus",
+    "publishedAt": "1956-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Philosophie"],
+    "description": "Le roman se présente sous la forme d'un monologue dramatique prononcé par Jean-Baptiste Clamence dans un bar d'Amsterdam.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793696/works/la-chute.webp"
+    ]
+  },
+  {
+    "title": "Les Liaisons dangereuses",
+    "author": "Pierre Choderlos de Laclos",
+    "publishedAt": "1782-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Romance", "Drame"],
+    "description": "Un roman épistolaire qui raconte la rivalité et les jeux de séduction de deux nobles pervers : la Marquise de Merteuil et le Vicomte de Valmont.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793698/works/les-liaisons-dangereuses.webp"
+    ]
+  },
+  {
+    "title": "Candide ou l'Optimisme",
+    "author": "Voltaire",
+    "publishedAt": "1759-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Philosophie", "Aventure"],
+    "description": "Un conte satirique qui critique la doctrine philosophique de l'optimisme léibnizien, et les malheurs du monde.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793698/works/candide-ou-l-optimisme.webp"
+    ]
+  },
+  {
+    "title": "Le Rouge et le Noir",
+    "author": "Stendhal",
+    "publishedAt": "1830-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame", "Romance"],
+    "description": "Le roman retrace l'ascension sociale de Julien Sorel, un jeune homme ambitieux et intelligent, dans la France de la Restauration.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793700/works/le-rouge-et-le-noir.webp"
+    ]
+  },
+  {
+    "title": "Notre-Dame de Paris",
+    "author": "Victor Hugo",
+    "publishedAt": "1831-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Fantastique", "Drame"],
+    "description": "L'histoire de la belle Esmeralda et du bossu Quasimodo, qui se déroule dans la cathédrale de Notre-Dame au XVe siècle.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793701/works/notre-dame-de-paris.webp"
+    ]
+  },
+  {
+    "title": "La Promesse de l'aube",
+    "author": "Romain Gary",
+    "publishedAt": "1960-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame", "Historique"],
+    "description": "Un récit autobiographique poignant sur l'amour inconditionnel et les espoirs démesurés d'une mère pour son fils.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793702/works/la-promesse-de-l-aube.webp"
+    ]
+  },
+  {
+    "title": "Le Parfum",
+    "author": "Patrick Süskind",
+    "publishedAt": "1985-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame", "Fantastique"],
+    "description": "L'histoire de Jean-Baptiste Grenouille, né avec un sens de l'odorat extraordinaire, qui cherche à créer le parfum ultime en commettant des meurtres.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793703/works/le-parfum.webp"
+    ]
+  },
+  {
+    "title": "À la recherche du temps perdu",
+    "author": "Marcel Proust",
+    "publishedAt": "1913-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame"],
+    "description": "Un cycle romanesque en sept tomes qui explore les thèmes de la mémoire involontaire, du temps et de la société aristocratique française.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793705/works/a-la-recherche-du-temps-perdu.webp"
+    ]
+  },
+  {
+    "title": "Le Meilleur des mondes",
+    "author": "Aldous Huxley",
+    "publishedAt": "1932-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Science-Fiction"],
+    "description": "Un roman qui se déroule dans un Londres futuriste où la société est fondée sur l'intelligence et le conditionnement social pour assurer la stabilité et le bonheur.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793706/works/le-meilleur-des-mondes.webp"
+    ]
+  },
+  {
+    "title": "Anna Karénine",
+    "author": "Léon Tolstoï",
+    "publishedAt": "1877-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Romance", "Drame"],
+    "description": "A complex novel that tells the tragic story of the aristocratic Anna Karenina, who embarks on a doomed affair with the cavalry officer Count Vronsky.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793707/works/anna-karenine.webp"
+    ]
+  },
+  {
+    "title": "Autant en emporte le vent",
+    "author": "Margaret Mitchell",
+    "publishedAt": "1936-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Historique", "Romance"],
+    "description": "Le récit fleuve de Scarlett O'Hara, une séduisante et manipulatrice jeune femme du Sud, et de ses liens avec Rhett Butler au fil de la Guerre de Sécession et de la période de la Reconstruction. ",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793708/works/autant-en-emporte-le-vent.webp"
+    ]
+  },
+  {
+    "title": "Le Vieil Homme et la Mer",
+    "author": "Ernest Hemingway",
+    "publishedAt": "1952-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame", "Aventure"],
+    "description": "L'histoire d'un vieux pêcheur cubain qui lutte avec un marlin géant, loin dans le Gulf Stream",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793709/works/le-vieil-homme-et-la-mer.webp"
+    ]
+  },
+  {
+    "title": "Don Quichotte",
+    "author": "Miguel de Cervantes",
+    "publishedAt": "1605-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Aventure", "Drame"],
+    "description": "L'histoire d'un homme qui lit tellement de romans de chevalerie qu'il décide de devenir chevalier errant pour ramener la justice dans le monde.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793710/works/don-quichotte.webp"
+    ]
+  },
+  {
+    "title": "Alice au pays des merveilles",
+    "author": "Lewis Carroll",
+    "publishedAt": "1865-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Fantastique"],
+    "description": "Les périples d'une jeune fille, Alice, qui chute dans un terrier et découvre un univers fantaisiste rempli de créatures curieuses et à forme humaine.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793711/works/alice-au-pays-des-merveilles.webp"
+    ]
+  },
+  {
+    "title": "Les Trois Mousquetaires",
+    "author": "Alexandre Dumas",
+    "publishedAt": "1844-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Aventure", "Historique"],
+    "description": "L'histoire de d'Artagnan, un jeune homme de Gascogne qui quitte sa province pour devenir mousquetaire du roi Louis XIII.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793713/works/les-trois-mousquetaires.webp"
+    ]
+  },
+  {
+    "title": "Le Portrait de Dorian Gray",
+    "author": "Oscar Wilde",
+    "publishedAt": "1890-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Fantastique", "Drame"],
+    "description": "L'histoire d'un homme dont le portrait se dégrade en reflétant ses turpitudes, alors qu'il conserve, lui, une jeunesse éternelle. ",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793714/works/le-portrait-de-dorian-gray.webp"
+    ]
+  },
+  {
+    "title": "Le Procès",
+    "author": "Franz Kafka",
+    "publishedAt": "1925-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Philosophie", "Drame"],
+    "description": "Le récit de Josef K., un homme qui se retrouve arrêté et jugé par une instance à la fois lointaine et insaisissable, sans jamais connaître la nature de l'accusation portée contre lui.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793716/works/le-proces.webp"
+    ]
+  },
+  {
+    "title": "La Condition humaine",
+    "author": "André Malraux",
+    "publishedAt": "1933-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Historique", "Drame"],
+    "description": "Un roman centré sur la révolution communiste de 1927 à Shanghai et la lutte idéologique et existentielle des personnages.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793717/works/la-condition-humaine.webp"
+    ]
+  },
+  {
+    "title": "Le Guépard",
+    "author": "Giuseppe Tomasi di Lampedusa",
+    "publishedAt": "1958-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Historique", "Drame"],
+    "description": "Le récit du Prince Salina, qui assiste à la fin de l'aristocratie sicilienne et à l'unification de l'Italie au XIXe siècle.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793718/works/le-guepard.webp"
+    ]
+  },
+  {
+    "title": "Cent ans de solitude",
+    "author": "Gabriel García Márquez",
+    "publishedAt": "1967-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Fantastique", "Drame"],
+    "description": "Le récit de la famille Buendía qui s'étend sur sept générations dans la ville légendaire de Macondo.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793720/works/cent-ans-de-solitude.webp"
+    ]
+  },
+  {
+    "title": "Les raisins de la colère",
+    "author": "John Steinbeck",
+    "publishedAt": "1939-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame"],
+    "description": "Le récit de la famille Joad, des agriculteurs locataires de l'Oklahoma, qui sont ruinés par la Grande Dépression et entreprennent un voyage vers la Californie dans l'espoir de trouver du travail.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793721/works/les-raisins-de-la-colere.webp"
+    ]
+  },
+  {
+    "title": "Le Grand Meaulnes",
+    "author": "Alain-Fournier",
+    "publishedAt": "1913-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame", "Romance"],
+    "description": "L'histoire d'Augustin Meaulnes et de sa quête pour retrouver une femme mystérieuse rencontrée lors d'une fête étrange.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793722/works/le-grand-meaulnes.webp"
+    ]
+  },
+  {
+    "title": "Bel-Ami",
+    "author": "Guy de Maupassant",
+    "publishedAt": "1885-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame"],
+    "description": "Le roman raconte l'ascension cynique de Georges Duroy, un journaliste séduisant qui utilise les femmes pour grimper l'échelle sociale à Paris.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793723/works/bel-ami.webp"
+    ]
+  },
+  {
+    "title": "Siddhartha",
+    "author": "Hermann Hesse",
+    "publishedAt": "1922-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Philosophie"],
+    "description": "L'histoire d'un jeune homme de l'Inde ancienne qui s'engage dans un voyage spirituel en quête de découverte de soi et d'illumination.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793724/works/siddhartha.webp"
+    ]
+  },
+  {
+    "title": "Le Monde de Sophie",
+    "author": "Jostein Gaarder",
+    "publishedAt": "1991-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Philosophie"],
+    "description": "Un roman qui est aussi un cours de philosophie, racontant l'histoire d'une adolescente qui reçoit des lettres anonymes sur l'histoire de la philosophie.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793725/works/le-monde-de-sophie.webp"
+    ]
+  },
+  {
+    "title": "Un sac de billes",
+    "author": "Joseph Joffo",
+    "publishedAt": "1973-01-01T00:00:00.000Z",
+    "type": "book",
+    "genre": ["Drame", "Historique"],
+    "description": "Le récit autobiographique de deux jeunes frères juifs qui traversent la France occupée pour échapper aux nazis.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758793726/works/un-sac-de-billes.webp"
+    ]
+  },
+  {
+    "title": "Thriller",
+    "author": "Michael Jackson",
+    "publishedAt": "1982-11-30T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Pop"],
+    "description": "Un album majeur qui a révolutionné la musique pop et le vidéo-clip. L'album le plus vendu de tous les temps.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792286/works/thriller.webp"
+    ]
+  },
+  {
+    "title": "Nevermind",
+    "author": "Nirvana",
+    "publishedAt": "1991-09-24T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock Alternatif"],
+    "description": "L'album qui a propulsé le mouvement grunge dans le grand public et défini une génération avec des titres comme 'Smells Like Teen Spirit'.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792287/works/nevermind.webp"
+    ]
+  },
+  {
+    "title": "The Dark Side of the Moon",
+    "author": "Pink Floyd",
+    "publishedAt": "1973-03-01T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Un album conceptuel explorant des thèmes comme le conflit, l'avidité, le temps, la folie et la mort.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792287/works/the-dark-side-of-the-moon.webp"
+    ]
+  },
+  {
+    "title": "Back in Black",
+    "author": "AC/DC",
+    "publishedAt": "1980-07-25T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hard Rock / Metal"],
+    "description": "Un hommage au chanteur décédé Bon Scott, cet album est l'un des plus vendus de l'histoire du rock.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792288/works/back-in-black.webp"
+    ]
+  },
+  {
+    "title": "Abbey Road",
+    "author": "The Beatles",
+    "publishedAt": "1969-09-26T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Le dernier album enregistré par les Beatles, célèbre pour sa pochette montrant le groupe traversant la rue à Londres.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792289/works/abbey-road.webp"
+    ]
+  },
+  {
+    "title": "The Joshua Tree",
+    "author": "U2",
+    "publishedAt": "1987-03-09T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "L'album qui a établi U2 comme un groupe de rock de stade, avec des succès comme 'With or Without You' et 'I Still Haven't Found What I'm Looking For'.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792290/works/the-joshua-tree.webp"
+    ]
+  },
+  {
+    "title": "Led Zeppelin IV",
+    "author": "Led Zeppelin",
+    "publishedAt": "1971-11-08T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hard Rock / Metal"],
+    "description": "Contient le titre emblématique 'Stairway to Heaven'. Cet album est l'un des plus influents de l'histoire du rock.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792290/works/led-zeppelin-iv.webp"
+    ]
+  },
+  {
+    "title": "Sgt. Pepper's Lonely Hearts Club Band",
+    "author": "The Beatles",
+    "publishedAt": "1967-06-01T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Souvent considéré comme l'un des albums les plus influents de tous les temps pour son innovation et son statut d'œuvre d'art.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792292/works/sgt-pepper-s-lonely-hearts-club-band.webp"
+    ]
+  },
+  {
+    "title": "Rumours",
+    "author": "Fleetwood Mac",
+    "publishedAt": "1977-02-04T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Enregistré dans un contexte de tensions personnelles, cet album est devenu un succès planétaire pour ses mélodies sophistiquées.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792293/works/rumours.webp"
+    ]
+  },
+  {
+    "title": "Hotel California",
+    "author": "Eagles",
+    "publishedAt": "1976-12-08T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Un album qui explore le côté sombre du rêve américain, avec la chanson titre mondialement connue.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792294/works/hotel-california.webp"
+    ]
+  },
+  {
+    "title": "A Night at the Opera",
+    "author": "Queen",
+    "publishedAt": "1975-11-21T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Contient le titre emblématique 'Bohemian Rhapsody', un chef-d'œuvre de l'opéra-rock.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792295/works/a-night-at-the-opera.webp"
+    ]
+  },
+  {
+    "title": "Appetite for Destruction",
+    "author": "Guns N' Roses",
+    "publishedAt": "1987-07-21T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hard Rock / Metal"],
+    "description": "Le premier album du groupe, considéré comme l'un des plus grands albums de hard rock de tous les temps.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792296/works/appetite-for-destruction.webp"
+    ]
+  },
+  {
+    "title": "The Wall",
+    "author": "Pink Floyd",
+    "publishedAt": "1979-11-30T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Un double album conceptuel qui raconte l'histoire de Pink, une rock star isolée du monde par un mur psychologique.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792298/works/the-wall.webp"
+    ]
+  },
+  {
+    "title": "Boston",
+    "author": "Boston",
+    "publishedAt": "1976-08-25T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Le premier album du groupe, contenant des classiques du rock comme 'More Than a Feeling'.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792298/works/boston.webp"
+    ]
+  },
+  {
+    "title": "Born in the U.S.A.",
+    "author": "Bruce Springsteen",
+    "publishedAt": "1984-06-04T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Un album très populaire mais souvent mal interprété, qui critique le rêve américain post-Vietnam.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792299/works/born-in-the-u-s-a.webp"
+    ]
+  },
+  {
+    "title": "Hybrid Theory",
+    "author": "Linkin Park",
+    "publishedAt": "2000-10-24T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hard Rock / Metal"],
+    "description": "Le premier album du groupe, qui mélange le rock, le hip-hop et l'électronique, définissant le son du début des années 2000.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792300/works/hybrid-theory.webp"
+    ]
+  },
+  {
+    "title": "Metallica (The Black Album)",
+    "author": "Metallica",
+    "publishedAt": "1991-08-12T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hard Rock / Metal"],
+    "description": "L'album qui a fait passer Metallica du statut de groupe de thrash metal à celui de superstar mondiale.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792301/works/metallica-the-black-album.webp"
+    ]
+  },
+  {
+    "title": "Licensed to Ill",
+    "author": "Beastie Boys",
+    "publishedAt": "1986-11-15T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hip Hop / Soul"],
+    "description": "Un des premiers albums de rap à succès, mêlant rock et humour.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792302/works/licensed-to-ill.webp"
+    ]
+  },
+  {
+    "title": "The Marshall Mathers LP",
+    "author": "Eminem",
+    "publishedAt": "2000-05-23T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hip Hop / Soul"],
+    "description": "Le deuxième album studio d'Eminem, un disque très personnel et controversé qui a remporté de nombreux prix.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792303/works/the-marshall-mathers-lp.webp"
+    ]
+  },
+  {
+    "title": "Purple Rain",
+    "author": "Prince and The Revolution",
+    "publishedAt": "1984-06-25T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock", "Pop"],
+    "description": "Bande originale du film du même nom, un classique des années 80 qui a défini la carrière de Prince.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792304/works/purple-rain.webp"
+    ]
+  },
+  {
+    "title": "Disintegration",
+    "author": "The Cure",
+    "publishedAt": "1989-05-02T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock Alternatif"],
+    "description": "Un album marquant du groupe, caractérisé par une atmosphère sombre et introspective.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792305/works/disintegration.webp"
+    ]
+  },
+  {
+    "title": "OK Computer",
+    "author": "Radiohead",
+    "publishedAt": "1997-05-21T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock Alternatif"],
+    "description": "Un album considéré comme un chef-d'œuvre de la musique moderne, explorant l'aliénation et la technologie.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792306/works/ok-computer.webp"
+    ]
+  },
+  {
+    "title": "Blood Sugar Sex Magik",
+    "author": "Red Hot Chili Peppers",
+    "publishedAt": "1991-09-24T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock Alternatif"],
+    "description": "L'album qui a cimenté le succès mondial du groupe avec des titres comme 'Under the Bridge'.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792307/works/blood-sugar-sex-magik.webp"
+    ]
+  },
+  {
+    "title": "Tapestry",
+    "author": "Carole King",
+    "publishedAt": "1971-02-10T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Un album influent de la chanteuse-compositrice, acclamé pour son honnêteté émotionnelle et ses mélodies sophistiquées.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792308/works/tapestry.webp"
+    ]
+  },
+  {
+    "title": "The Miseducation of Lauryn Hill",
+    "author": "Lauryn Hill",
+    "publishedAt": "1998-08-25T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hip Hop / Soul"],
+    "description": "Le seul album studio solo de Lauryn Hill, un mélange de hip hop, R&B et soul.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792309/works/the-miseducation-of-lauryn-hill.webp"
+    ]
+  },
+  {
+    "title": "Kind of Blue",
+    "author": "Miles Davis",
+    "publishedAt": "1959-08-17T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Jazz / Electro"],
+    "description": "Considéré comme le plus grand album de jazz modal, un classique intemporel.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792311/works/kind-of-blue.webp"
+    ]
+  },
+  {
+    "title": "London Calling",
+    "author": "The Clash",
+    "publishedAt": "1979-12-14T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock Alternatif"],
+    "description": "Un double album éclectique qui élargit les horizons du punk rock en intégrant le reggae, le ska et le jazz.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792313/works/london-calling.webp"
+    ]
+  },
+  {
+    "title": "Master of Puppets",
+    "author": "Metallica",
+    "publishedAt": "1986-03-03T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hard Rock / Metal"],
+    "description": "Souvent cité comme l'un des meilleurs albums de heavy metal et le chef-d'œuvre de Metallica.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792313/works/master-of-puppets.webp"
+    ]
+  },
+  {
+    "title": "Exile on Main St.",
+    "author": "The Rolling Stones",
+    "publishedAt": "1972-05-12T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Un album double, rugueux et essentiel, enregistré en partie dans le sous-sol de la maison de Keith Richards en France.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792315/works/exile-on-main-st.webp"
+    ]
+  },
+  {
+    "title": "Pet Sounds",
+    "author": "The Beach Boys",
+    "publishedAt": "1966-05-16T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Un album novateur qui a élevé la musique pop au rang d'art, considéré comme l'un des plus grands de tous les temps.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792316/works/pet-sounds.webp"
+    ]
+  },
+  {
+    "title": "Jagged Little Pill",
+    "author": "Alanis Morissette",
+    "publishedAt": "1995-06-13T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock Alternatif"],
+    "description": "L'album qui a transformé Morissette en une icône du rock des années 90, avec des hymnes féministes et francs.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792317/works/jagged-little-pill.webp"
+    ]
+  },
+  {
+    "title": "Back to Black",
+    "author": "Amy Winehouse",
+    "publishedAt": "2006-10-27T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hip Hop / Soul"],
+    "description": "Un album acclamé par la critique qui a relancé l'intérêt pour la musique soul des années 60.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792318/works/back-to-black.webp"
+    ]
+  },
+  {
+    "title": "Enter the Wu-Tang (36 Chambers)",
+    "author": "Wu-Tang Clan",
+    "publishedAt": "1993-11-09T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hip Hop / Soul"],
+    "description": "Un album séminal du hip hop qui a introduit l'esthétique du kung-fu et des sons sombres dans le genre.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792319/works/enter-the-wu-tang-36-chambers.webp"
+    ]
+  },
+  {
+    "title": "Discovery",
+    "author": "Daft Punk",
+    "publishedAt": "2001-03-13T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Jazz / Electro"],
+    "description": "Un album qui a mélangé le disco, le rock et l'électronique, marquant une nouvelle ère pour la French Touch.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792320/works/discovery.webp"
+    ]
+  },
+  {
+    "title": "The Rise and Fall of Ziggy Stardust and the Spiders from Mars",
+    "author": "David Bowie",
+    "publishedAt": "1972-06-16T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Un album conceptuel sur une rock star alien bisexuelle et son ascension vers la gloire.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792321/works/the-rise-and-fall-of-ziggy-stardust-and-the-spiders-from-mars.webp"
+    ]
+  },
+  {
+    "title": "Is This It",
+    "author": "The Strokes",
+    "publishedAt": "2001-07-30T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock Alternatif"],
+    "description": "Un album qui a marqué le renouveau du garage rock au début des années 2000.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792321/works/is-this-it.webp"
+    ]
+  },
+  {
+    "title": "Revolver",
+    "author": "The Beatles",
+    "publishedAt": "1966-08-05T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock"],
+    "description": "Un album qui marque le tournant psychédélique du groupe, explorant des sons et des techniques de studio complexes.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792323/works/revolver.webp"
+    ]
+  },
+  {
+    "title": "Dirt",
+    "author": "Alice in Chains",
+    "publishedAt": "1992-09-29T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock Alternatif"],
+    "description": "Un album sombre et puissant explorant les thèmes de la dépendance et de la dépression.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792323/works/dirt.webp"
+    ]
+  },
+  {
+    "title": "Siamese Dream",
+    "author": "The Smashing Pumpkins",
+    "publishedAt": "1993-07-27T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock Alternatif"],
+    "description": "Un album acclamé pour ses arrangements complexes et sa production luxuriante.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792324/works/siamese-dream.webp"
+    ]
+  },
+  {
+    "title": "Violator",
+    "author": "Depeche Mode",
+    "publishedAt": "1990-03-19T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Pop"],
+    "description": "L'album qui a propulsé Depeche Mode au sommet avec des titres comme 'Enjoy the Silence' et 'Personal Jesus'.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792325/works/violator.webp"
+    ]
+  },
+  {
+    "title": "Californication",
+    "author": "Red Hot Chili Peppers",
+    "publishedAt": "1999-06-08T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Rock Alternatif"],
+    "description": "L'album du retour pour le groupe, marquant un changement de son vers des mélodies plus douces.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792325/works/californication.webp"
+    ]
+  },
+  {
+    "title": "Led Zeppelin II",
+    "author": "Led Zeppelin",
+    "publishedAt": "1969-10-22T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Hard Rock / Metal"],
+    "description": "Un album blues-rock puissant qui a défini leur son des années 70.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792327/works/led-zeppelin-ii.webp"
+    ]
+  },
+  {
+    "title": "The Queen is Dead",
+    "author": "The Smiths",
+    "publishedAt": "1986-06-16T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Pop"],
+    "description": "Un album souvent cité comme l'un des plus importants de la musique britannique des années 80.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792328/works/the-queen-is-dead.webp"
+    ]
+  },
+  {
+    "title": "Symphonie n° 5 de Beethoven",
+    "author": "Ludwig van Beethoven",
+    "publishedAt": "1808-12-22T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Musique Classique"],
+    "description": "L'une des compositions les plus célèbres de la musique classique, reconnaissable à son motif de quatre notes 'destin'.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792329/works/symphonie-n-5-de-beethoven.webp"
+    ]
+  },
+  {
+    "title": "Symphonie Fantastique",
+    "author": "Hector Berlioz",
+    "publishedAt": "1830-12-05T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Musique Classique"],
+    "description": "Un chef-d'œuvre du romantisme, décrivant la passion obsessive d'un artiste pour une femme.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792329/works/symphonie-fantastique.webp"
+    ]
+  },
+  {
+    "title": "Les Quatre Saisons",
+    "author": "Antonio Vivaldi",
+    "publishedAt": "1725-01-01T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Musique Classique"],
+    "description": "Quatre concertos pour violon illustrant les ambiances de chaque saison.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792330/works/les-quatre-saisons.webp"
+    ]
+  },
+  {
+    "title": "Clair de Lune",
+    "author": "Claude Debussy",
+    "publishedAt": "1905-01-01T00:00:00.000Z",
+    "type": "music",
+    "genre": ["Musique Classique"],
+    "description": "Une pièce emblématique de la musique impressionniste française, célèbre pour sa mélodie douce.",
+    "images": [
+      "https://res.cloudinary.com/dsqbqwlhm/image/upload/v1758792331/works/clair-de-lune.webp"
+    ]
+  }
+]
