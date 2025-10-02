@@ -24,3 +24,16 @@ export const getWorkTypesByIds = async (ids: Types.ObjectId[]) => {
     .lean();
   return docs as { _id: Types.ObjectId; type: string }[];
 };
+
+export const getAllWorks = async (limit?: number) => {
+  const query = Work.find().lean();
+  
+  // Tri par date de publication décroissante (les plus récentes en premier)
+  query.sort({ publishedAt: -1 });
+
+  if (limit && limit > 0) {
+    query.limit(limit);
+  }
+  
+  return await query.exec();
+};
