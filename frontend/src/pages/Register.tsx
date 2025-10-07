@@ -1,16 +1,12 @@
 import { useState, type FormEvent } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
-export const Login = () => {
+export const Register = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Récupérer le message de succès depuis l'état de navigation
-  const successMessage = location.state?.message;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -20,34 +16,41 @@ export const Login = () => {
     const formData = new FormData(e.target as HTMLFormElement);
 
     const formValues = {
+      username: formData.get('username') as string,
       email: formData.get('email') as string,
       password: formData.get('password') as string,
+      confirmPassword: formData.get('confirmPassword') as string,
+    };
+
+    // Validation côté client
+    if (formValues.password !== formValues.confirmPassword) {
+      setError('Les mots de passe ne correspondent pas');
+      setIsLoading(false);
+      return;
     }
 
     try {
-      await login({ email: formValues.email, password: formValues.password });
-      navigate('/');
+      await register({ 
+        username: formValues.username, 
+        email: formValues.email, 
+        password: formValues.password 
+      });
+      navigate('/login', { 
+        state: { message: 'Inscription réussie ! Vous pouvez maintenant vous connecter.' }
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de la connexion');
+      setError(err instanceof Error ? err.message : 'Erreur lors de l\'inscription');
     } finally {
       setIsLoading(false);
     }
   };
 
-  console.log('render');
-
   return (
     <div className="min-h-screen bg-page-background flex items-center justify-center px-4">
       <div className="bg-primary-color p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-3xl font-bold text-slate-900 mb-6 text-center">
-          Connexion
+          Inscription
         </h1>
-
-        {successMessage && (
-          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4">
-            {successMessage}
-          </div>
-        )}
 
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
@@ -56,6 +59,24 @@ export const Login = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="username" className="block text-slate-900 font-medium mb-2">
+              Nom d'utilisateur
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              className="w-full px-4 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color"
+              required
+              minLength={3}
+              maxLength={20}
+            />
+            <p className="text-sm text-slate-700 mt-1">
+              Entre 3 et 20 caractères
+            </p>
+          </div>
+
           <div>
             <label htmlFor="email" className="block text-slate-900 font-medium mb-2">
               Email
@@ -79,6 +100,24 @@ export const Login = () => {
               name="password"
               className="w-full px-4 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color"
               required
+              minLength={8}
+              maxLength={30}
+            />
+            <p className="text-sm text-slate-700 mt-1">
+              Au moins 8 caractères avec majuscule, minuscule, chiffre et caractère spécial
+            </p>
+          </div>
+
+          <div>
+            <label htmlFor="confirmPassword" className="block text-slate-900 font-medium mb-2">
+              Confirmer le mot de passe
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              className="w-full px-4 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color"
+              required
             />
           </div>
 
@@ -87,18 +126,18 @@ export const Login = () => {
             disabled={isLoading}
             className="w-full bg-action-color hover:bg-action-color-hover text-slate-100 py-3 rounded-md font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Connexion...' : 'Se connecter'}
+            {isLoading ? 'Inscription...' : 'S\'inscrire'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-slate-700">
-            Pas encore de compte ?{' '}
+            Déjà un compte ?{' '}
             <Link 
-              to="/register" 
+              to="/login" 
               className="text-action-color hover:text-action-color-hover font-medium"
             >
-              S'inscrire
+              Se connecter
             </Link>
           </p>
         </div>
