@@ -23,7 +23,7 @@ interface IWorkSeed {
   updatedAt?: Date | string;
 }
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 const WORKS_DATA_PATH = "./scripts/works_data.json";
 
 const seedData = {

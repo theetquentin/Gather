@@ -1,7 +1,4 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export const connectDB = async (url: string | undefined) => {
   if (!url) throw new Error("URL MongoDB manquante");

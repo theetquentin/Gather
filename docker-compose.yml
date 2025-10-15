@@ -1,0 +1,55 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gather-backend
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=prod
+    expose:
+      - ${BACKEND_PORT}
+    networks:
+      - gather-network
+    volumes:
+      - ./backend/logs:/app/logs
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gather-frontend
+    restart: unless-stopped
+    env_file:
+      - ./frontend/.env
+    environment:
+      - VITE_NODE_ENV=prod
+    expose:
+      - ${VITE_FRONTEND_PORT}
+    depends_on:
+      - backend
+    networks:
+      - gather-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: gather-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - gather-network
+
+networks:
+  gather-network:
+    driver: bridge

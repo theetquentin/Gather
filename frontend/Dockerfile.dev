@@ -1,0 +1,20 @@
+FROM node:24-alpine
+
+WORKDIR /app
+
+# Copier les fichiers de dépendances
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm ci
+
+# Copier le code source
+COPY . .
+
+# Exposer le port de développement
+EXPOSE 5173
+
+# Démarrer Vite en mode dev
+CMD ["npm", "run", "dev"]
+
+

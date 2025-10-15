@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      dockerfile: Dockerfile.dev
+    environment:
+      - NODE_ENV=dev
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    restart: "no"
+
+  frontend:
+    build:
+      dockerfile: Dockerfile.dev
+    environment:
+      - VITE_NODE_ENV=dev
+      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - "${VITE_FRONTEND_PORT}:${VITE_FRONTEND_PORT}"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    restart: "no"
+
+  nginx:
+    profiles: ["prod"] # désactivé en dev
