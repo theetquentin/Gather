@@ -1,57 +1,58 @@
 #!/bin/bash
 set -e
-echo "Démarrage en mode PRODUCTION..."
 
-if [ ! -f ../.env ]; then
-    echo "Fichier .env manquant"
-    exit 1
+FRONTEND_CONF="./nginx/conf.d/frontend.conf"
+BACKEND_CONF="./nginx/conf.d/backend.conf"
+
+echo "Lancement du déploiement en production..."
+
+# Étape 0 : Vérifier les droits sur ./certbot/conf/live
+CERT_DIR="./certbot/conf/live"
+if [ ! -r "$CERT_DIR" ] || [ ! -w "$CERT_DIR" ]; then
+  echo "Attention : vous n'avez pas les droits nécessaires sur $CERT_DIR"
+  echo "Lancez le script avec sudo ou ajustez les permissions."
+  exit 1
 fi
 
-set -a
-source ../.env
-set +a
+# Étape 1 : Démarrage initial en HTTP
+echo "🔹 Étape 1 : Démarrage initial en HTTP..."
+docker compose up -d frontend backend nginx
 
-export NODE_ENV=prod
-export VITE_NODE_ENV=prod
-DOMAIN="${DOMAIN}"
-API_DOMAIN="${API_DOMAIN}"
-export MAIL="quentin.theet@gmail.com"
-
-CERT_DIR="/etc/letsencrypt/live/$DOMAIN"
-
-# Vérification des certificats existants
-if [ -f "$CERT_DIR/fullchain.pem" ] && [ -f "$CERT_DIR/privkey.pem" ]; then
-    echo "Certificat SSL déjà présent, pas besoin de régénérer."
+# Étape 2 : Génération du certificat SSL si nécessaire
+if [ ! -d "./certbot/conf/live" ]; then
+  echo "Étape 2 : Génération du certificat SSL avec Certbot..."
+  docker compose run --rm certbot
 else
-    echo "Certificat SSL absent, génération en cours..."
-
-    mkdir -p /var/www/certbot
-    mkdir -p /etc/letsencrypt
-
-    echo "Démarrage temporaire de Nginx pour Certbot..."
-    docker compose --profile prod up -d nginx
-
-    docker run --rm \
-      -v /etc/letsencrypt:/etc/letsencrypt \
-      -v /var/www/certbot:/var/www/certbot \
-      certbot/certbot certonly \
-      --webroot \
-      --webroot-path=/var/www/certbot \
-      --email "$MAIL" \
-      --agree-tos \
-      --no-eff-email \
-      -d "$DOMAIN" \
-      -d "$API_DOMAIN"
-
-    echo "Redémarrage de Nginx avec SSL..."
-    docker compose --profile prod restart nginx
+  echo "Les certificats existent déjà, passage à HTTPS..."
 fi
 
-# Lancer toute la stack prod
-echo "Lancement des services prod..."
-docker compose --profile prod up -d --build
+# Étape 3 : bascule HTTP -> HTTPS
+activate_https() {
+    local file="$1"
 
-echo "Tous les services prod démarrés !"
-echo "Frontend: https://$DOMAIN"
-echo "API: https://$API_DOMAIN"
-echo "Logs: docker compose logs -f"
+    echo "-> Bascule HTTP/HTTPS dans $file"
+
+    # 1. Commenter le bloc HTTP
+    # Cible la plage de lignes entre '# START HTTP' et '# END HTTP'.
+    # '//b' :  Exclut les lignes de balisage
+    # /^\s*#/b : Exclut les lignes qui commencent par un commentaire (y compris les espaces)
+    # 's/^/# /' : ajoute un '#' suivi d'un espace au début de la ligne.
+    sed -i '/^# START HTTP$/,/^# END HTTP$/{
+        //b
+        /^\s*#/b
+        s/^/# /
+    }' "$file"
+
+    # 2. Décommenter le bloc HTTPS
+    sed -i '/^# START HTTPS$/,/^# END HTTPS$/{
+        //!s/^# *//
+    }' "$file"
+}
+
+activate_https "$FRONTEND_CONF"
+activate_https "$BACKEND_CONF"
+
+echo "Étape 4 : Relance de Nginx..."
+docker compose restart nginx
+
+echo "Déploiement terminé !"

@@ -14,8 +14,10 @@ services:
   frontend:
     build:
       dockerfile: Dockerfile.dev
+    env_file:
+      - ./frontend/.env
     environment:
-      - VITE_NODE_ENV=dev
+      - VITE_APP_ENV=dev
       - CHOKIDAR_USEPOLLING=true
     ports:
       - "${VITE_FRONTEND_PORT}:${VITE_FRONTEND_PORT}"
