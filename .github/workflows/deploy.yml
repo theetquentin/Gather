@@ -22,7 +22,7 @@ jobs:
             # Navigate to project directory
             cd ${{ secrets.PROJECT_PATH }}
 
-            # Pull latest changes from main branch
+            # Pull latest changes from main branch (no conflicts with templates approach)
             git fetch origin
             git checkout main
             git pull origin main

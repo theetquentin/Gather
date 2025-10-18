@@ -55,3 +55,7 @@ docker-compose.override.yml
 *.crt
 *.key
 /certbot
+
+# Nginx active configs (generated from templates)
+nginx/conf.d/backend.conf
+nginx/conf.d/frontend.conf
