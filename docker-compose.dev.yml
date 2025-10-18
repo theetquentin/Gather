@@ -20,11 +20,14 @@ services:
       - VITE_APP_ENV=dev
       - CHOKIDAR_USEPOLLING=true
     ports:
-      - "${VITE_FRONTEND_PORT}:${VITE_FRONTEND_PORT}"
+      - "${VITE_FRONTEND_PORT:-5173}:${VITE_FRONTEND_PORT:-5173}"
     volumes:
       - ./frontend:/app
       - /app/node_modules
     restart: "no"
 
+  # ["prod"] desactive les containers suivants en dev
   nginx:
-    profiles: ["prod"] # désactivé en dev
+    profiles: ["prod"]
+  certbot:
+    profiles: ["prod"]

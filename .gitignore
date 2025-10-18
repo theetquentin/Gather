@@ -25,6 +25,7 @@ lerna-debug.log*
 # VS Code
 .vscode/
 *.code-workspace
+CLAUDE.md
 
 # OS / IDE
 logs

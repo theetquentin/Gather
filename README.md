@@ -13,6 +13,7 @@ L’objectif est de proposer une plateforme claire et organisée, déployée via
 - TypeScript
 - MongoDB (Mongoose)
 - ESLint + Prettier
+- Jest + Supertest
 
 ### Frontend
 - React
@@ -29,50 +30,54 @@ L’objectif est de proposer une plateforme claire et organisée, déployée via
 ## 📂 Structure du projet
 
 
-## 🚀 Déploiement & Démarrage
+## 🚀 Pipeline CI/CD
 
-Le projet est entièrement conteneurisé et géré par Docker Compose.
+Le projet **Gather** utilise un pipeline d’**Intégration Continue (CI)** et de **Déploiement Continu (CD)** basé sur **GitHub Actions**.  
+Ce pipeline garantit la qualité du code, l’automatisation du déploiement et la fiabilité du processus de mise en production.
 
-Prérequis : 
-- **Docker** et **Docker Compose**.
-- **Node.js** (recommandé pour la gestion des .env et les scripts Bash).
-- **Configuration DNS** : Pour le mode Production, vous devez avoir un domaine principal et un sous-domaine (ex: gather.quentintheet.fr et api.gather.quentintheet.fr) qui sont reliés à l'adresse IP publique de votre serveur via un enregistrement DNS de type A.
+- **CI (Continuous Integration)**  
+  Exécute automatiquement les tests et le linting lors des *push* et *pull requests* sur les branches `dev` et `main`.
 
-### 1. Configuration des variables d'environnement
+- **CD (Continuous Deployment)**  
+  Déploie automatiquement l’application en production à chaque *push* sur la branche `main`.
 
-Ce projet utilise des variables d'environnement pour la configuration des services.
-Créez les fichiers suivants à la racine du projet :
-- ./.env (Variables globales et de backend)
-- ./frontend/.env (Variables spécifiques au frontend, notamment les clés VITE_)
+### ⚙️ Workflows principaux
 
-### 2. Démarrage en mode Développement
+**1. CI – Tests et Linting (`.github/workflows/ci.yml`)**
+- **Déclenchement :** `push` sur `dev` ou `pull request` vers `main`  
+- **Vérifications effectuées :**
+  - Linting du frontend et du backend (ESLint)  
+  - Tests backend (Jest avec `mongodb-memory-server`)  
+  - Build du frontend (Vite)  
+- **Aucun service externe requis :** une base MongoDB en mémoire est générée pour les tests.
 
-Le mode développement utilise des volumes pour le hot-reloading et expose les ports internes pour faciliter le débogage.
+**2. CD – Déploiement en production (`.github/workflows/deploy.yml`)**
+- **Déclenchement :** `push` sur `main` ou lancement manuel via GitHub Actions  
+- **Processus :**
+  1. Connexion SSH au serveur distant  
+  2. Récupération du code depuis `main`  
+  3. Exécution du script `./scripts/prod.sh` (déploiement Docker Compose)  
+  4. Vérification automatique de l’accessibilité du backend et du frontend  
+- Le déploiement repose sur des **secrets GitHub** pour la connexion SSH et les domaines de production.
 
-Pour lancer la stack :
+### 🖥️ Prérequis serveur
+Le serveur de production doit disposer de :
+- Git, Docker et Docker Compose installés  
+- Accès SSH configuré avec clé privée  
+- Projet cloné à l’emplacement défini dans `PROJECT_PATH`  
+- Fichiers `.env` configurés pour le backend et le frontend  
 
-`./dev.sh`
 
-Accès :
-```
-Frontend : http://localhost:<VITE_FRONTEND_PORT>
-Backend API : http://localhost:<BACKEND_PORT>
-```
+### 🔄 Processus de déploiement
+- **Automatique :** lors de la fusion sur `main`, le workflow CD est déclenché et déploie la nouvelle version.  
+- **Manuel :** un déploiement peut être lancé depuis l’interface **Actions → CD - Deploy to Production**.
 
-### 3. Démarrage en mode Production
+### 🧾 Script de production (`scripts/prod.sh`)
+Le script gère :
+1. Le démarrage initial des services avec Docker Compose  
+2. La génération des certificats SSL via Certbot  
+3. Le basculement de la configuration Nginx vers HTTPS  
+4. Le redémarrage des conteneurs pour appliquer la configuration sécurisée  
 
-Le mode production est optimisé pour un déploiement sécurisé, incluant un reverse proxy Nginx et la gestion automatique des certificats SSL (via Certbot).
-
-Les variables **DOMAIN** et **API_DOMAIN** doivent être présentes dans votre fichier .env.
-
-Il faut des nom de domaines reliés à votre serveur,
-
-Pour lancer la stack de production (cela va d'abord tenter de générer ou vérifier les certificats SSL) :
-
-`./prod.sh`
-
-Accès :
-```
-Frontend : https://<DOMAIN>
-Backend API : https://<API_DOMAIN>
-```
+### 🧾 Script de développement (`scripts/dev.sh`)
+Ce script est utilisé pour développer sur sa machine et non sur serveur, avec le backend et le frontend en http simple.
