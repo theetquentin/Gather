@@ -10,11 +10,12 @@ FRONTEND_HTTPS="./nginx/conf.d/frontend.conf.https"
 
 echo "🚀 Lancement du déploiement en production..."
 
-# Étape 0 : Vérifier les droits sur ./certbot/conf/live
-CERT_DIR="./certbot/conf/live"
-if [ ! -r "$CERT_DIR" ] || [ ! -w "$CERT_DIR" ]; then
-  echo "⚠️  Attention : vous n'avez pas les droits nécessaires sur $CERT_DIR"
-  echo "Lancez le script avec sudo ou ajustez les permissions."
+# Étape 0 : Créer le dossier certbot si nécessaire et vérifier les permissions
+CERT_DIR="./certbot/conf"
+mkdir -p "$CERT_DIR"
+if [ ! -w "$CERT_DIR" ]; then
+  echo "⚠️  Attention : vous n'avez pas les droits d'écriture sur $CERT_DIR"
+  echo "Ajustez les permissions avec: sudo chown -R \$USER:$USER ./certbot"
   exit 1
 fi
 
