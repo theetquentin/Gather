@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      dockerfile: Dockerfile.dev
+    environment:
+      - NODE_ENV=dev
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    restart: "no"
+
+  frontend:
+    build:
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./frontend/.env
+    environment:
+      - VITE_APP_ENV=dev
+      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - "${VITE_FRONTEND_PORT:-5173}:${VITE_FRONTEND_PORT:-5173}"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    restart: "no"
+
+  # ["prod"] desactive les containers suivants en dev
+  nginx:
+    profiles: ["prod"]
+  certbot:
+    profiles: ["prod"]

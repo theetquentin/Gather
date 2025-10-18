@@ -1,6 +1,7 @@
-
-
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const APP_ENV = import.meta.env.VITE_APP_ENV;
+const API_DOMAIN = import.meta.env.VITE_API_DOMAIN;
+const BACKEND_PORT = import.meta.env.VITE_BACKEND_PORT;
+const API_BASE_URL = APP_ENV === "dev" ? `http://localhost:${BACKEND_PORT}` : `https://${API_DOMAIN}`;
 
 export const apiClient = {
   async request<T>(

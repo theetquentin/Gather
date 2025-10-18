@@ -15,4 +15,3 @@ export const getWorks = async (limit?: number) => {
   const finalLimit = limit ?? DEFAULT_LIMIT;
   return await getAllWorks(finalLimit);
 };
-

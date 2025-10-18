@@ -6,4 +6,3 @@ const router = Router();
 router.get("/", getAllWorks);
 
 export default router;
-

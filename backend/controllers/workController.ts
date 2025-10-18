@@ -32,15 +32,14 @@ export const getAllWorks = async (req: Request, res: Response) => {
     const msg =
       err instanceof Error ? err.message : "Une erreur serveur est survenue";
     let status = 500;
-    
+
     if (
       msg === "La limite doit être un entier positif" ||
       msg.startsWith("La limite ne peut pas dépasser")
     ) {
       status = 400;
     }
-    
+
     return res.status(status).json({ success: false, errors: msg, data: null });
   }
 };
-

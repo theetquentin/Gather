@@ -1,0 +1,20 @@
+FROM node:24-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci
+RUN npm install --save-dev nodemon
+
+COPY . .
+
+EXPOSE 3000
+
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nodejs -u 1001
+
+RUN chown -R nodejs:nodejs /app
+USER nodejs
+
+CMD ["npm", "run", "dev"]

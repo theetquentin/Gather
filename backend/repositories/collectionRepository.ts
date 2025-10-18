@@ -40,3 +40,29 @@ export const addWorksToCollectionByIds = async (
     { new: true },
   );
 };
+
+export const getAllCollections = async () => {
+  return await Collection.find().populate("userId", "username email");
+};
+
+export const getCollectionsByUserId = async (userId: string) => {
+  return await Collection.find({ userId }).populate("userId", "username email");
+};
+
+export const getPublicCollections = async () => {
+  return await Collection.find({ visibility: "public" }).populate(
+    "userId",
+    "username email",
+  );
+};
+
+export const updateCollection = async (
+  collectionId: string,
+  data: Partial<ICollection>,
+) => {
+  return await Collection.findByIdAndUpdate(collectionId, data, { new: true });
+};
+
+export const deleteCollection = async (collectionId: string) => {
+  return await Collection.findByIdAndDelete(collectionId);
+};
