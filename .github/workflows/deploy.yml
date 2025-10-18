@@ -8,32 +8,27 @@ on:
 jobs:
   deploy:
     name: Deploy to Production Server
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    # SECURITY: Only run on the main repository, never on forks
+    if: github.repository == 'theetquentin/Gather'
 
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SERVER_PORT || 22 }}
-          script: |
-            # Navigate to project directory
-            cd ${{ secrets.PROJECT_PATH }}
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            # Pull latest changes from main branch (no conflicts with templates approach)
-            git fetch origin
-            git checkout main
-            git pull origin main
+      - name: Pull latest changes
+        run: |
+          git fetch origin
+          git checkout main
+          git pull origin main
 
-            # Run production deployment script as root from project root
-            sudo ./scripts/prod.sh
+      - name: Deploy to production
+        run: |
+          # Run production deployment script
+          ./scripts/prod.sh
 
-            # Show container status
-            docker compose ps
-
-            echo "✅ Deployment completed successfully!"
+      - name: Show container status
+        run: docker compose ps
 
   verify-deployment:
     name: Verify Deployment
