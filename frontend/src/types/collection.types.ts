@@ -1,0 +1,26 @@
+export type CollectionType = 'book' | 'movie' | 'series' | 'music' | 'game' | 'other';
+export type CollectionVisibility = 'private' | 'public' | 'shared';
+
+export interface Collection {
+  _id: string;
+  name: string;
+  type: CollectionType;
+  visibility: CollectionVisibility;
+  userId: string;
+  works: string[];
+  sharedWith: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCollectionInput {
+  name: string;
+  type: CollectionType;
+  visibility: CollectionVisibility;
+}
+
+export interface UpdateCollectionInput {
+  name?: string;
+  type?: CollectionType;
+  visibility?: CollectionVisibility;
+}
