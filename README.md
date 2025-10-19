@@ -32,45 +32,51 @@ L’objectif est de proposer une plateforme claire et organisée, déployée via
 
 ## 🚀 Pipeline CI/CD
 
-Le projet **Gather** utilise un pipeline d’**Intégration Continue (CI)** et de **Déploiement Continu (CD)** basé sur **GitHub Actions**.  
-Ce pipeline garantit la qualité du code, l’automatisation du déploiement et la fiabilité du processus de mise en production.
+Le projet **Gather** utilise un pipeline d'**Intégration Continue (CI)** et de **Déploiement Continu (CD)** basé sur **GitHub Actions**.
+Ce pipeline garantit la qualité du code, l'automatisation du déploiement et la fiabilité du processus de mise en production.
 
-- **CI (Continuous Integration)**  
-  Exécute automatiquement les tests et le linting lors des *push* et *pull requests* sur les branches `dev` et `main`.
+### 🔄 Workflow automatisé (Dev → Main → Production)
 
-- **CD (Continuous Deployment)**  
-  Déploie automatiquement l’application en production à chaque *push* sur la branche `main`.
+**Processus simplifié en une seule action :**
 
-### ⚙️ Workflows principaux
+1. **Push sur `dev`** → Déclenche automatiquement :
+   - Tests backend (Jest + ESLint)
+   - Tests frontend (Build + ESLint)
+   - Si tous les tests passent → **Merge automatique** de `dev` vers `main`
+   - Le merge déclenche le **déploiement automatique** en production
 
-**1. CI – Tests et Linting (`.github/workflows/ci.yml`)**
-- **Déclenchement :** `push` sur `dev` ou `pull request` vers `main`  
-- **Vérifications effectuées :**
-  - Linting du frontend et du backend (ESLint)  
-  - Tests backend (Jest avec `mongodb-memory-server`)  
-  - Build du frontend (Vite)  
-- **Aucun service externe requis :** une base MongoDB en mémoire est générée pour les tests.
+**Aucune intervention manuelle nécessaire !** Juste un `git push origin dev` suffit.
 
-**2. CD – Déploiement en production (`.github/workflows/deploy.yml`)**
-- **Déclenchement :** `push` sur `main` ou lancement manuel via GitHub Actions  
-- **Processus :**
-  1. Connexion SSH au serveur distant  
-  2. Récupération du code depuis `main`  
-  3. Exécution du script `./scripts/prod.sh` (déploiement Docker Compose)  
-  4. Vérification automatique de l’accessibilité du backend et du frontend  
-- Le déploiement repose sur des **secrets GitHub** pour la connexion SSH et les domaines de production.
+### ⚙️ Workflows disponibles
+
+**1. CD - Deploy to Production (`.github/workflows/deploy.yml`)** ⭐
+- **Déclenchement :** `push` sur `dev` ou manuel via GitHub Actions
+- **Étapes automatiques (sur push dev) :**
+  1. **Tests Backend** : ESLint + Jest (mongodb-memory-server)
+  2. **Tests Frontend** : ESLint + Build (Vite)
+  3. **Auto-merge** : Si les tests passent, merge automatique `dev` → `main`
+  4. **Déploiement** : Connexion au serveur, pull du code, exécution de `./scripts/prod.sh`
+  5. **Vérification** : Health checks sur le backend et le frontend
+- **Mode manuel** : Permet de redéployer en cas d'urgence sans passer par les tests
+
+**2. CI - Tests (`.github/workflows/ci.yml`)**
+- **Déclenchement :** `pull request` vers `main` ou `dev`
+- **Vérifications** :
+  - Linting du frontend et du backend (ESLint)
+  - Tests backend (Jest avec `mongodb-memory-server`)
+  - Build du frontend (Vite)
 
 ### 🖥️ Prérequis serveur
 Le serveur de production doit disposer de :
-- Git, Docker et Docker Compose installés  
-- Accès SSH configuré avec clé privée  
-- Projet cloné à l’emplacement défini dans `PROJECT_PATH`  
-- Fichiers `.env` configurés pour le backend et le frontend  
+- Git, Docker et Docker Compose installés
+- Accès SSH configuré avec clé privée
+- Projet cloné à l'emplacement défini dans `PROJECT_PATH`
+- GitHub Actions self-hosted runner configuré
 
-
-### 🔄 Processus de déploiement
-- **Automatique :** lors de la fusion sur `main`, le workflow CD est déclenché et déploie la nouvelle version.  
-- **Manuel :** un déploiement peut être lancé depuis l’interface **Actions → CD - Deploy to Production**.
+### 🔐 Secrets GitHub requis
+- `BACKEND_PORT`, `MONGO_URI`, `JWT_SECRET`
+- `DOMAIN`, `API_DOMAIN`, `MAIL`
+- `VITE_BACKEND_PORT`, `VITE_FRONTEND_PORT`, `VITE_API_DOMAIN`
 
 ### 🧾 Script de production (`scripts/prod.sh`)
 Le script gère :

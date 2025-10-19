@@ -27,9 +27,21 @@ const collectionErrorMap: Record<string, number> = {
   "Accès refusé à cette collection": 403,
 };
 
-export const createCollection = async (req: Request, res: Response) => {
+export const createCollection = async (
+  req: AuthenticatedRequest,
+  res: Response,
+) => {
   try {
-    const dto = plainToInstance(CreateCollectionDto, req.body);
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ success: false, errors: "Non authentifié", data: null });
+    }
+
+    const dto = plainToInstance(CreateCollectionDto, {
+      ...req.body,
+      userId: req.user.id,
+    });
     const errors = await validate(dto);
 
     if (errors.length > 0) {

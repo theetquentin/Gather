@@ -2,15 +2,49 @@ name: CD - Deploy to Production
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   workflow_dispatch: # Allow manual deployment trigger
 
 jobs:
+  run-tests:
+    name: Run Tests
+    uses: ./.github/workflows/tests.yml
+
+  auto-merge:
+    name: Auto-merge dev to main
+    runs-on: ubuntu-latest
+    needs: [run-tests]
+    # Only run on push to dev, not on manual trigger
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev' && github.repository == 'theetquentin/Gather'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge dev into main
+        run: |
+          git fetch origin
+          git checkout main
+          git pull origin main
+          git merge origin/dev --no-ff -m "Auto-merge dev to main after successful tests"
+          git push origin main
+
   deploy:
     name: Deploy to Production Server
     runs-on: self-hosted
-    # SECURITY: Only run on the main repository, never on forks
-    if: github.repository == 'theetquentin/Gather'
+    needs: [auto-merge]
+    # Run after auto-merge succeeds, or skip auto-merge if manual trigger
+    if: |
+      github.repository == 'theetquentin/Gather' &&
+      (needs.auto-merge.result == 'success' || needs.auto-merge.result == 'skipped')
 
     steps:
       - name: Checkout code
