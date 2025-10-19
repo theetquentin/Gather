@@ -6,6 +6,7 @@ import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
 import { Works } from '../pages/Works';
 import { Collections } from '../pages/Collections';
+import { MyCollections } from '../pages/MyCollections';
 
 // Configuration des routes de l'application
 export const AppRoutes = () => {
@@ -36,18 +37,7 @@ export const AppRoutes = () => {
         {/* Page privée - redirige vers /login si non connecté */}
         <Route
           path="/my-collections"
-          element={
-            isAuthenticated ? (
-              <div className="container mx-auto px-4 py-8">
-                <div className="text-center py-12">
-                  <h1 className="text-4xl font-bold text-slate-900 mb-4">Mes collections</h1>
-                  <p className="text-slate-500">Cette page sera bientôt disponible</p>
-                </div>
-              </div>
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={isAuthenticated ? <MyCollections /> : <Navigate to="/login" />}
         />
       </Routes>
     </div>

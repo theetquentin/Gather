@@ -14,8 +14,8 @@ export const collectionService = {
   },
 
   async getUserCollections(): Promise<Collection[]> {
-    const response = await apiClient.get<ApiResponse<Collection[]>>('/collections/me');
-    return response.data;
+    const response = await apiClient.get<ApiResponse<{ collections: Collection[] }>>('/collections/me');
+    return response.data.collections;
   },
 
   async getCollectionById(id: string): Promise<Collection> {
