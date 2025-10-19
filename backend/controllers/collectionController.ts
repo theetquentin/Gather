@@ -6,13 +6,32 @@ import { ICollection } from "../interfaces/interface.icollection";
 import {
   createNewCollection,
   addWorksToCollection,
+  fetchCollections,
+  fetchCollectionsByUser,
+  fetchCollectionById,
+  updateCollectionById,
+  deleteCollectionById,
 } from "../services/collectionService";
 import { AuthenticatedRequest } from "../middleswares/authMiddleware";
+import { handleServiceError } from "../utils/errorHandler";
+
+const collectionErrorMap: Record<string, number> = {
+  "Identifiant de collection invalide": 400,
+  "Identifiant utilisateur invalide": 400,
+  "Liste d'œuvres vide ou invalide": 400,
+  "Vous avez déjà nommé une de vos collections ainsi": 400,
+  "Vous avez déjà une collection avec ce nom": 400,
+  "Certaines œuvres n'existent pas": 400,
+  "Collection non trouvée": 404,
+  "Utilisateur non trouvé": 404,
+  "Accès refusé à cette collection": 403,
+};
 
 export const createCollection = async (req: Request, res: Response) => {
   try {
     const dto = plainToInstance(CreateCollectionDto, req.body);
     const errors = await validate(dto);
+
     if (errors.length > 0) {
       const firstError = errors[0];
       const firstMessage = firstError.constraints
@@ -39,48 +58,28 @@ export const createCollection = async (req: Request, res: Response) => {
       },
     });
   } catch (err: unknown) {
-    const msg =
-      err instanceof Error ? err.message : "Une erreur serveur est survenue";
-    let status = 500;
-    if (
-      msg === "Vous avez déjà nommé une de vos collections ainsi" ||
-      msg === "Certaines œuvres n'existent pas"
-    ) {
-      status = 400;
-    } else if (msg === "Utilisateur non trouvé") {
-      status = 404;
-    } else if (
-      msg.startsWith("Les oeuvres ne sont pas du même type que la collection:")
-    ) {
-      status = 422;
-      const ids = msg.split(":")[1] ?? "";
-      return res.status(status).json({
-        success: false,
-        errors: "Le type des œuvres doit correspondre au type de la collection",
-        data: { mismatchedIds: ids ? ids.split(",") : [] },
-      });
-    }
-    return res.status(status).json({ success: false, errors: msg, data: null });
+    return handleServiceError(err, res, collectionErrorMap);
   }
 };
-
-// single-item addWork removed in favor of bulk endpoint
 
 export const addWorks = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { collectionId } = req.params as { collectionId: string };
     const { workIds } = req.body as { workIds?: string[] };
-    if (!Array.isArray(workIds) || workIds.length === 0)
+
+    if (!Array.isArray(workIds) || workIds.length === 0) {
       return res.status(400).json({
         success: false,
         errors: "workIds doit être un tableau non vide",
         data: null,
       });
+    }
 
-    if (!req.user)
+    if (!req.user) {
       return res
         .status(401)
         .json({ success: false, errors: "Non authentifié", data: null });
+    }
 
     const result = await addWorksToCollection(
       collectionId,
@@ -88,29 +87,30 @@ export const addWorks = async (req: AuthenticatedRequest, res: Response) => {
       req.user.id,
     );
 
-    const totalRequested = workIds.length;
-    const issuesCount =
+    const totalIssues =
       result.invalidIds.length +
       result.nonexistentIds.length +
       result.mismatchedIds.length;
 
-    let status = 200;
-    if (result.addedCount === 0 && issuesCount > 0)
-      status = 422; // Unprocessable
-    else if (result.addedCount > 0 && issuesCount > 0)
-      status = 207; // Multi-Status
-    else status = 200; // All good
+    const status =
+      result.addedCount === 0 && totalIssues > 0
+        ? 422
+        : result.addedCount > 0 && totalIssues > 0
+          ? 207
+          : 200;
+
+    const message =
+      status === 200
+        ? "Toutes les œuvres ont été ajoutées"
+        : status === 207
+          ? "Ajout partiel effectué"
+          : "Aucune œuvre ajoutée en raison de problèmes de validation";
 
     return res.status(status).json({
       success: true,
-      message:
-        status === 200
-          ? "Toutes les œuvres ont été ajoutées"
-          : status === 207
-            ? "Ajout partiel effectué"
-            : "Aucune œuvre ajoutée en raison de problèmes de validation",
+      message,
       data: {
-        requestedCount: totalRequested,
+        requestedCount: workIds.length,
         addedCount: result.addedCount,
         invalidIds: result.invalidIds,
         nonexistentIds: result.nonexistentIds,
@@ -126,29 +126,156 @@ export const addWorks = async (req: AuthenticatedRequest, res: Response) => {
       },
     });
   } catch (err: unknown) {
-    const msg =
-      err instanceof Error ? err.message : "Une erreur serveur est survenue";
-    let status = 500;
+    // Cas spécial pour les types incompatibles
     if (
-      msg === "Identifiant de collection invalide" ||
-      msg === "Liste d'œuvres vide ou invalide"
+      err instanceof Error &&
+      err.message.startsWith(
+        "Les oeuvres ne sont pas du même type que la collection:",
+      )
     ) {
-      status = 400;
-    } else if (msg === "Collection non trouvée") {
-      status = 404;
-    } else if (msg === "Accès refusé à cette collection") {
-      status = 403;
-    } else if (
-      msg.startsWith("Les oeuvres ne sont pas du même type que la collection:")
-    ) {
-      status = 422;
-      const ids = msg.split(":")[1] ?? "";
-      return res.status(status).json({
+      const ids = err.message.split(":")[1] ?? "";
+      return res.status(422).json({
         success: false,
         errors: "Le type des œuvres doit correspondre au type de la collection",
         data: { mismatchedIds: ids ? ids.split(",") : [] },
       });
     }
-    return res.status(status).json({ success: false, errors: msg, data: null });
+    return handleServiceError(err, res, collectionErrorMap);
+  }
+};
+
+export const getAllCollections = async (req: Request, res: Response) => {
+  try {
+    const { visibility } = req.query as { visibility?: string };
+    const publicOnly = visibility === "public";
+
+    const collections = await fetchCollections(publicOnly);
+
+    return res.status(200).json({
+      success: true,
+      message: "Liste des collections",
+      data: { collections },
+    });
+  } catch (err: unknown) {
+    return handleServiceError(err, res, collectionErrorMap);
+  }
+};
+
+export const getUserCollections = async (
+  req: AuthenticatedRequest,
+  res: Response,
+) => {
+  try {
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ success: false, errors: "Non authentifié", data: null });
+    }
+
+    const collections = await fetchCollectionsByUser(req.user.id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Vos collections",
+      data: { collections },
+    });
+  } catch (err: unknown) {
+    return handleServiceError(err, res, collectionErrorMap);
+  }
+};
+
+export const getCollectionById = async (
+  req: AuthenticatedRequest,
+  res: Response,
+) => {
+  try {
+    const { collectionId } = req.params;
+    const userId = req.user?.id;
+
+    const collection = await fetchCollectionById(collectionId, userId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Détails de la collection",
+      data: { collection },
+    });
+  } catch (err: unknown) {
+    return handleServiceError(err, res, collectionErrorMap);
+  }
+};
+
+export const updateCollection = async (
+  req: AuthenticatedRequest,
+  res: Response,
+) => {
+  try {
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ success: false, errors: "Non authentifié", data: null });
+    }
+
+    const { collectionId } = req.params;
+    const updates = req.body;
+
+    const allowedFields = ["name", "type", "visibility"];
+    const hasInvalidFields = Object.keys(updates).some(
+      (key) => !allowedFields.includes(key),
+    );
+
+    if (hasInvalidFields) {
+      return res.status(400).json({
+        success: false,
+        errors: "Champs non modifiables détectés",
+        data: null,
+      });
+    }
+
+    const updated = await updateCollectionById(
+      collectionId,
+      req.user.id,
+      updates,
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Collection mise à jour",
+      data: {
+        collection: {
+          id: updated._id,
+          name: updated.name,
+          type: updated.type,
+          visibility: updated.visibility,
+          userId: updated.userId,
+          works: updated.works,
+        },
+      },
+    });
+  } catch (err: unknown) {
+    return handleServiceError(err, res, collectionErrorMap);
+  }
+};
+
+export const deleteCollection = async (
+  req: AuthenticatedRequest,
+  res: Response,
+) => {
+  try {
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ success: false, errors: "Non authentifié", data: null });
+    }
+
+    const { collectionId } = req.params;
+    await deleteCollectionById(collectionId, req.user.id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Collection supprimée",
+      data: null,
+    });
+  } catch (err: unknown) {
+    return handleServiceError(err, res, collectionErrorMap);
   }
 };
