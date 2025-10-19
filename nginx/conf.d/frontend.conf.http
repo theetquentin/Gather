@@ -2,8 +2,10 @@ server {
     listen 80;
     server_name gather.quentintheet.fr;
 
-    location /.well-known/acme-challenge/ {
+    # Challenge Certbot - priorité absolue avec ^~
+    location ^~ /.well-known/acme-challenge/ {
         root /var/www/certbot;
+        try_files $uri =404;
     }
 
     location / {

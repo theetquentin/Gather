@@ -58,9 +58,10 @@ services:
       --email ${MAIL}
       --agree-tos
       --no-eff-email
+      --keep-until-expiring
+      --non-interactive
       -d ${DOMAIN}
-      -d ${API_DOMAIN}
-      --force-renewal"
+      -d ${API_DOMAIN}"
     networks:
       - gather-network
 

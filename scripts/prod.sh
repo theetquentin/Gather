@@ -10,20 +10,32 @@ FRONTEND_HTTPS="./nginx/conf.d/frontend.conf.https"
 
 echo "🚀 Lancement du déploiement en production..."
 
-# Étape 0 : Créer le dossier certbot si nécessaire et vérifier les permissions
+# Étape 0 : Créer les dossiers certbot et vérifier les permissions
 CERT_DIR="./certbot/conf"
+WWW_DIR="./certbot/www"
 mkdir -p "$CERT_DIR"
+mkdir -p "$WWW_DIR/.well-known/acme-challenge"
+
+# S'assurer que les dossiers sont accessibles en écriture
+chmod -R 755 ./certbot || true
 if [ ! -w "$CERT_DIR" ]; then
   echo "⚠️  Attention : vous n'avez pas les droits d'écriture sur $CERT_DIR"
-  echo "Ajustez les permissions avec: sudo chown -R \$USER:$USER ./certbot"
+  echo "Ajustez les permissions avec: sudo chown -R \$USER:\$USER ./certbot"
   exit 1
 fi
+
+echo "✅ Dossiers Certbot créés et configurés"
 
 # Étape 1 : Copier les configs HTTP et démarrer les services
 echo "🔹 Étape 1 : Configuration HTTP et démarrage des services..."
 cp "$BACKEND_HTTP" "$BACKEND_CONF"
 cp "$FRONTEND_HTTP" "$FRONTEND_CONF"
 docker compose up -d frontend backend nginx
+
+# Redémarrer Nginx pour qu'il monte correctement le volume certbot/www
+echo "🔹 Redémarrage de Nginx pour monter les volumes..."
+docker compose restart nginx
+sleep 2
 
 # Étape 2 : Génération du certificat SSL si nécessaire
 if [ ! -d "./certbot/conf/live" ]; then

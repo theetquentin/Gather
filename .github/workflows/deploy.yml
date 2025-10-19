@@ -65,11 +65,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Pull latest changes
+      - name: Pull latest changes and clean
         run: |
           git fetch origin
           git checkout main
-          git pull origin main
+          git reset --hard origin/main
+
+          # Clean untracked files that might cause conflicts
+          rm -f nginx/conf.d/certbot.conf
 
       - name: Create backend .env file from secrets
         run: |
