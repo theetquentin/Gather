@@ -50,7 +50,9 @@ export const Login = () => {
         )}
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+            <span className="font-semibold" aria-hidden="true">⚠ </span>
+            <span className="sr-only">Erreur : </span>
             {error}
           </div>
         )}

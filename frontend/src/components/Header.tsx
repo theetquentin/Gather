@@ -8,24 +8,24 @@ export const Header = () => {
     // border-b-2 border-primary-color
     <header className="bg-primary-color">
       <div className="max-w-6xl mx-auto py-4">
-        <nav className="flex items-center justify-between">
+        <nav className="flex items-center justify-between" aria-label="Navigation principale">
           <div className="flex items-center space-x-8">
-            <Link to="/" className="text-2xl font-bold text-slate-900">
+            <Link to="/" className="text-2xl font-bold text-slate-900 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2">
               Gather
             </Link>
-            
+
             <div className="flex space-x-6">
               {!isAuthenticated && (
                 <>
                   <Link
                     to="/register"
-                    className="text-slate-900 hover:text-action-color-hover transition-colors font-medium"
+                    className="text-slate-900 hover:text-action-color-hover transition-colors font-medium focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
                   >
                     Inscription
                   </Link>
                   <Link
                     to="/login"
-                    className="text-slate-900 hover:text-action-color-hover transition-colors font-medium"
+                    className="text-slate-900 hover:text-action-color-hover transition-colors font-medium focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
                   >
                     Connexion
                   </Link>
@@ -34,14 +34,14 @@ export const Header = () => {
 
               <Link
                 to="/works"
-                className="text-slate-900 hover:text-action-color-hover transition-colors font-medium"
+                className="text-slate-900 hover:text-action-color-hover transition-colors font-medium focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
               >
                 Toutes les œuvres
               </Link>
 
               <Link
                 to="/collections"
-                className="text-slate-900 hover:text-action-color-hover transition-colors font-medium"
+                className="text-slate-900 hover:text-action-color-hover transition-colors font-medium focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
               >
                 Collections publiques
               </Link>
@@ -49,7 +49,7 @@ export const Header = () => {
               {isAuthenticated && (
                 <Link
                   to="/my-collections"
-                  className="text-slate-900 hover:text-action-color-hover transition-colors font-medium"
+                  className="text-slate-900 hover:text-action-color-hover transition-colors font-medium focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
                 >
                   Mes collections
                 </Link>
@@ -64,7 +64,8 @@ export const Header = () => {
               </span>
               <button
                 onClick={logout}
-                className="bg-action-color hover:bg-secondary-color text-slate-100 px-4 py-2 rounded-md transition-colors font-medium"
+                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md transition-colors font-medium"
+                aria-label="Se déconnecter de votre compte"
               >
                 Déconnexion
               </button>

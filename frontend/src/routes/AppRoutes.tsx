@@ -17,7 +17,7 @@ export const AppRoutes = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-slate-500 text-xl">Chargement...</div>
+        <div className="text-slate-700 text-xl" role="status" aria-live="polite">Chargement...</div>
       </div>
     );
   }
