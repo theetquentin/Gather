@@ -10,43 +10,57 @@ jobs:
     name: Run Tests
     uses: ./.github/workflows/tests.yml
 
-  auto-merge:
-    name: Auto-merge dev to main
+  create-pr:
+    name: Create PR and auto-merge
     runs-on: ubuntu-latest
     needs: [run-tests]
     # Only run on push to dev, not on manual trigger
     if: github.event_name == 'push' && github.ref == 'refs/heads/dev' && github.repository == 'theetquentin/Gather'
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Configure Git
+      - name: Create or update Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GATHER_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Check if PR already exists
+          PR_NUMBER=$(gh pr list --base main --head dev --json number --jq '.[0].number')
 
-      - name: Merge dev into main
-        run: |
-          git fetch origin
-          git checkout main
-          git pull origin main
-          git merge origin/dev --no-ff -m "Auto-merge dev to main after successful tests"
-          git push origin main
+          if [ -z "$PR_NUMBER" ]; then
+            # Create new PR
+            PR_NUMBER=$(gh pr create \
+              --base main \
+              --head dev \
+              --title "🚀 Auto-deploy: dev → main" \
+              --body "✅ All tests passed successfully on dev branch
+
+          This PR was automatically created by GitHub Actions.
+          It will be automatically merged once all required checks pass." \
+              --label "auto-merge" | grep -oP '(?<=/pull/)\d+')
+            echo "Created PR #$PR_NUMBER"
+          else
+            echo "PR #$PR_NUMBER already exists"
+          fi
+
+          # Enable auto-merge
+          gh pr merge $PR_NUMBER --auto --squash --delete-branch=false
+          echo "Auto-merge enabled for PR #$PR_NUMBER"
 
   deploy:
     name: Deploy to Production Server
     runs-on: self-hosted
-    needs: [auto-merge]
-    # Run after auto-merge succeeds, or skip auto-merge if manual trigger
+    needs: [create-pr]
+    # Run after PR creation succeeds, or skip if manual trigger
     if: |
       github.repository == 'theetquentin/Gather' &&
-      (needs.auto-merge.result == 'success' || needs.auto-merge.result == 'skipped')
+      (needs.create-pr.result == 'success' || needs.create-pr.result == 'skipped')
 
     steps:
       - name: Checkout code
