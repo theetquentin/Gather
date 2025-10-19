@@ -62,6 +62,12 @@ jobs:
       (needs.create-pr.result == 'success' || needs.create-pr.result == 'skipped')
 
     steps:
+      - name: Clean workspace before checkout
+        run: |
+          # Fix permissions on certbot files created by Docker as root
+          sudo chown -R $USER:$USER . || true
+          rm -rf * .git .github || true
+
       - name: Checkout code
         uses: actions/checkout@v4
 
