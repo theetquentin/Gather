@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { workService } from '../services/work.service';
 import type { Work } from '../types/work.types';
 import type { CollectionType } from '../types/collection.types';
@@ -20,44 +20,60 @@ const TYPE_MAPPING: Record<CollectionType, string> = {
 
 export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }: WorkSelectorProps) => {
   const [works, setWorks] = useState<Work[]>([]);
-  const [filteredWorks, setFilteredWorks] = useState<Work[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Charger toutes les œuvres au montage
-  useEffect(() => {
-    loadWorks();
-  }, []);
-
-  // Filtrer les œuvres par type de collection
-  useEffect(() => {
-    const workType = TYPE_MAPPING[collectionType];
-    let filtered = works.filter(work => work.type === workType);
-
-    // Filtrer par recherche si une query existe
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        work =>
-          work.title.toLowerCase().includes(query) ||
-          work.author.toLowerCase().includes(query)
-      );
-    }
-
-    setFilteredWorks(filtered);
-  }, [works, collectionType, searchQuery]);
-
-  const loadWorks = async () => {
+  // Charger les œuvres selon le type et la recherche
+  const loadWorks = async (search?: string) => {
     try {
       setIsLoading(true);
-      const response = await workService.getWorks();
+      const workType = TYPE_MAPPING[collectionType];
+      const response = await workService.getWorks({
+        limit: 20,
+        type: workType,
+        search: search?.trim() || undefined,
+      });
       setWorks(response.data.works);
     } catch (err) {
       console.error('Erreur lors du chargement des œuvres:', err);
+      setWorks([]);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Charger les œuvres quand le type change
+  useEffect(() => {
+    setSearchQuery(''); // Réinitialiser la recherche
+    loadWorks();
+  }, [collectionType]);
+
+  // Debounce pour la recherche (attend 500ms après la dernière frappe)
+  useEffect(() => {
+    // Annuler le timer précédent
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    // Si la recherche est vide, charger immédiatement
+    if (!searchQuery.trim()) {
+      loadWorks();
+      return;
+    }
+
+    // Sinon, attendre 500ms avant de lancer la recherche
+    debounceTimerRef.current = setTimeout(() => {
+      loadWorks(searchQuery);
+    }, 500);
+
+    // Cleanup
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, [searchQuery]);
 
   const handleToggleWork = (workId: string) => {
     if (selectedWorkIds.includes(workId)) {
@@ -68,7 +84,7 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
   };
 
   const handleSelectAll = () => {
-    const allIds = filteredWorks.map(work => work._id);
+    const allIds = works.map(work => work._id);
     onWorksChange(allIds);
   };
 
@@ -76,21 +92,13 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
     onWorksChange([]);
   };
 
-  if (isLoading) {
-    return (
-      <div className="text-slate-700 text-center py-4">
-        Chargement des œuvres...
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <label className="block text-slate-900 font-semibold">
           Ajouter des œuvres (optionnel)
         </label>
-        {filteredWorks.length > 0 && (
+        {works.length > 0 && (
           <div className="flex gap-2">
             <button
               type="button"
@@ -113,13 +121,20 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
       </div>
 
       {/* Barre de recherche */}
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Rechercher par titre ou auteur..."
-        className="w-full px-4 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900"
-      />
+      <div className="relative">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Rechercher par titre ou auteur..."
+          className="w-full px-4 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900"
+        />
+        {isLoading && (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            <div className="w-5 h-5 border-2 border-action-color border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
+      </div>
 
       {/* Compteur de sélection */}
       {selectedWorkIds.length > 0 && (
@@ -129,13 +144,15 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
       )}
 
       {/* Liste des œuvres */}
-      {filteredWorks.length === 0 ? (
+      {works.length === 0 && !isLoading ? (
         <div className="bg-primary-color p-6 rounded-lg text-center text-slate-700">
-          Aucune œuvre disponible pour ce type de collection
+          {searchQuery.trim()
+            ? `Aucune œuvre trouvée pour "${searchQuery}"`
+            : 'Aucune œuvre disponible pour ce type de collection'}
         </div>
       ) : (
         <div className="bg-primary-color rounded-lg border border-slate-400 max-h-64 overflow-y-auto">
-          {filteredWorks.map((work) => (
+          {works.map((work) => (
             <label
               key={work._id}
               className={`flex items-start p-3 border-b border-slate-300 last:border-b-0 cursor-pointer hover:bg-secondary-color transition-colors ${
