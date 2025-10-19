@@ -42,8 +42,7 @@ jobs:
               --body "✅ All tests passed successfully on dev branch
 
           This PR was automatically created by GitHub Actions.
-          It will be automatically merged once all required checks pass." \
-              --label "auto-merge" | grep -oP '(?<=/pull/)\d+')
+          It will be automatically merged once all required checks pass." | grep -oP '(?<=/pull/)\d+')
             echo "Created PR #$PR_NUMBER"
           else
             echo "PR #$PR_NUMBER already exists"
