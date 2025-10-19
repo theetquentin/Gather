@@ -160,17 +160,29 @@ describe("Tests API - GET /collections", () => {
     await request(app)
       .post("/collections")
       .set("Authorization", `Bearer ${token1}`)
-      .send({ name: "Collection publique 1", type: "book", visibility: "public" });
+      .send({
+        name: "Collection publique 1",
+        type: "book",
+        visibility: "public",
+      });
 
     await request(app)
       .post("/collections")
       .set("Authorization", `Bearer ${token2}`)
-      .send({ name: "Collection privée", type: "movie", visibility: "private" });
+      .send({
+        name: "Collection privée",
+        type: "movie",
+        visibility: "private",
+      });
 
     await request(app)
       .post("/collections")
       .set("Authorization", `Bearer ${token1}`)
-      .send({ name: "Collection publique 2", type: "music", visibility: "public" });
+      .send({
+        name: "Collection publique 2",
+        type: "music",
+        visibility: "public",
+      });
 
     const res = await request(app).get("/collections?visibility=public");
 
@@ -196,12 +208,20 @@ describe("Tests API - GET /collections", () => {
     await request(app)
       .post("/collections")
       .set("Authorization", `Bearer ${token}`)
-      .send({ name: "Collection publique", type: "book", visibility: "public" });
+      .send({
+        name: "Collection publique",
+        type: "book",
+        visibility: "public",
+      });
 
     await request(app)
       .post("/collections")
       .set("Authorization", `Bearer ${token}`)
-      .send({ name: "Collection privée", type: "movie", visibility: "private" });
+      .send({
+        name: "Collection privée",
+        type: "movie",
+        visibility: "private",
+      });
 
     const res = await request(app).get("/collections");
 
@@ -334,7 +354,11 @@ describe("Tests API - PATCH /collections/:collectionId", () => {
     const createRes = await request(app)
       .post("/collections")
       .set("Authorization", `Bearer ${token}`)
-      .send({ name: "Collection originale", type: "book", visibility: "public" });
+      .send({
+        name: "Collection originale",
+        type: "book",
+        visibility: "public",
+      });
 
     const collectionId = createRes.body.data.id;
 
@@ -426,7 +450,11 @@ describe("Tests API - DELETE /collections/:collectionId", () => {
     const createRes = await request(app)
       .post("/collections")
       .set("Authorization", `Bearer ${token}`)
-      .send({ name: "Collection à supprimer", type: "book", visibility: "public" });
+      .send({
+        name: "Collection à supprimer",
+        type: "book",
+        visibility: "public",
+      });
 
     const collectionId = createRes.body.data.id;
 
@@ -472,7 +500,9 @@ describe("Tests API - DELETE /collections/:collectionId", () => {
   });
 
   test("Supprimer sans authentification retourne 401", async () => {
-    const res = await request(app).delete("/collections/123456789012345678901234");
+    const res = await request(app).delete(
+      "/collections/123456789012345678901234",
+    );
 
     expect(res.status).toBe(401);
     expect(res.body.success).toBeFalsy();
