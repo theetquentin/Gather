@@ -16,6 +16,10 @@ export class CreateCollectionDto {
 
   @IsNotEmpty({ message: "Le type est requis." })
   @IsString({ message: "Le type doit être une chaîne de caractères." })
+  @IsEnum(["book", "movie", "series", "music", "game", "other"], {
+    message:
+      "Le type doit être l'un des suivants: book, movie, series, music, game, other.",
+  })
   type!: string;
 
   @IsOptional()

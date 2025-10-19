@@ -151,8 +151,8 @@ export const fetchCollectionById = async (
   const collection = await getCollectionById(collectionId);
   if (!collection) throw new Error("Collection non trouvée");
 
-  if (collection.visibility === "private" && userId) {
-    if (collection.userId.toString() !== userId) {
+  if (collection.visibility === "private") {
+    if (!userId || collection.userId.toString() !== userId) {
       throw new Error("Accès refusé à cette collection");
     }
   }
