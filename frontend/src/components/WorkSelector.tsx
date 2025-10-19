@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { workService } from '../services/work.service';
 import type { Work } from '../types/work.types';
 import type { CollectionType } from '../types/collection.types';
@@ -22,10 +22,10 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
   const [works, setWorks] = useState<Work[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimerRef = useRef<number | null>(null);
 
   // Charger les œuvres selon le type et la recherche
-  const loadWorks = async (search?: string) => {
+  const loadWorks = useCallback(async (search?: string) => {
     try {
       setIsLoading(true);
       const workType = TYPE_MAPPING[collectionType];
@@ -41,13 +41,13 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [collectionType]);
 
   // Charger les œuvres quand le type change
   useEffect(() => {
     setSearchQuery(''); // Réinitialiser la recherche
     loadWorks();
-  }, [collectionType]);
+  }, [collectionType, loadWorks]);
 
   // Debounce pour la recherche (attend 500ms après la dernière frappe)
   useEffect(() => {
@@ -73,7 +73,7 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
         clearTimeout(debounceTimerRef.current);
       }
     };
-  }, [searchQuery]);
+  }, [searchQuery, loadWorks]);
 
   const handleToggleWork = (workId: string) => {
     if (selectedWorkIds.includes(workId)) {
