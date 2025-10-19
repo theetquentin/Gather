@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { WorkSelector } from './WorkSelector';
 import type { CollectionType, CollectionVisibility, CreateCollectionInput } from '../types/collection.types';
 
 interface CollectionFormProps {
@@ -38,6 +39,7 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
   const [name, setName] = useState('');
   const [type, setType] = useState<CollectionType>('book');
   const [visibility, setVisibility] = useState<CollectionVisibility>('private');
+  const [selectedWorkIds, setSelectedWorkIds] = useState<string[]>([]);
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: FormEvent) => {
@@ -55,11 +57,17 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
     }
 
     try {
-      await onSubmit({ name: name.trim(), type, visibility });
+      await onSubmit({
+        name: name.trim(),
+        type,
+        visibility,
+        works: selectedWorkIds.length > 0 ? selectedWorkIds : undefined
+      });
       // Réinitialiser le formulaire
       setName('');
       setType('book');
       setVisibility('private');
+      setSelectedWorkIds([]);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur lors de la création');
     }
@@ -113,36 +121,31 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
 
       {/* Visibilité */}
       <div>
-        <label className="block text-slate-900 font-semibold mb-3">
+        <label htmlFor="visibility" className="block text-slate-900 font-semibold mb-2">
           Visibilité *
         </label>
-        <div className="space-y-3">
+        <select
+          id="visibility"
+          value={visibility}
+          onChange={(e) => setVisibility(e.target.value as CollectionVisibility)}
+          className="w-full px-4 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900"
+          required
+          disabled={isLoading}
+        >
           {VISIBILITY_OPTIONS.map((option) => (
-            <label
-              key={option.value}
-              className={`flex items-start p-4 border rounded-lg cursor-pointer transition-colors ${
-                visibility === option.value
-                  ? 'border-action-color bg-secondary-color'
-                  : 'border-slate-400 bg-primary-color hover:bg-secondary-color'
-              }`}
-            >
-              <input
-                type="radio"
-                name="visibility"
-                value={option.value}
-                checked={visibility === option.value}
-                onChange={(e) => setVisibility(e.target.value as CollectionVisibility)}
-                className="mt-1 mr-3"
-                disabled={isLoading}
-              />
-              <div>
-                <div className="font-medium text-slate-900">{option.label}</div>
-                <div className="text-sm text-slate-700">{option.description}</div>
-              </div>
-            </label>
+            <option key={option.value} value={option.value}>
+              {option.label} - {option.description}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
+
+      {/* Sélection des œuvres */}
+      <WorkSelector
+        collectionType={type}
+        selectedWorkIds={selectedWorkIds}
+        onWorksChange={setSelectedWorkIds}
+      />
 
       {/* Boutons d'action */}
       <div className="flex gap-3 pt-4">

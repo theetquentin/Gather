@@ -25,8 +25,27 @@ export const getWorkTypesByIds = async (ids: Types.ObjectId[]) => {
   return docs as { _id: Types.ObjectId; type: string }[];
 };
 
-export const getAllWorks = async (limit?: number) => {
-  const query = Work.find().lean();
+export const getAllWorks = async (
+  limit?: number,
+  type?: string,
+  search?: string,
+) => {
+  const filter: Record<string, unknown> = {};
+
+  // Filtre par type
+  if (type) {
+    filter.type = type;
+  }
+
+  // Recherche textuelle sur titre et auteur
+  if (search && search.trim()) {
+    filter.$or = [
+      { title: { $regex: search.trim(), $options: "i" } },
+      { author: { $regex: search.trim(), $options: "i" } },
+    ];
+  }
+
+  const query = Work.find(filter).lean();
 
   // Tri par date de publication décroissante (les plus récentes en premier)
   query.sort({ publishedAt: -1 });

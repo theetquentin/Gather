@@ -17,6 +17,7 @@ export interface CreateCollectionInput {
   name: string;
   type: CollectionType;
   visibility: CollectionVisibility;
+  works?: string[];
 }
 
 export interface UpdateCollectionInput {

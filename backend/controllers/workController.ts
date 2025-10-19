@@ -3,7 +3,7 @@ import { getWorks } from "../services/workService";
 
 export const getAllWorks = async (req: Request, res: Response) => {
   try {
-    const { limit } = req.query;
+    const { limit, type, search } = req.query;
     let limitValue: number | undefined;
 
     if (limit !== undefined) {
@@ -18,7 +18,10 @@ export const getAllWorks = async (req: Request, res: Response) => {
       limitValue = parsed;
     }
 
-    const works = await getWorks(limitValue);
+    const typeValue = type ? String(type) : undefined;
+    const searchValue = search ? String(search) : undefined;
+
+    const works = await getWorks(limitValue, typeValue, searchValue);
 
     return res.status(200).json({
       success: true,
