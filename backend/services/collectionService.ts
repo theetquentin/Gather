@@ -186,10 +186,11 @@ export const updateCollectionById = async (
     }
   }
 
-  const safeUpdates: Record<string, string> = {};
+  const safeUpdates: Record<string, string | Types.ObjectId[]> = {};
   if (updates.name) safeUpdates.name = updates.name;
   if (updates.type) safeUpdates.type = updates.type;
   if (updates.visibility) safeUpdates.visibility = updates.visibility;
+  if (updates.works !== undefined) safeUpdates.works = updates.works;
 
   const updated = await updateCollection(collectionId, safeUpdates);
   if (!updated) throw new Error("Échec de la mise à jour de la collection");

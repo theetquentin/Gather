@@ -30,7 +30,7 @@ echo "✅ Dossiers Certbot créés et configurés"
 echo "🔹 Étape 1 : Configuration HTTP et démarrage des services..."
 cp "$BACKEND_HTTP" "$BACKEND_CONF"
 cp "$FRONTEND_HTTP" "$FRONTEND_CONF"
-docker compose up -d frontend backend nginx
+docker compose up -d --build frontend backend nginx
 
 # Redémarrer Nginx pour qu'il monte correctement le volume certbot/www
 echo "🔹 Redémarrage de Nginx pour monter les volumes..."

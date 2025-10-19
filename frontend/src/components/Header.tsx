@@ -17,34 +17,43 @@ export const Header = () => {
             <div className="flex space-x-6">
               {!isAuthenticated && (
                 <>
-                  <Link 
-                    to="/register" 
+                  <Link
+                    to="/register"
                     className="text-slate-900 hover:text-action-color-hover transition-colors font-medium"
                   >
                     Inscription
                   </Link>
-                  <Link 
-                    to="/login" 
+                  <Link
+                    to="/login"
                     className="text-slate-900 hover:text-action-color-hover transition-colors font-medium"
                   >
                     Connexion
                   </Link>
                 </>
               )}
-              
-              <Link 
-                to="/works" 
+
+              <Link
+                to="/works"
                 className="text-slate-900 hover:text-action-color-hover transition-colors font-medium"
               >
                 Toutes les œuvres
               </Link>
-              
-              <Link 
-                to="/collections" 
+
+              <Link
+                to="/collections"
                 className="text-slate-900 hover:text-action-color-hover transition-colors font-medium"
               >
                 Collections publiques
               </Link>
+
+              {isAuthenticated && (
+                <Link
+                  to="/my-collections"
+                  className="text-slate-900 hover:text-action-color-hover transition-colors font-medium"
+                >
+                  Mes collections
+                </Link>
+              )}
             </div>
           </div>
 
