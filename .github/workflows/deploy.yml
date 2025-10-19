@@ -48,9 +48,16 @@ jobs:
             echo "PR #$PR_NUMBER already exists"
           fi
 
-          # Enable auto-merge
-          gh pr merge $PR_NUMBER --auto --squash --delete-branch=false
-          echo "Auto-merge enabled for PR #$PR_NUMBER"
+          # Enable auto-merge (retry with sleep if PR is not ready)
+          for i in {1..5}; do
+            if gh pr merge $PR_NUMBER --auto --squash --delete-branch=false; then
+              echo "Auto-merge enabled for PR #$PR_NUMBER"
+              break
+            else
+              echo "Attempt $i failed, waiting 10 seconds..."
+              sleep 10
+            fi
+          done
 
   deploy:
     name: Deploy to Production Server
