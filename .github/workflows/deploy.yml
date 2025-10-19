@@ -74,6 +74,12 @@ jobs:
       (needs.create-pr.result == 'success' || needs.create-pr.result == 'skipped')
 
     steps:
+      - name: Clean workspace
+        run: |
+          # Clean docker volumes and files created by root
+          sudo chown -R $USER:$USER . || true
+          rm -rf * .git || true
+
       - name: Checkout code
         uses: actions/checkout@v4
 
