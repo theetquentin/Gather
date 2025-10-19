@@ -22,6 +22,27 @@ jobs:
           git checkout main
           git pull origin main
 
+      - name: Create backend .env file from secrets
+        run: |
+          cat > .env << EOF
+          BACKEND_PORT=${{ secrets.BACKEND_PORT }}
+          MONGO_URI=${{ secrets.MONGO_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          NODE_ENV=production
+          DOMAIN=${{ secrets.DOMAIN }}
+          API_DOMAIN=${{ secrets.API_DOMAIN }}
+          MAIL=${{ secrets.MAIL }}
+          EOF
+
+      - name: Create frontend .env file from secrets
+        run: |
+          cat > frontend/.env << EOF
+          VITE_APP_ENV=prod
+          VITE_BACKEND_PORT=${{ secrets.VITE_BACKEND_PORT }}
+          VITE_FRONTEND_PORT=${{ secrets.VITE_FRONTEND_PORT }}
+          VITE_API_DOMAIN=${{ secrets.VITE_API_DOMAIN }}
+          EOF
+
       - name: Deploy to production
         run: |
           # Run production deployment script
