@@ -35,48 +35,76 @@ L’objectif est de proposer une plateforme claire et organisée, déployée via
 Le projet **Gather** utilise un pipeline d'**Intégration Continue (CI)** et de **Déploiement Continu (CD)** basé sur **GitHub Actions**.
 Ce pipeline garantit la qualité du code, l'automatisation du déploiement et la fiabilité du processus de mise en production.
 
-### 🔄 Workflow automatisé (Dev → Main → Production)
+### 🔄 Workflow automatisé (Dev → Tests → PR → Main → Production)
 
 **Processus simplifié en une seule action :**
 
 1. **Push sur `dev`** → Déclenche automatiquement :
-   - Tests backend (Jest + ESLint)
-   - Tests frontend (Build + ESLint)
-   - Si tous les tests passent → **Merge automatique** de `dev` vers `main`
-   - Le merge déclenche le **déploiement automatique** en production
+   - ✅ Tests backend (Jest + ESLint)
+   - ✅ Tests frontend (Build + ESLint)
+   - ✅ Si tous les tests passent → **Création automatique d'une PR** `dev` → `main`
+   - ✅ **Auto-merge** de la PR (fusion automatique)
+   - ✅ Le merge déclenche le **déploiement automatique** en production
+   - ✅ Health checks pour vérifier que le déploiement fonctionne
 
 **Aucune intervention manuelle nécessaire !** Juste un `git push origin dev` suffit.
 
-### ⚙️ Workflows disponibles
+### ⚙️ Architecture des Workflows
 
-**1. CD - Deploy to Production (`.github/workflows/deploy.yml`)** ⭐
-- **Déclenchement :** `push` sur `dev` ou manuel via GitHub Actions
-- **Étapes automatiques (sur push dev) :**
-  1. **Tests Backend** : ESLint + Jest (mongodb-memory-server)
-  2. **Tests Frontend** : ESLint + Build (Vite)
-  3. **Auto-merge** : Si les tests passent, merge automatique `dev` → `main`
-  4. **Déploiement** : Connexion au serveur, pull du code, exécution de `./scripts/prod.sh`
-  5. **Vérification** : Health checks sur le backend et le frontend
-- **Mode manuel** : Permet de redéployer en cas d'urgence sans passer par les tests
+**3 fichiers, rôles distincts :**
 
-**2. CI - Tests (`.github/workflows/ci.yml`)**
-- **Déclenchement :** `pull request` vers `main` ou `dev`
-- **Vérifications** :
-  - Linting du frontend et du backend (ESLint)
-  - Tests backend (Jest avec `mongodb-memory-server`)
-  - Build du frontend (Vite)
+| Fichier | Déclenchement | Rôle |
+|---------|---------------|------|
+| **`tests.yml`** | Appelé par d'autres workflows | Workflow réutilisable : ESLint + Jest (backend), ESLint + Build (frontend) |
+| **`ci.yml`** | Pull Request vers `main`/`dev` | Validation avant merge : appelle `tests.yml` |
+| **`deploy.yml`**  | Push sur `dev` ou manuel | Pipeline complet : Tests → PR auto → Merge → Deploy → Verify |
+
+### 🔄 Pipeline de Déploiement (`deploy.yml`)
+
+**4 jobs séquentiels :**
+
+1. **Tests** → Appelle `tests.yml` (backend + frontend)
+2. **Create PR** → Crée/met à jour PR `dev → main` + active auto-merge
+3. **Deploy** (self-hosted) → Sync code (`git reset --hard`) + génère `.env` + exécute `prod.sh`
+4. **Verify** → Health checks HTTPS (backend + frontend)
+
+**En pratique :**
+```bash
+git push origin dev  # Déclenche tout automatiquement
+```
+
+### 🔒 SSL/HTTPS avec Certbot
+
+Le déploiement gère automatiquement les certificats SSL via Let's Encrypt :
+
+- **Première exécution** : Génération des certificats SSL
+- **Config Nginx optimisée** :
+  - Modificateur `^~` pour donner priorité absolue au challenge Certbot
+  - Redirection HTTP → HTTPS après génération des certificats
+- **Renouvellement automatique** : `--keep-until-expiring` (pas de rate-limit)
+
+**Mécanisme de déploiement** (`scripts/prod.sh`) :
+1. Création des dossiers `certbot/www/.well-known/acme-challenge/`
+2. Démarrage en HTTP avec les configs `*.http`
+3. Redémarrage de Nginx pour monter correctement les volumes
+4. Exécution de Certbot pour générer les certificats
+5. Basculement vers HTTPS avec les configs `*.https`
+6. Redémarrage final de Nginx
 
 ### 🖥️ Prérequis serveur
 Le serveur de production doit disposer de :
-- Git, Docker et Docker Compose installés
-- Accès SSH configuré avec clé privée
-- Projet cloné à l'emplacement défini dans `PROJECT_PATH`
-- GitHub Actions self-hosted runner configuré
+- **Git, Docker et Docker Compose** installés
+- **GitHub Actions self-hosted runner** configuré
+- **Ports 80 et 443** ouverts pour HTTP/HTTPS
+- **Domaines configurés** pointant vers le serveur
 
 ### 🔐 Secrets GitHub requis
 - `BACKEND_PORT`, `MONGO_URI`, `JWT_SECRET`
-- `DOMAIN`, `API_DOMAIN`, `MAIL`
+- `DOMAIN` (ex: gather.example.com)
+- `API_DOMAIN` (ex: api.gather.example.com)
+- `MAIL` (pour Let's Encrypt)
 - `VITE_BACKEND_PORT`, `VITE_FRONTEND_PORT`, `VITE_API_DOMAIN`
+- `GATHER_TOKEN` (Personal Access Token avec permissions repo + pull requests)
 
 ### 🧾 Script de production (`scripts/prod.sh`)
 Le script gère :

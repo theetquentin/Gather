@@ -44,25 +44,13 @@ jobs:
           This PR was automatically created by GitHub Actions.
           It will be automatically merged once all required checks pass." | grep -oP '(?<=/pull/)\d+')
             echo "Created PR #$PR_NUMBER"
-
-            # Wait a bit for PR to be ready
-            echo "Waiting for PR to be ready..."
-            sleep 5
           else
             echo "PR #$PR_NUMBER already exists"
           fi
 
-          # Enable auto-merge with retry logic
-          echo "Enabling auto-merge for PR #$PR_NUMBER..."
-          for i in {1..3}; do
-            if gh pr merge $PR_NUMBER --auto --squash --delete-branch=false 2>&1; then
-              echo "✅ Auto-merge enabled successfully"
-              break
-            else
-              echo "Retry $i/3..."
-              sleep 3
-            fi
-          done
+          # Enable auto-merge
+          gh pr merge $PR_NUMBER --auto --squash --delete-branch=false
+          echo "Auto-merge enabled for PR #$PR_NUMBER"
 
   deploy:
     name: Deploy to Production Server
@@ -74,20 +62,23 @@ jobs:
       (needs.create-pr.result == 'success' || needs.create-pr.result == 'skipped')
 
     steps:
-      - name: Clean workspace
+      - name: Clean workspace before checkout
         run: |
-          # Clean docker volumes and files created by root
+          # Fix permissions on certbot files created by Docker as root
           sudo chown -R $USER:$USER . || true
-          rm -rf * .git || true
+          rm -rf * .git .github || true
 
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Pull latest changes
+      - name: Pull latest changes and clean
         run: |
           git fetch origin
           git checkout main
-          git pull origin main
+          git reset --hard origin/main
+
+          # Clean untracked files that might cause conflicts
+          rm -f nginx/conf.d/certbot.conf
 
       - name: Create backend .env file from secrets
         run: |
