@@ -18,7 +18,7 @@ collectionRouter.get("/", getAllCollections); // GET /collections?visibility=pub
 // Routes protégées
 collectionRouter.post("/", requireAuth, createCollection);
 collectionRouter.get("/me", requireAuth, getUserCollections);
-collectionRouter.get("/:collectionId", getCollectionById);
+collectionRouter.get("/:collectionId", requireAuth, getCollectionById);
 collectionRouter.patch("/:collectionId", requireAuth, updateCollection);
 collectionRouter.delete("/:collectionId", requireAuth, deleteCollection);
 collectionRouter.post("/:collectionId/works", requireAuth, addWorks);

@@ -230,7 +230,7 @@ export const updateCollection = async (
     const { collectionId } = req.params;
     const updates = req.body;
 
-    const allowedFields = ["name", "type", "visibility"];
+    const allowedFields = ["name", "type", "visibility", "works"];
     const hasInvalidFields = Object.keys(updates).some(
       (key) => !allowedFields.includes(key),
     );

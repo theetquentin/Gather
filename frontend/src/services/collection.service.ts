@@ -19,8 +19,8 @@ export const collectionService = {
   },
 
   async getCollectionById(id: string): Promise<Collection> {
-    const response = await apiClient.get<ApiResponse<Collection>>(`/collections/${id}`);
-    return response.data;
+    const response = await apiClient.get<ApiResponse<{ collection: Collection }>>(`/collections/${id}`);
+    return response.data.collection;
   },
 
   async createCollection(data: CreateCollectionInput): Promise<Collection> {
@@ -29,8 +29,8 @@ export const collectionService = {
   },
 
   async updateCollection(id: string, data: UpdateCollectionInput): Promise<Collection> {
-    const response = await apiClient.put<ApiResponse<Collection>>(`/collections/${id}`, data);
-    return response.data;
+    const response = await apiClient.patch<ApiResponse<{ collection: Collection }>>(`/collections/${id}`, data);
+    return response.data.collection;
   },
 
   async deleteCollection(id: string): Promise<void> {

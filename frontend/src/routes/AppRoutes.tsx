@@ -7,6 +7,7 @@ import { Register } from '../pages/Register';
 import { Works } from '../pages/Works';
 import { Collections } from '../pages/Collections';
 import { MyCollections } from '../pages/MyCollections';
+import { CollectionDetail } from '../pages/CollectionDetail';
 
 // Configuration des routes de l'application
 export const AppRoutes = () => {
@@ -33,8 +34,12 @@ export const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/works" element={<Works />} />
         <Route path="/collections" element={<Collections />} />
-        
-        {/* Page privée - redirige vers /login si non connecté */}
+
+        {/* Pages privées - redirigent vers /login si non connecté */}
+        <Route
+          path="/collections/:id"
+          element={isAuthenticated ? <CollectionDetail /> : <Navigate to="/login" />}
+        />
         <Route
           path="/my-collections"
           element={isAuthenticated ? <MyCollections /> : <Navigate to="/login" />}

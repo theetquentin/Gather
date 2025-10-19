@@ -24,4 +24,5 @@ export interface UpdateCollectionInput {
   name?: string;
   type?: CollectionType;
   visibility?: CollectionVisibility;
+  works?: string[];
 }
