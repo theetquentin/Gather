@@ -108,10 +108,36 @@ jobs:
           VITE_API_DOMAIN=${{ secrets.VITE_API_DOMAIN }}
           EOF
 
+      - name: Restore SSL certificates from persistent storage
+        run: |
+          # Créer le dossier certbot local
+          mkdir -p certbot/conf certbot/www
+
+          # Copier les certificats depuis le stockage permanent s'ils existent
+          if [ -d "$HOME/gather-ssl-certs/conf/live" ]; then
+            echo "📦 Restauration des certificats SSL existants..."
+            sudo cp -r $HOME/gather-ssl-certs/conf/* certbot/conf/ || true
+            sudo chown -R $USER:$USER certbot/
+          else
+            echo "ℹ️ Aucun certificat existant trouvé, première génération"
+          fi
+
       - name: Deploy to production
         run: |
           # Run production deployment script
           ./scripts/prod.sh
+
+      - name: Backup SSL certificates to persistent storage
+        if: always()
+        run: |
+          # Créer le dossier de stockage permanent
+          mkdir -p $HOME/gather-ssl-certs
+
+          # Sauvegarder les certificats si ils existent
+          if [ -d "certbot/conf/live" ]; then
+            echo "💾 Sauvegarde des certificats SSL..."
+            sudo cp -r certbot/conf $HOME/gather-ssl-certs/ || true
+          fi
 
       - name: Show container status
         run: docker compose ps
