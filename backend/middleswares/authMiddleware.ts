@@ -50,3 +50,32 @@ export const requireRole = (roles: string[]) => {
     next();
   };
 };
+
+export const optionalAuth = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      // Pas de token, on continue sans user
+      return next();
+    }
+    const token = authHeader.split(" ")[1];
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      return res.status(500).json({
+        success: false,
+        errors: "Configuration JWT manquante",
+        data: null,
+      });
+    }
+    const decoded = jwt.verify(token, secret) as { sub: string; role: string };
+    req.user = { id: decoded.sub, role: decoded.role };
+    next();
+  } catch (_err) {
+    // Token invalide, on continue sans user
+    next();
+  }
+};

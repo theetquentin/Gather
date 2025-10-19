@@ -8,7 +8,7 @@ import {
   updateCollection,
   deleteCollection,
 } from "../controllers/collectionController";
-import { requireAuth } from "../middleswares/authMiddleware";
+import { requireAuth, optionalAuth } from "../middleswares/authMiddleware";
 
 const collectionRouter = Router();
 
@@ -18,7 +18,7 @@ collectionRouter.get("/", getAllCollections); // GET /collections?visibility=pub
 // Routes protégées
 collectionRouter.post("/", requireAuth, createCollection);
 collectionRouter.get("/me", requireAuth, getUserCollections);
-collectionRouter.get("/:collectionId", requireAuth, getCollectionById);
+collectionRouter.get("/:collectionId", optionalAuth, getCollectionById);
 collectionRouter.patch("/:collectionId", requireAuth, updateCollection);
 collectionRouter.delete("/:collectionId", requireAuth, deleteCollection);
 collectionRouter.post("/:collectionId/works", requireAuth, addWorks);
