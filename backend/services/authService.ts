@@ -43,19 +43,3 @@ export const loginAndIssueToken = async (email: string, password: string) => {
     },
   };
 };
-
-export const getCurrentUser = async (userId: string) => {
-  const { getUserById } = await import("../repositories/userRepository");
-  const user = await getUserById(userId);
-
-  if (!user) {
-    throw new Error("Utilisateur non trouvé");
-  }
-
-  return {
-    id: user._id,
-    username: user.username,
-    email: user.email,
-    role: user.role,
-  };
-};
