@@ -166,3 +166,43 @@ jobs:
           else
             echo "⚠️ Frontend health check returned: $response"
           fi
+
+  sync-dev:
+    name: Sync dev with main
+    runs-on: ubuntu-latest
+    needs: [verify-deployment]
+    # Only run after successful deployment
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/dev' &&
+      github.repository == 'theetquentin/Gather' &&
+      needs.verify-deployment.result == 'success'
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GATHER_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync dev branch with main
+        run: |
+          # Fetch latest changes
+          git fetch origin main
+          git fetch origin dev
+
+          # Switch to dev and merge main
+          git checkout dev
+          git merge origin/main --no-edit -m "chore: sync dev with main after successful deployment [skip ci]"
+
+          # Push updated dev
+          git push origin dev
+
+          echo "✅ Dev branch synchronized with main"
