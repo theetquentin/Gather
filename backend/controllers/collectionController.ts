@@ -61,7 +61,7 @@ export const createCollection = async (
       success: true,
       message: "Collection créée avec succès",
       data: {
-        id: result._id,
+        _id: result._id,
         name: result.name,
         type: result.type,
         visibility: result.visibility,
@@ -128,7 +128,7 @@ export const addWorks = async (req: AuthenticatedRequest, res: Response) => {
         nonexistentIds: result.nonexistentIds,
         mismatchedIds: result.mismatchedIds,
         collection: {
-          id: result.updatedCollection._id,
+          _id: result.updatedCollection._id,
           name: result.updatedCollection.name,
           type: result.updatedCollection.type,
           visibility: result.updatedCollection.visibility,
@@ -254,7 +254,7 @@ export const updateCollection = async (
       message: "Collection mise à jour",
       data: {
         collection: {
-          id: updated._id,
+          _id: updated._id,
           name: updated.name,
           type: updated.type,
           visibility: updated.visibility,

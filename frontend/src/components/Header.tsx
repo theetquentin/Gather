@@ -8,7 +8,7 @@ export const Header = () => {
     // border-b-2 border-primary-color
     <header className="bg-primary-color">
       <div className="max-w-6xl mx-auto py-4">
-        <nav className="flex items-center justify-between" aria-label="Navigation principale">
+        <nav className="flex items-center justify-between min-h-[44px]" aria-label="Navigation principale">
           <div className="flex items-center space-x-8">
             <Link to="/" className="text-2xl font-bold text-slate-900 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2">
               Gather
@@ -32,12 +32,14 @@ export const Header = () => {
                 </>
               )}
 
-              <Link
-                to="/works"
-                className="text-slate-900 hover:text-action-color-hover transition-colors font-medium focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
-              >
-                Toutes les œuvres
-              </Link>
+              {!isAuthenticated && (
+                <Link
+                  to="/works"
+                  className="text-slate-900 hover:text-action-color-hover transition-colors font-medium focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
+                >
+                  Toutes les œuvres
+                </Link>
+              )}
 
               <Link
                 to="/collections"

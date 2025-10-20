@@ -202,9 +202,131 @@ export const CollectionDetail = () => {
         </div>
       </div>
 
+      {/* Barre d'actions */}
+      <div className="flex my-2 gap-2 items-center">
+        {works.length > 0 && (
+          <h2 className="text-lg font-semibold text-slate-900">
+            Œuvres ({works.length})
+          </h2>
+        )}
+        <div className="flex ml-auto gap-2">
+          <button
+            onClick={() => setIsEditingInfo(true)}
+            className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 whitespace-nowrap"
+          >
+            Modifier les informations
+          </button>
+          <button
+            onClick={() => setIsEditingWorks(true)}
+            className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-slate-100 focus-visible:ring-offset-2 whitespace-nowrap"
+          >
+            Modifier les œuvres
+          </button>
+        </div>
+      </div>
+
+      {/* Formulaire d'édition des informations */}
+      {isEditingInfo && (
+        <div className="mb-4">
+          <form onSubmit={handleSaveInfo} className="space-y-3">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-slate-900 font-medium mb-1 text-sm"
+              >
+                Nom de la collection
+              </label>
+              <input
+                type="text"
+                id="name"
+                ref={nameInputRef}
+                defaultValue={collection.name}
+                className="w-full px-3 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900 text-sm"
+                placeholder="Nom de la collection"
+                required
+                disabled={isSaving}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="visibility"
+                className="block text-slate-900 font-medium mb-1 text-sm"
+              >
+                Visibilité
+              </label>
+              <select
+                id="visibility"
+                ref={visibilitySelectRef}
+                defaultValue={collection.visibility}
+                className="w-full px-3 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900 text-sm"
+                required
+                disabled={isSaving}
+              >
+                <option value="private">
+                  Privée - Visible uniquement par vous
+                </option>
+                <option value="public">Publique - Visible par tous</option>
+                <option value="shared">
+                  Partagée - Visible par les invités
+                </option>
+              </select>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={handleCancelEditInfo}
+                disabled={isSaving}
+                className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                disabled={isSaving}
+                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+              >
+                {isSaving ? "Sauvegarde..." : "Enregistrer"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* Formulaire d'édition des œuvres */}
+      {isEditingWorks && (
+        <div className="mb-4">
+          <div className="space-y-3">
+            <WorkSelector
+              collectionType={collection.type}
+              selectedWorkIds={selectedWorkIds}
+              onWorksChange={setSelectedWorkIds}
+            />
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                onClick={handleCancelEditWorks}
+                disabled={isSaving}
+                className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={handleSaveWorks}
+                disabled={isSaving}
+                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+              >
+                {isSaving ? "Sauvegarde..." : "Enregistrer"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Liste des œuvres */}
       {works.length === 0 ? (
-        <div className="bg-primary-color p-8 rounded-lg text-center flex">
+        <div className="p-8 rounded-lg text-center mt-4">
           <h2 className="text-xl font-semibold text-slate-900 mb-2">
             Collection vide
           </h2>
@@ -213,132 +335,11 @@ export const CollectionDetail = () => {
           </p>
         </div>
       ) : (
-        <>
-          <div className="flex my-2 gap-2">
-            <h2 className="text-lg font-semibold text-slate-900">
-              Œuvres ({works.length})
-            </h2>
-            <div className="flex ml-auto gap-2">
-              <button
-                onClick={() => setIsEditingInfo(true)}
-                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 whitespace-nowrap"
-              >
-                Modifier les informations
-              </button>
-              <button
-                onClick={() => setIsEditingWorks(true)}
-                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-slate-100 focus-visible:ring-offset-2 whitespace-nowrap"
-              >
-                Modifier les œuvres
-              </button>
-            </div>
-          </div>
-
-          {/* Formulaire d'édition des informations */}
-          {isEditingInfo && (
-            <div className="mb-4">
-              <form onSubmit={handleSaveInfo} className="space-y-3">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-slate-900 font-medium mb-1 text-sm"
-                  >
-                    Nom de la collection
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    ref={nameInputRef}
-                    defaultValue={collection.name}
-                    className="w-full px-3 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900 text-sm"
-                    placeholder="Nom de la collection"
-                    required
-                    disabled={isSaving}
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="visibility"
-                    className="block text-slate-900 font-medium mb-1 text-sm"
-                  >
-                    Visibilité
-                  </label>
-                  <select
-                    id="visibility"
-                    ref={visibilitySelectRef}
-                    defaultValue={collection.visibility}
-                    className="w-full px-3 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900 text-sm"
-                    required
-                    disabled={isSaving}
-                  >
-                    <option value="private">
-                      Privée - Visible uniquement par vous
-                    </option>
-                    <option value="public">Publique - Visible par tous</option>
-                    <option value="shared">
-                      Partagée - Visible par les invités
-                    </option>
-                  </select>
-                </div>
-
-                <div className="flex justify-end gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={handleCancelEditInfo}
-                    disabled={isSaving}
-                    className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
-                  >
-                    Annuler
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSaving}
-                    className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
-                  >
-                    {isSaving ? "Sauvegarde..." : "Enregistrer"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-
-          {/* Formulaire d'édition des œuvres */}
-          {isEditingWorks && (
-            <div className="mb-4">
-              <div className="space-y-3">
-                <WorkSelector
-                  collectionType={collection.type}
-                  selectedWorkIds={selectedWorkIds}
-                  onWorksChange={setSelectedWorkIds}
-                />
-
-                <div className="flex justify-end gap-2 pt-2">
-                  <button
-                    onClick={handleCancelEditWorks}
-                    disabled={isSaving}
-                    className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
-                  >
-                    Annuler
-                  </button>
-                  <button
-                    onClick={handleSaveWorks}
-                    disabled={isSaving}
-                    className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
-                  >
-                    {isSaving ? "Sauvegarde..." : "Enregistrer"}
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-            {works.map((work) => (
-              <WorkCard key={work._id} work={work} />
-            ))}
-          </div>
-        </>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+          {works.map((work) => (
+            <WorkCard key={work._id} work={work} />
+          ))}
+        </div>
       )}
     </div>
   );
