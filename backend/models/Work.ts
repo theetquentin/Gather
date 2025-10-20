@@ -23,6 +23,10 @@ const workSchema = new Schema<IWork>(
       type: [],
       required: true,
     },
+    description: {
+      type: String,
+      required: false,
+    },
     images: [
       {
         type: [],
