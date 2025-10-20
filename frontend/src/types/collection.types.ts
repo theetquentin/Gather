@@ -1,3 +1,5 @@
+import type { Work } from './work.types';
+
 export type CollectionType = 'book' | 'movie' | 'series' | 'music' | 'game' | 'other';
 export type CollectionVisibility = 'private' | 'public' | 'shared';
 
@@ -7,7 +9,7 @@ export interface Collection {
   type: CollectionType;
   visibility: CollectionVisibility;
   userId: string;
-  works: string[];
+  works: Work[];
   sharedWith: string[];
   createdAt: string;
   updatedAt: string;
