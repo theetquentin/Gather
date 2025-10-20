@@ -50,7 +50,7 @@ jobs:
 
           # Enable auto-merge (retry with sleep if PR is not ready)
           for i in {1..5}; do
-            if gh pr merge $PR_NUMBER --auto --squash --delete-branch=false; then
+            if gh pr merge $PR_NUMBER --auto --merge --delete-branch=false; then
               echo "Auto-merge enabled for PR #$PR_NUMBER"
               break
             else
