@@ -17,9 +17,9 @@ const TYPE_LABELS: Record<CollectionType, string> = {
 };
 
 const VISIBILITY_LABELS: Record<CollectionVisibility, { label: string; color: string }> = {
-  private: { label: 'Privée', color: 'bg-slate-500' },
-  public: { label: 'Publique', color: 'bg-green-600' },
-  shared: { label: 'Partagée', color: 'bg-blue-600' },
+  private: { label: 'Privée', color: 'bg-[#33538A]' },
+  public: { label: 'Publique', color: 'bg-[#4C8CBD]' },
+  shared: { label: 'Partagée', color: 'bg-[#2BA84A]' },
 };
 
 export const CollectionCard = ({ collection, onDelete, showActions = false }: CollectionCardProps) => {
@@ -50,7 +50,8 @@ export const CollectionCard = ({ collection, onDelete, showActions = false }: Co
       <div className="flex gap-2">
         <Link
           to={`/collections/${collection._id}`}
-          className="flex-1 text-center bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md font-medium transition-colors"
+          className="flex-1 text-center bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md font-medium transition-colors focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+          aria-label={`Voir les détails de la collection ${collection.name}`}
         >
           Voir la collection
         </Link>
@@ -58,7 +59,8 @@ export const CollectionCard = ({ collection, onDelete, showActions = false }: Co
         {showActions && onDelete && (
           <button
             onClick={() => onDelete(collection._id)}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-slate-100 rounded-md font-medium transition-colors"
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-slate-100 rounded-md font-medium transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+            aria-label={`Supprimer la collection ${collection.name}`}
           >
             Supprimer
           </button>

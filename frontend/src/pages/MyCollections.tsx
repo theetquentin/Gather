@@ -55,37 +55,41 @@ export const MyCollections = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
-          <div className="text-slate-500 text-xl">Chargement de vos collections...</div>
+          <div className="text-slate-700 text-xl" role="status" aria-live="polite">Chargement de vos collections...</div>
         </div>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <main className="container mx-auto px-4 py-8">
       {/* En-tête */}
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-4xl font-bold text-slate-900">Mes collections</h1>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
-        >
-          {showForm ? 'Annuler' : 'Créer une collection'}
-        </button>
+        {!showForm && (
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
+          >
+            Créer une collection
+          </button>
+        )}
       </div>
 
       {/* Message d'erreur global */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6" role="alert">
+          <span className="font-semibold" aria-hidden="true">⚠ </span>
+          <span className="sr-only">Erreur : </span>
           {error}
         </div>
       )}
 
       {/* Formulaire de création */}
       {showForm && (
-        <div className="bg-primary-color p-6 rounded-xl shadow-lg mb-8">
+        <div className="p-6 mb-8">
           <h2 className="text-2xl font-semibold text-slate-900 mb-6">
             Créer une nouvelle collection
           </h2>
@@ -132,6 +136,6 @@ export const MyCollections = () => {
           </div>
         </>
       )}
-    </div>
+    </main>
   );
 };

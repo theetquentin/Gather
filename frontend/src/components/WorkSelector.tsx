@@ -155,15 +155,18 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
           {works.map((work) => (
             <label
               key={work._id}
-              className={`flex items-start p-3 border-b border-slate-300 last:border-b-0 cursor-pointer hover:bg-secondary-color transition-colors ${
+              htmlFor={`work-checkbox-${work._id}`}
+              className={`flex items-start p-3 border-b border-slate-400 last:border-b-0 cursor-pointer hover:bg-secondary-color transition-colors ${
                 selectedWorkIds.includes(work._id) ? 'bg-secondary-color' : ''
               }`}
             >
               <input
                 type="checkbox"
+                id={`work-checkbox-${work._id}`}
                 checked={selectedWorkIds.includes(work._id)}
                 onChange={() => handleToggleWork(work._id)}
-                className="mt-1 mr-3"
+                className="mt-1 mr-3 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+                aria-label={`Sélectionner ${work.title} par ${work.author}`}
               />
               <div className="flex-1">
                 <div className="font-medium text-slate-900">{work.title}</div>

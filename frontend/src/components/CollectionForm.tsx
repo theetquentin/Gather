@@ -74,16 +74,18 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-3">
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded" role="alert">
+          <span className="font-semibold" aria-hidden="true">⚠ </span>
+          <span className="sr-only">Erreur : </span>
           {error}
         </div>
       )}
 
       {/* Nom de la collection */}
       <div>
-        <label htmlFor="name" className="block text-slate-900 font-semibold mb-2">
+        <label htmlFor="name" className="block text-slate-900 font-medium mb-1 text-sm">
           Nom de la collection *
         </label>
         <input
@@ -91,7 +93,7 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900"
+          className="w-full px-3 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900 text-sm"
           placeholder="Ex: Ma collection de science-fiction"
           required
           disabled={isLoading}
@@ -100,14 +102,14 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
 
       {/* Type de collection */}
       <div>
-        <label htmlFor="type" className="block text-slate-900 font-semibold mb-2">
+        <label htmlFor="type" className="block text-slate-900 font-medium mb-1 text-sm">
           Type de collection *
         </label>
         <select
           id="type"
           value={type}
           onChange={(e) => setType(e.target.value as CollectionType)}
-          className="w-full px-4 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900"
+          className="w-full px-3 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900 text-sm"
           required
           disabled={isLoading}
         >
@@ -121,14 +123,14 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
 
       {/* Visibilité */}
       <div>
-        <label htmlFor="visibility" className="block text-slate-900 font-semibold mb-2">
+        <label htmlFor="visibility" className="block text-slate-900 font-medium mb-1 text-sm">
           Visibilité *
         </label>
         <select
           id="visibility"
           value={visibility}
           onChange={(e) => setVisibility(e.target.value as CollectionVisibility)}
-          className="w-full px-4 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900"
+          className="w-full px-3 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900 text-sm"
           required
           disabled={isLoading}
         >
@@ -148,25 +150,24 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
       />
 
       {/* Boutons d'action */}
-      <div className="flex gap-3 pt-4">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="flex-1 bg-action-color hover:bg-action-color-hover text-slate-100 py-3 rounded-md font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isLoading ? 'Création...' : 'Créer la collection'}
-        </button>
-
+      <div className="flex justify-end gap-2 pt-2">
         {onCancel && (
           <button
             type="button"
             onClick={onCancel}
             disabled={isLoading}
-            className="px-6 bg-secondary-color hover:bg-primary-color text-slate-900 py-3 rounded-md font-medium transition-colors disabled:opacity-50"
+            className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
           >
             Annuler
           </button>
         )}
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+        >
+          {isLoading ? 'Création...' : 'Créer la collection'}
+        </button>
       </div>
     </form>
   );
