@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { plainToInstance, instanceToPlain } from "class-transformer";
 import { validate } from "class-validator";
 import { CreateCollectionDto } from "../dtos/createCollection.dto";
@@ -156,10 +156,17 @@ export const addWorks = async (req: AuthenticatedRequest, res: Response) => {
   }
 };
 
-export const getAllCollections = async (req: Request, res: Response) => {
+export const getAllCollections = async (
+  req: AuthenticatedRequest,
+  res: Response,
+) => {
   try {
-    const { visibility } = req.query as { visibility?: string };
-    const publicOnly = visibility === "public";
+    const user = req.user;
+    let publicOnly = true;
+
+    if (user && ["admin", "moderator"].includes(user.role)) {
+      publicOnly = false;
+    }
 
     const collections = await fetchCollections(publicOnly);
 

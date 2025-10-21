@@ -11,7 +11,7 @@ export const COLLECTION_TYPES: { value: CollectionType; label: string }[] = [
 
 export const VISIBILITY_LABELS: Record<string, { label: string; color: string }> = {
   private: { label: "Privée", color: "bg-[#33538A]" },
-  public: { label: "Publique", color: "bg-[#4C8BD]" },
+  public: { label: "Publique", color: "bg-[#4C8B3D]" },
   shared: { label: "Partagée", color: "bg-[#2BA84A]" },
 };
 

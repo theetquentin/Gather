@@ -5,16 +5,21 @@ import { WorkCard } from "../components/WorkCard";
 import { WorkSelector } from "../components/WorkSelector";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingMessage } from "../components/LoadingMessage";
+import { useAuth } from "../hooks/useAuth";
 import {
   COLLECTION_TYPES,
   VISIBILITY_LABELS,
   VISIBILITY_OPTIONS,
 } from "../constants/collection.constants";
-import type { Collection, UpdateCollectionInput } from "../types/collection.types";
+import type {
+  Collection,
+  UpdateCollectionInput,
+} from "../types/collection.types";
 
 type EditMode = "info" | "works" | null;
 
 export const CollectionDetail = () => {
+  const { isAuthenticated } = useAuth();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -131,27 +136,32 @@ export const CollectionDetail = () => {
             Œuvres ({collection.works.length})
           </h2>
         )}
-        <div className="flex ml-auto gap-2">
-          <button
-            onClick={() => setEditMode("info")}
-            className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
-          >
-            Modifier les informations
-          </button>
-          <button
-            onClick={() => setEditMode("works")}
-            className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
-          >
-            Modifier les œuvres
-          </button>
-        </div>
+        {isAuthenticated && (
+          <div className="flex ml-auto gap-2">
+            <button
+              onClick={() => setEditMode("info")}
+              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+            >
+              Modifier les informations
+            </button>
+            <button
+              onClick={() => setEditMode("works")}
+              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+            >
+              Modifier les œuvres
+            </button>
+          </div>
+        )}
       </div>
 
       {editMode === "info" && (
         <div className="mb-4">
           <form onSubmit={handleSaveInfo} className="space-y-3">
             <div>
-              <label htmlFor="name" className="block text-slate-900 font-medium mb-1 text-sm">
+              <label
+                htmlFor="name"
+                className="block text-slate-900 font-medium mb-1 text-sm"
+              >
                 Nom de la collection
               </label>
               <input
@@ -165,13 +175,20 @@ export const CollectionDetail = () => {
               />
             </div>
             <div>
-              <label htmlFor="visibility" className="block text-slate-900 font-medium mb-1 text-sm">
+              <label
+                htmlFor="visibility"
+                className="block text-slate-900 font-medium mb-1 text-sm"
+              >
                 Visibilité
               </label>
               <select
                 id="visibility"
                 value={formVisibility}
-                onChange={(e) => setFormVisibility(e.target.value as "private" | "public" | "shared")}
+                onChange={(e) =>
+                  setFormVisibility(
+                    e.target.value as "private" | "public" | "shared",
+                  )
+                }
                 className="w-full px-3 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900 text-sm"
                 required
                 disabled={isSaving}
