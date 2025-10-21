@@ -198,7 +198,7 @@ describe("Tests API - GET /collections", () => {
     );
   });
 
-  test("Récupérer toutes les collections sans filtre retourne toutes les collections", async () => {
+  test("Récupérer toutes les collections sans authentification retourne uniquement les collections publiques", async () => {
     const { token } = await createUserAndGetToken({
       username: "user",
       email: "user@example.com",
@@ -227,7 +227,8 @@ describe("Tests API - GET /collections", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBeTruthy();
-    expect(res.body.data.collections).toHaveLength(2);
+    expect(res.body.data.collections).toHaveLength(1);
+    expect(res.body.data.collections[0].visibility).toBe("public");
   });
 });
 
