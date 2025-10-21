@@ -13,7 +13,7 @@ import { requireAuth, optionalAuth } from "../middleswares/authMiddleware";
 const collectionRouter = Router();
 
 // Routes publiques
-collectionRouter.get("/", getAllCollections); // GET /collections?visibility=public
+collectionRouter.get("/", optionalAuth, getAllCollections); // GET /collections - public par défaut, toutes si admin/moderator
 
 // Routes protégées
 collectionRouter.post("/", requireAuth, createCollection);

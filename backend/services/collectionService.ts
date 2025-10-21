@@ -16,6 +16,7 @@ import {
   countWorksByIds,
   getWorkTypesByIds,
 } from "../repositories/workRepository";
+import { getAcceptedShareByCollectionAndGuest } from "../repositories/shareRepository";
 
 export const createNewCollection = async (data: ICollection) => {
   const { name, works, userId } = data;
@@ -151,22 +152,34 @@ export const fetchCollectionById = async (
   const collection = await getCollectionById(collectionId);
   if (!collection) throw new Error("Collection non trouvée");
 
-  // Vérifier l'accès selon la visibilité
-  if (collection.visibility === "private") {
-    // Collection privée : authentification obligatoire
-    if (!userId) {
-      throw new Error(
-        "Authentification requise pour accéder à cette collection",
-      );
-    }
-    // Vérifier que c'est bien le propriétaire
-    if (collection.userId.toString() !== userId) {
-      throw new Error("Accès refusé à cette collection");
-    }
+  // Si la collection est publique, tout le monde peut la voir
+  if (collection.visibility === "public") {
+    return collection;
   }
-  // Les collections publiques et partagées sont accessibles à tous
 
-  return collection;
+  // Pour les collections privées ou partagées, authentification obligatoire
+  if (!userId) {
+    throw new Error("Authentification requise pour accéder à cette collection");
+  }
+
+  // Vérifier si c'est le propriétaire
+  const isOwner = collection.userId.toString() === userId;
+  if (isOwner) {
+    return collection;
+  }
+
+  // Vérifier si l'utilisateur a un partage accepté pour cette collection
+  const share = await getAcceptedShareByCollectionAndGuest(
+    new Types.ObjectId(collectionId),
+    new Types.ObjectId(userId),
+  );
+
+  if (share) {
+    return collection;
+  }
+
+  // Aucun accès trouvé
+  throw new Error("Accès refusé à cette collection");
 };
 
 export const updateCollectionById = async (

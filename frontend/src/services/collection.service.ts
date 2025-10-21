@@ -9,8 +9,8 @@ interface ApiResponse<T> {
 
 export const collectionService = {
   async getAllCollections(): Promise<Collection[]> {
-    const response = await apiClient.get<ApiResponse<Collection[]>>('/collections');
-    return response.data;
+    const response = await apiClient.get<ApiResponse<{ collections: Collection[] }>>('/collections');
+    return response.data.collections;
   },
 
   async getUserCollections(): Promise<Collection[]> {
