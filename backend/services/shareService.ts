@@ -40,7 +40,9 @@ export const createNewShare = async (data: IShare) => {
 
   // Vérifier que l'auteur ne se partage pas à lui-même
   if (guestId.toString() === authorId.toString()) {
-    throw new Error("Vous ne pouvez pas vous partager une collection à vous-même");
+    throw new Error(
+      "Vous ne pouvez pas vous partager une collection à vous-même",
+    );
   }
 
   // Créer le partage
