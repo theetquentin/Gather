@@ -18,6 +18,16 @@ import {
   getNotificationsByShareId,
 } from "../repositories/notificationRepository";
 
+// Helper pour extraire l'ID depuis un champ potentiellement populé
+const getIdString = (
+  field: Types.ObjectId | { _id: Types.ObjectId },
+): string => {
+  if (field && typeof field === "object" && "_id" in field) {
+    return field._id.toString();
+  }
+  return (field as Types.ObjectId).toString();
+};
+
 export const createNewShare = async (data: IShare) => {
   const { collectionId, guestId, authorId } = data;
 
@@ -79,6 +89,10 @@ export const fetchSharesByCollection = async (collectionId: string) => {
     throw new Error("Identifiant de collection invalide");
   }
 
+  // Vérifier que la collection existe
+  const collection = await getCollectionById(collectionId);
+  if (!collection) throw new Error("Collection non trouvée");
+
   return await getSharesByCollectionId(collectionId);
 };
 
@@ -103,7 +117,10 @@ export const updateShareStatusById = async (
   if (!share) throw new Error("Partage non trouvé");
 
   // Seul l'invité peut accepter ou refuser
-  if (share.guestId.toString() !== userId) {
+  // guestId peut être populé donc on utilise le helper
+  const guestIdString = getIdString(share.guestId);
+
+  if (guestIdString !== userId) {
     throw new Error("Seul l'invité peut modifier le statut du partage");
   }
 
@@ -134,7 +151,10 @@ export const updateShareById = async (
   if (!share) throw new Error("Partage non trouvé");
 
   // Seul l'auteur peut modifier les droits
-  if (share.authorId.toString() !== userId) {
+  // authorId peut être populé donc on utilise le helper
+  const authorIdString = getIdString(share.authorId);
+
+  if (authorIdString !== userId) {
     throw new Error("Seul l'auteur peut modifier ce partage");
   }
 
@@ -154,8 +174,12 @@ export const deleteShareById = async (shareId: string, userId: string) => {
   if (!share) throw new Error("Partage non trouvé");
 
   // L'auteur ou l'invité peuvent supprimer le partage
-  const isAuthor = share.authorId.toString() === userId;
-  const isGuest = share.guestId.toString() === userId;
+  // authorId et guestId peuvent être populés donc on utilise le helper
+  const authorIdString = getIdString(share.authorId);
+  const guestIdString = getIdString(share.guestId);
+
+  const isAuthor = authorIdString === userId;
+  const isGuest = guestIdString === userId;
 
   if (!isAuthor && !isGuest) {
     throw new Error("Vous n'êtes pas autorisé à supprimer ce partage");
