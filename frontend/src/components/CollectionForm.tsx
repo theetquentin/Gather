@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { WorkSelector } from './WorkSelector';
+import { ErrorMessage } from './ErrorMessage';
+import { COLLECTION_TYPES, VISIBILITY_OPTIONS } from '../constants/collection.constants';
 import type { CollectionType, CollectionVisibility, CreateCollectionInput } from '../types/collection.types';
 
 interface CollectionFormProps {
@@ -7,33 +9,6 @@ interface CollectionFormProps {
   onCancel?: () => void;
   isLoading?: boolean;
 }
-
-const COLLECTION_TYPES: { value: CollectionType; label: string }[] = [
-  { value: 'book', label: 'Livres' },
-  { value: 'movie', label: 'Films' },
-  { value: 'series', label: 'Séries' },
-  { value: 'music', label: 'Musique' },
-  { value: 'game', label: 'Jeux vidéo' },
-  { value: 'other', label: 'Autre' },
-];
-
-const VISIBILITY_OPTIONS: { value: CollectionVisibility; label: string; description: string }[] = [
-  {
-    value: 'private',
-    label: 'Privée',
-    description: 'Visible uniquement par vous'
-  },
-  {
-    value: 'public',
-    label: 'Publique',
-    description: 'Visible par tous les utilisateurs'
-  },
-  {
-    value: 'shared',
-    label: 'Partagée',
-    description: 'Visible par les utilisateurs invités'
-  },
-];
 
 export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: CollectionFormProps) => {
   const [name, setName] = useState('');
@@ -75,15 +50,8 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded" role="alert">
-          <span className="font-semibold" aria-hidden="true">⚠ </span>
-          <span className="sr-only">Erreur : </span>
-          {error}
-        </div>
-      )}
+      {error && <ErrorMessage message={error} />}
 
-      {/* Nom de la collection */}
       <div>
         <label htmlFor="name" className="block text-slate-900 font-medium mb-1 text-sm">
           Nom de la collection *
@@ -100,7 +68,6 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
         />
       </div>
 
-      {/* Type de collection */}
       <div>
         <label htmlFor="type" className="block text-slate-900 font-medium mb-1 text-sm">
           Type de collection *
@@ -121,7 +88,6 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
         </select>
       </div>
 
-      {/* Visibilité */}
       <div>
         <label htmlFor="visibility" className="block text-slate-900 font-medium mb-1 text-sm">
           Visibilité *
@@ -142,21 +108,19 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
         </select>
       </div>
 
-      {/* Sélection des œuvres */}
       <WorkSelector
         collectionType={type}
         selectedWorkIds={selectedWorkIds}
         onWorksChange={setSelectedWorkIds}
       />
 
-      {/* Boutons d'action */}
       <div className="flex justify-end gap-2 pt-2">
         {onCancel && (
           <button
             type="button"
             onClick={onCancel}
             disabled={isLoading}
-            className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+            className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50"
           >
             Annuler
           </button>
@@ -164,7 +128,7 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
         <button
           type="submit"
           disabled={isLoading}
-          className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+          className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50"
         >
           {isLoading ? 'Création...' : 'Créer la collection'}
         </button>

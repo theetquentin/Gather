@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import type { Collection, CollectionType, CollectionVisibility } from '../types/collection.types';
+import { COLLECTION_TYPES, VISIBILITY_LABELS } from '../constants/collection.constants';
+import type { Collection } from '../types/collection.types';
 
 interface CollectionCardProps {
   collection: Collection;
@@ -7,26 +8,40 @@ interface CollectionCardProps {
   showActions?: boolean;
 }
 
-const TYPE_LABELS: Record<CollectionType, string> = {
-  book: 'Livres',
-  movie: 'Films',
-  series: 'Séries',
-  music: 'Musique',
-  game: 'Jeux vidéo',
-  other: 'Autre',
-};
-
-const VISIBILITY_LABELS: Record<CollectionVisibility, { label: string; color: string }> = {
-  private: { label: 'Privée', color: 'bg-[#33538A]' },
-  public: { label: 'Publique', color: 'bg-[#4C8CBD]' },
-  shared: { label: 'Partagée', color: 'bg-[#2BA84A]' },
-};
-
 export const CollectionCard = ({ collection, onDelete, showActions = false }: CollectionCardProps) => {
   const visibilityInfo = VISIBILITY_LABELS[collection.visibility];
 
+  // Extraire les 3 premières images des œuvres
+  const previewImages: string[] = [];
+  for (const work of collection.works) {
+    if (work.images && work.images.length > 0 && previewImages.length < 3) {
+      previewImages.push(work.images[0]);
+    }
+    if (previewImages.length >= 3) break;
+  }
+
+  const worksCount = collection.works.length;
+
   return (
     <div className="bg-primary-color p-6 rounded-xl shadow hover:shadow-lg transition-shadow">
+      {/* Miniature des images */}
+      {previewImages.length > 0 && (
+        <div className="mb-4 h-32 rounded-lg overflow-hidden flex items-center justify-center gap-1 p-1">
+          {previewImages.map((image, index) => (
+            <div
+              key={index}
+              className="relative bg-slate-200 overflow-hidden rounded flex-1 h-full"
+            >
+              <img
+                src={image}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <h3 className="text-xl font-semibold text-slate-900 mb-2">
@@ -34,7 +49,7 @@ export const CollectionCard = ({ collection, onDelete, showActions = false }: Co
           </h3>
           <div className="flex items-center gap-3">
             <span className="inline-block px-3 py-1 bg-secondary-color text-slate-900 text-sm font-medium rounded-full">
-              {TYPE_LABELS[collection.type]}
+              {COLLECTION_TYPES.find((t) => t.value === collection.type)?.label}
             </span>
             <span className={`inline-block px-3 py-1 ${visibilityInfo.color} text-slate-100 text-sm font-medium rounded-full`}>
               {visibilityInfo.label}
@@ -44,7 +59,7 @@ export const CollectionCard = ({ collection, onDelete, showActions = false }: Co
       </div>
 
       <div className="text-slate-700 mb-4">
-        <span className="font-medium">{collection.works.length}</span> œuvre{collection.works.length > 1 ? 's' : ''}
+        <span className="font-medium">{worksCount}</span> œuvre{worksCount > 1 ? 's' : ''}
       </div>
 
       <div className="flex gap-2">

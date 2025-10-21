@@ -49,7 +49,7 @@ describe("Tests API - POST /collections", () => {
     expect(res.status).toBe(201);
     expect(res.body.success).toBeTruthy();
     expect(res.body.message).toBe("Collection créée avec succès");
-    expect(res.body.data).toHaveProperty("id");
+    expect(res.body.data).toHaveProperty("_id");
     expect(res.body.data.name).toBe(collectionData.name);
     expect(res.body.data.type).toBe(collectionData.type);
     expect(res.body.data.visibility).toBe(collectionData.visibility);
@@ -287,7 +287,7 @@ describe("Tests API - GET /collections/:collectionId", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({ name: "Collection test", type: "book", visibility: "public" });
 
-    const collectionId = createRes.body.data.id;
+    const collectionId = createRes.body.data._id;
 
     const res = await request(app).get(`/collections/${collectionId}`);
 
@@ -315,7 +315,7 @@ describe("Tests API - GET /collections/:collectionId", () => {
       .set("Authorization", `Bearer ${token1}`)
       .send({ name: "Collection privée", type: "book", visibility: "private" });
 
-    const collectionId = createRes.body.data.id;
+    const collectionId = createRes.body.data._id;
 
     const res = await request(app)
       .get(`/collections/${collectionId}`)
@@ -360,7 +360,7 @@ describe("Tests API - PATCH /collections/:collectionId", () => {
         visibility: "public",
       });
 
-    const collectionId = createRes.body.data.id;
+    const collectionId = createRes.body.data._id;
 
     const res = await request(app)
       .patch(`/collections/${collectionId}`)
@@ -386,7 +386,7 @@ describe("Tests API - PATCH /collections/:collectionId", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({ name: "Collection test", type: "book", visibility: "public" });
 
-    const collectionId = createRes.body.data.id;
+    const collectionId = createRes.body.data._id;
 
     const res = await request(app)
       .patch(`/collections/${collectionId}`)
@@ -416,7 +416,7 @@ describe("Tests API - PATCH /collections/:collectionId", () => {
       .set("Authorization", `Bearer ${token1}`)
       .send({ name: "Collection user1", type: "book", visibility: "public" });
 
-    const collectionId = createRes.body.data.id;
+    const collectionId = createRes.body.data._id;
 
     const res = await request(app)
       .patch(`/collections/${collectionId}`)
@@ -456,7 +456,7 @@ describe("Tests API - DELETE /collections/:collectionId", () => {
         visibility: "public",
       });
 
-    const collectionId = createRes.body.data.id;
+    const collectionId = createRes.body.data._id;
 
     const res = await request(app)
       .delete(`/collections/${collectionId}`)
@@ -488,7 +488,7 @@ describe("Tests API - DELETE /collections/:collectionId", () => {
       .set("Authorization", `Bearer ${token1}`)
       .send({ name: "Collection user1", type: "book", visibility: "public" });
 
-    const collectionId = createRes.body.data.id;
+    const collectionId = createRes.body.data._id;
 
     const res = await request(app)
       .delete(`/collections/${collectionId}`)

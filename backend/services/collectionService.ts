@@ -151,11 +151,20 @@ export const fetchCollectionById = async (
   const collection = await getCollectionById(collectionId);
   if (!collection) throw new Error("Collection non trouvée");
 
+  // Vérifier l'accès selon la visibilité
   if (collection.visibility === "private") {
-    if (!userId || collection.userId.toString() !== userId) {
+    // Collection privée : authentification obligatoire
+    if (!userId) {
+      throw new Error(
+        "Authentification requise pour accéder à cette collection",
+      );
+    }
+    // Vérifier que c'est bien le propriétaire
+    if (collection.userId.toString() !== userId) {
       throw new Error("Accès refusé à cette collection");
     }
   }
+  // Les collections publiques et partagées sont accessibles à tous
 
   return collection;
 };

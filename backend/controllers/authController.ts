@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 import { LoginDto } from "../dtos/login.dto";
-import { loginAndIssueToken, getCurrentUser } from "../services/authService";
+import { loginAndIssueToken } from "../services/authService";
+import { fetchUserById } from "../services/userService";
 import { AuthenticatedRequest } from "../middleswares/authMiddleware";
 
 export const login = async (req: Request, res: Response) => {
@@ -59,7 +60,7 @@ export const me = async (req: AuthenticatedRequest, res: Response) => {
       });
     }
 
-    const user = await getCurrentUser(req.user.id);
+    const user = await fetchUserById(req.user.id);
 
     return res.status(200).json({
       success: true,

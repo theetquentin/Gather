@@ -14,7 +14,7 @@ export const countCollectionByNameByUser = async (
 };
 
 export const getCollectionById = async (collectionId: string) => {
-  return await Collection.findById(collectionId);
+  return await Collection.findById(collectionId).populate("works", "-reviews");
 };
 
 export const addWorkToCollectionByIds = async (
@@ -42,18 +42,21 @@ export const addWorksToCollectionByIds = async (
 };
 
 export const getAllCollections = async () => {
-  return await Collection.find().populate("userId", "username email");
+  return await Collection.find()
+    .populate("userId", "username email")
+    .populate("works", "-reviews");
 };
 
 export const getCollectionsByUserId = async (userId: string) => {
-  return await Collection.find({ userId }).populate("userId", "username email");
+  return await Collection.find({ userId })
+    .populate("userId", "username email")
+    .populate("works", "-reviews");
 };
 
 export const getPublicCollections = async () => {
-  return await Collection.find({ visibility: "public" }).populate(
-    "userId",
-    "username email",
-  );
+  return await Collection.find({ visibility: "public" })
+    .populate("userId", "username email")
+    .populate("works", "-reviews");
 };
 
 export const updateCollection = async (
