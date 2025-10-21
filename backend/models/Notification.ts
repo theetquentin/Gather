@@ -20,6 +20,10 @@ const notificationSchema = new Schema<INotification>(
       type: Schema.Types.ObjectId,
       ref: "Work",
     },
+    shareId: {
+      type: Schema.Types.ObjectId,
+      ref: "Share",
+    },
     type: {
       type: String,
       enum: ["review", "share", "alert"],
