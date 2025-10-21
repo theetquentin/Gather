@@ -26,7 +26,26 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check if there are changes to deploy
+        id: check-changes
+        run: |
+          # Fetch latest changes from both branches
+          git fetch origin main
+          git fetch origin dev
+
+          # Compare dev and main
+          DIFF_COUNT=$(git rev-list --count origin/main..origin/dev)
+
+          if [ "$DIFF_COUNT" -eq "0" ]; then
+            echo "ℹ️ No commits to deploy (dev and main are in sync)"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Found $DIFF_COUNT commit(s) to deploy"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create or update Pull Request
+        if: steps.check-changes.outputs.has_changes == 'true'
         env:
           GH_TOKEN: ${{ secrets.GATHER_TOKEN }}
         run: |
@@ -63,10 +82,10 @@ jobs:
     name: Deploy to Production Server
     runs-on: self-hosted
     needs: [create-pr]
-    # Run after PR creation succeeds, or skip if manual trigger
+    # Run only after PR creation succeeds (skip if no changes or manual trigger)
     if: |
       github.repository == 'theetquentin/Gather' &&
-      (needs.create-pr.result == 'success' || needs.create-pr.result == 'skipped')
+      needs.create-pr.result == 'success'
 
     steps:
       - name: Clean workspace before checkout
