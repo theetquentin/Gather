@@ -50,6 +50,13 @@ export const deleteNotification = async (notificationId: string) => {
   return await Notification.findByIdAndDelete(notificationId);
 };
 
+export const getNotificationsByShareId = async (
+  shareId: string,
+  userId: string,
+) => {
+  return await Notification.find({ shareId, userId });
+};
+
 export const deleteNotificationsByShareId = async (shareId: string) => {
   return await Notification.deleteMany({ shareId });
 };

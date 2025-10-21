@@ -11,6 +11,12 @@ import {
 } from "../repositories/shareRepository";
 import { getCollectionById } from "../repositories/collectionRepository";
 import { getUserById } from "../repositories/userRepository";
+import {
+  createNotification,
+  markNotificationAsRead,
+  deleteNotificationsByShareId,
+  getNotificationsByShareId,
+} from "../repositories/notificationRepository";
 
 export const createNewShare = async (data: IShare) => {
   const { collectionId, guestId, authorId } = data;
@@ -37,7 +43,22 @@ export const createNewShare = async (data: IShare) => {
     throw new Error("Vous ne pouvez pas vous partager une collection à vous-même");
   }
 
-  return await createShare(data);
+  // Créer le partage
+  const newShare = await createShare(data);
+
+  // Créer automatiquement une notification pour l'invité
+  await createNotification({
+    userId: guestId,
+    senderId: authorId,
+    collectionId,
+    shareId: newShare._id,
+    type: "share",
+    message: `${author.username} vous a invité à voir la collection "${collection.name}"`,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+
+  return newShare;
 };
 
 export const fetchShareById = async (shareId: string) => {
@@ -84,7 +105,18 @@ export const updateShareStatusById = async (
     throw new Error("Seul l'invité peut modifier le statut du partage");
   }
 
-  return await updateShareStatus(shareId, status);
+  // Mettre à jour le statut du partage
+  const updatedShare = await updateShareStatus(shareId, status);
+
+  // Marquer automatiquement la notification associée comme lue
+  const notifications = await getNotificationsByShareId(shareId, userId);
+  for (const notif of notifications) {
+    if (!notif.readAt) {
+      await markNotificationAsRead(notif._id.toString());
+    }
+  }
+
+  return updatedShare;
 };
 
 export const updateShareById = async (
@@ -126,6 +158,9 @@ export const deleteShareById = async (shareId: string, userId: string) => {
   if (!isAuthor && !isGuest) {
     throw new Error("Vous n'êtes pas autorisé à supprimer ce partage");
   }
+
+  // Supprimer les notifications associées à ce partage
+  await deleteNotificationsByShareId(shareId);
 
   return await deleteShare(shareId);
 };
