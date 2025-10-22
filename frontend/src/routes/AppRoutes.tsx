@@ -6,12 +6,14 @@ import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Works } from "../pages/Works";
 import { Collections } from "../pages/Collections";
+import { AllCollections } from "../pages/AllCollections";
 import { MyCollections } from "../pages/MyCollections";
 import { CollectionDetail } from "../pages/CollectionDetail";
+import { Notifications } from "../pages/Notifications";
 
 // Configuration des routes de l'application
 export const AppRoutes = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
 
   // Pendant le chargement, on affiche un message
   if (isLoading) {
@@ -51,6 +53,22 @@ export const AppRoutes = () => {
           path="/my-collections"
           element={
             isAuthenticated ? <MyCollections /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            isAuthenticated ? <Notifications /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/all-collections"
+          element={
+            isAuthenticated && user && ["admin", "moderator"].includes(user.role) ? (
+              <AllCollections />
+            ) : (
+              <Navigate to="/collections" />
+            )
           }
         />
       </Routes>

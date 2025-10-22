@@ -62,7 +62,7 @@ export const createNewShare = async (data: IShare) => {
   await createNotification({
     userId: guestId,
     senderId: authorId,
-    collectionId,
+    collectionId: collection._id,
     shareId: newShare._id,
     type: "share",
     message: `${author.username} vous a invité à voir la collection "${collection.name}"`,

@@ -161,10 +161,28 @@ export const getAllCollections = async (
   res: Response,
 ) => {
   try {
-    const user = req.user;
+    // Par défaut, on affiche uniquement les collections publiques
     let publicOnly = true;
 
-    if (user && ["admin", "moderator"].includes(user.role)) {
+    // Si le paramètre publicOnly est explicitement à false
+    if (req.query.publicOnly === "false") {
+      // Vérifier que l'utilisateur est authentifié et a le rôle approprié
+      if (!req.user) {
+        return res.status(401).json({
+          success: false,
+          errors: "Authentification requise pour voir toutes les collections",
+          data: null,
+        });
+      }
+
+      if (!["admin", "moderator"].includes(req.user.role)) {
+        return res.status(403).json({
+          success: false,
+          errors: "Accès refusé : réservé aux modérateurs et administrateurs",
+          data: null,
+        });
+      }
+
       publicOnly = false;
     }
 
@@ -172,7 +190,9 @@ export const getAllCollections = async (
 
     return res.status(200).json({
       success: true,
-      message: "Liste des collections",
+      message: publicOnly
+        ? "Liste des collections publiques"
+        : "Liste de toutes les collections",
       data: { collections },
     });
   } catch (err: unknown) {

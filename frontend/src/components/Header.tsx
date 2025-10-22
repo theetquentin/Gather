@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { NotificationBell } from './NotificationBell';
 
 export const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -56,11 +57,21 @@ export const Header = () => {
                   Mes collections
                 </Link>
               )}
+
+              {isAuthenticated && user && ["admin", "moderator"].includes(user.role) && (
+                <Link
+                  to="/all-collections"
+                  className="text-slate-900 hover:text-action-color-hover transition-colors font-medium focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
+                >
+                  Toutes les collections
+                </Link>
+              )}
             </div>
           </div>
 
           {isAuthenticated && (
             <div className="flex items-center space-x-4">
+              <NotificationBell />
               <span className="text-slate-700">
                 Bonjour, <span className="font-medium text-slate-900">{user?.username}</span>
               </span>

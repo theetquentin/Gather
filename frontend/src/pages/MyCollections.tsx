@@ -163,19 +163,55 @@ export const MyCollections = () => {
         </div>
       ) : (
         <>
-          <div className="mb-4 text-slate-700">
-            <span className="font-medium">{collections.length}</span> collection{collections.length > 1 ? 's' : ''}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {collections.map((collection) => (
-              <CollectionCard
-                key={collection._id}
-                collection={collection}
-                onDelete={handleDeleteCollection}
-                showActions={true}
-              />
-            ))}
-          </div>
+          {/* Mes collections personnelles */}
+          {(() => {
+            const ownedCollections = collections.filter(c => c.owned !== false);
+            return ownedCollections.length > 0 && (
+              <div className="mb-12">
+                <h2 className="text-2xl font-semibold text-slate-900 mb-4">
+                  Mes collections
+                </h2>
+                <div className="mb-4 text-slate-700">
+                  <span className="font-medium">{ownedCollections.length}</span> collection{ownedCollections.length > 1 ? 's' : ''}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {ownedCollections.map((collection) => (
+                    <CollectionCard
+                      key={collection._id}
+                      collection={collection}
+                      onDelete={handleDeleteCollection}
+                      showActions={true}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Collections partagées avec moi */}
+          {(() => {
+            const sharedCollections = collections.filter(c => c.owned === false);
+            return sharedCollections.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-semibold text-slate-900 mb-4">
+                  Collections partagées avec moi
+                </h2>
+                <div className="mb-4 text-slate-700">
+                  <span className="font-medium">{sharedCollections.length}</span> collection{sharedCollections.length > 1 ? 's' : ''}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {sharedCollections.map((collection) => (
+                    <CollectionCard
+                      key={collection._id}
+                      collection={collection}
+                      onDelete={handleDeleteCollection}
+                      showActions={true}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </>
       )}
     </main>

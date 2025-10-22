@@ -85,6 +85,20 @@ export const CollectionDetail = () => {
       setError("Le nom doit contenir au moins 3 caractères");
       return;
     }
+
+    // Si la collection est actuellement partagée et qu'on change vers un autre type
+    if (
+      collection?.visibility === "shared" &&
+      formVisibility !== "shared"
+    ) {
+      const confirmed = window.confirm(
+        "Attention : changer la visibilité de cette collection supprimera tous les partages existants et les invitations en attente. Voulez-vous continuer ?",
+      );
+      if (!confirmed) {
+        return;
+      }
+    }
+
     handleSave({ name: formName.trim(), visibility: formVisibility });
   };
 
@@ -110,24 +124,38 @@ export const CollectionDetail = () => {
     );
 
   const visibilityInfo = VISIBILITY_LABELS[collection.visibility];
+  const isOwner = collection.owned !== false;
+  const canEdit = isOwner || collection.rights === "edit";
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
       {error && <ErrorMessage message={error} className="mb-4" />}
 
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">
-          {collection.name}
-        </h1>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mb-2">
+          <h1 className="text-2xl font-bold text-slate-900">
+            {collection.name}
+          </h1>
+          {!isOwner && (
+            <span className="px-2 py-1 bg-blue-500 text-slate-100 text-xs font-medium rounded">
+              Partagée
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2 py-0.5 bg-secondary-color text-slate-900 text-xs font-medium rounded">
             {COLLECTION_TYPES.find((t) => t.value === collection.type)?.label}
           </span>
           <span
-            className={`px-2 py-0.5 ${visibilityInfo.color} text-slate-100 text-xs font-medium rounded`}
+            className={`px-2 py-0.5 ${visibilityInfo.color} ${visibilityInfo.text} text-xs font-medium rounded`}
           >
             {visibilityInfo.label}
           </span>
+          {!isOwner && collection.rights && (
+            <span className="px-2 py-0.5 bg-slate-600 text-slate-100 text-xs font-medium rounded">
+              {collection.rights === "read" ? "Lecture seule" : "Édition"}
+            </span>
+          )}
         </div>
       </div>
 
@@ -137,21 +165,23 @@ export const CollectionDetail = () => {
             Œuvres ({collection.works.length})
           </h2>
         )}
-        {isAuthenticated && (
+        {isAuthenticated && canEdit && (
           <div className="flex ml-auto gap-2">
-            <button
-              onClick={() => setEditMode("info")}
-              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
-            >
-              Modifier les informations
-            </button>
+            {isOwner && (
+              <button
+                onClick={() => setEditMode("info")}
+                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+              >
+                Modifier les informations
+              </button>
+            )}
             <button
               onClick={() => setEditMode("works")}
               className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
             >
               Modifier les œuvres
             </button>
-            {collection.visibility === "shared" && (
+            {isOwner && collection.visibility === "shared" && (
               <button
                 onClick={() => setEditMode("invites")}
                 className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
