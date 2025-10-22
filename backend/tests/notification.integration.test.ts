@@ -49,11 +49,11 @@ describe("Tests API - GET /notifications/me", () => {
       password: "Password123!",
     });
 
-    await createNotification(user.id, {
+    await createNotification(user._id, {
       message: "Notification 1",
       type: "alert",
     });
-    await createNotification(user.id, {
+    await createNotification(user._id, {
       message: "Notification 2",
       type: "alert",
     });
@@ -110,11 +110,11 @@ describe("Tests API - GET /notifications/unread", () => {
       password: "Password123!",
     });
 
-    await createNotification(user.id, {
+    await createNotification(user._id, {
       message: "Non lue",
       readAt: undefined,
     });
-    await createNotification(user.id, {
+    await createNotification(user._id, {
       message: "Lue",
       readAt: new Date(),
     });
@@ -146,9 +146,9 @@ describe("Tests API - GET /notifications/unread/count", () => {
       password: "Password123!",
     });
 
-    await createNotification(user.id, { readAt: undefined });
-    await createNotification(user.id, { readAt: undefined });
-    await createNotification(user.id, { readAt: new Date() });
+    await createNotification(user._id, { readAt: undefined });
+    await createNotification(user._id, { readAt: undefined });
+    await createNotification(user._id, { readAt: new Date() });
 
     const res = await request(app)
       .get("/notifications/unread/count")
@@ -175,7 +175,7 @@ describe("Tests API - PATCH /notifications/:notificationId/read", () => {
       password: "Password123!",
     });
 
-    const notification = await createNotification(user.id, {
+    const notification = await createNotification(user._id, {
       readAt: undefined,
     });
 
@@ -263,9 +263,9 @@ describe("Tests API - PATCH /notifications/read-all", () => {
       password: "Password123!",
     });
 
-    await createNotification(user.id, { readAt: undefined });
-    await createNotification(user.id, { readAt: undefined });
-    await createNotification(user.id, { readAt: undefined });
+    await createNotification(user._id, { readAt: undefined });
+    await createNotification(user._id, { readAt: undefined });
+    await createNotification(user._id, { readAt: undefined });
 
     const res = await request(app)
       .patch("/notifications/read-all")
@@ -301,7 +301,7 @@ describe("Tests API - DELETE /notifications/:notificationId", () => {
       password: "Password123!",
     });
 
-    const notification = await createNotification(user.id);
+    const notification = await createNotification(user._id);
 
     const res = await request(app)
       .delete(`/notifications/${notification._id}`)

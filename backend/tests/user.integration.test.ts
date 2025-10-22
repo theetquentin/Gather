@@ -40,7 +40,7 @@ describe("Tests API - POST /users", () => {
     expect(res.status).toEqual(201);
     expect(res.body.success).toBeTruthy();
     expect(res.body.message).toBe("User created with success");
-    expect(res.body.data).toHaveProperty("id");
+    expect(res.body.data).toHaveProperty("_id");
     expect(res.body.data.username).toBe(userData.username);
     expect(res.body.data.email).toBe(userData.email);
     expect(res.body.data.password).not.toBe(userData.password);
@@ -267,7 +267,7 @@ describe("Tests API - GET /users/:userId", () => {
       password: "Password123!",
     });
 
-    const userId = createdUser.id;
+    const userId = createdUser._id;
 
     const res = await request(app)
       .get(`/users/${userId}`)

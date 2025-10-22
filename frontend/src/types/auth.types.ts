@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  _id: string;
   username: string;
   email: string;
   role: string;
@@ -37,7 +37,7 @@ export interface RegisterResponse {
   success: boolean;
   message?: string;
   data: {
-    id: string;
+    _id: string;
     username: string;
     email: string;
   };

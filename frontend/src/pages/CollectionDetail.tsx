@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { collectionService } from "../services/collection.service";
 import { WorkCard } from "../components/WorkCard";
 import { WorkSelector } from "../components/WorkSelector";
+import { UserInvite } from "../components/UserInvite";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingMessage } from "../components/LoadingMessage";
 import { useAuth } from "../hooks/useAuth";
@@ -16,7 +17,7 @@ import type {
   UpdateCollectionInput,
 } from "../types/collection.types";
 
-type EditMode = "info" | "works" | null;
+type EditMode = "info" | "works" | "invites" | null;
 
 export const CollectionDetail = () => {
   const { isAuthenticated } = useAuth();
@@ -150,6 +151,14 @@ export const CollectionDetail = () => {
             >
               Modifier les œuvres
             </button>
+            {collection.visibility === "shared" && (
+              <button
+                onClick={() => setEditMode("invites")}
+                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+              >
+                Gérer les invitations
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -242,6 +251,20 @@ export const CollectionDetail = () => {
               className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium"
             >
               {isSaving ? "Sauvegarde..." : "Enregistrer"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {editMode === "invites" && collection.visibility === "shared" && (
+        <div className="mb-4">
+          <UserInvite collectionId={collection._id} />
+          <div className="flex justify-end gap-2 pt-2">
+            <button
+              onClick={() => setEditMode(null)}
+              className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium"
+            >
+              Fermer
             </button>
           </div>
         </div>

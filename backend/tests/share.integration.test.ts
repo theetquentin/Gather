@@ -212,7 +212,7 @@ describe("Tests API - POST /shares", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         collectionId: collection._id,
-        guestId: user.id,
+        guestId: user._id,
       });
 
     expect(res.status).toBe(400);

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { collectionService } from '../services/collection.service';
 import { CollectionForm } from '../components/CollectionForm';
 import { CollectionCard } from '../components/CollectionCard';
+import { UserInvite } from '../components/UserInvite';
 import type { Collection, CreateCollectionInput } from '../types/collection.types';
 
 export const MyCollections = () => {
@@ -9,6 +10,8 @@ export const MyCollections = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [showInvites, setShowInvites] = useState(false);
+  const [newlyCreatedCollection, setNewlyCreatedCollection] = useState<Collection | null>(null);
   const [error, setError] = useState('');
 
   // Charger les collections au montage du composant
@@ -35,9 +38,20 @@ export const MyCollections = () => {
       const newCollection = await collectionService.createCollection(data);
       setCollections([newCollection, ...collections]);
       setShowForm(false);
+
+      // Si la collection est partagée, afficher l'interface d'invitation
+      if (data.visibility === 'shared') {
+        setNewlyCreatedCollection(newCollection);
+        setShowInvites(true);
+      }
     } finally {
       setIsCreating(false);
     }
+  };
+
+  const handleCloseInvites = () => {
+    setShowInvites(false);
+    setNewlyCreatedCollection(null);
   };
 
   const handleDeleteCollection = async (id: string) => {
@@ -68,7 +82,7 @@ export const MyCollections = () => {
       {/* En-tête */}
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-4xl font-bold text-slate-900">Mes collections</h1>
-        {!showForm && (
+        {!showForm && !showInvites && (
           <button
             onClick={() => setShowForm(true)}
             className="bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
@@ -98,6 +112,34 @@ export const MyCollections = () => {
             onCancel={() => setShowForm(false)}
             isLoading={isCreating}
           />
+        </div>
+      )}
+
+      {/* Interface d'invitation après création */}
+      {showInvites && newlyCreatedCollection && (
+        <div className="bg-primary-color p-6 rounded-xl mb-8">
+          <div className="mb-4">
+            <h2 className="text-2xl font-semibold text-slate-900 mb-2">
+              Collection créée avec succès !
+            </h2>
+            <p className="text-slate-700 mb-1">
+              <span className="font-medium">{newlyCreatedCollection.name}</span>
+            </p>
+            <p className="text-slate-700 text-sm">
+              Vous pouvez maintenant inviter des utilisateurs à cette collection.
+            </p>
+          </div>
+
+          <UserInvite collectionId={newlyCreatedCollection._id} />
+
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              onClick={handleCloseInvites}
+              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
+            >
+              Terminer
+            </button>
+          </div>
         </div>
       )}
 

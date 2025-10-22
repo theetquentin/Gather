@@ -36,11 +36,11 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
 
       // Filtrer les utilisateurs déjà invités
       const invitedUserIds = existingShares.map(share =>
-        typeof share.guestId === 'string' ? share.guestId : share.guestId.id
+        typeof share.guestId === 'string' ? share.guestId : share.guestId._id
       );
 
       const filteredResults = results.filter(
-        user => !invitedUserIds.includes(user.id)
+        user => !invitedUserIds.includes(user._id)
       );
 
       setSearchResults(filteredResults);
@@ -51,6 +51,15 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
       setIsSearching(false);
     }
   }, [searchQuery, existingShares]);
+
+  // Réinitialiser l'état quand la collection change
+  useEffect(() => {
+    setSearchQuery('');
+    setSearchResults([]);
+    setError('');
+    setSelectedRights('read');
+    setIsInviting(null);
+  }, [collectionId]);
 
   // Charger les partages existants
   useEffect(() => {
@@ -85,7 +94,7 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
       await loadExistingShares();
 
       // Retirer l'utilisateur des résultats de recherche
-      setSearchResults(prev => prev.filter(u => u.id !== userId));
+      setSearchResults(prev => prev.filter(u => u._id !== userId));
 
       if (onInviteSuccess) {
         onInviteSuccess();
@@ -138,7 +147,7 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
       {error && <ErrorMessage message={error} />}
 
       {/* Section de recherche */}
-      <div className="bg-primary-color p-4 rounded-lg">
+      <div>
         <h3 className="text-lg font-semibold text-slate-900 mb-3">
           Inviter des utilisateurs
         </h3>
@@ -183,7 +192,7 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
           <div className="mt-3 space-y-2">
             {searchResults.map((user) => (
               <div
-                key={user.id}
+                key={user._id}
                 className="flex items-center justify-between bg-secondary-color p-3 rounded"
               >
                 <div>
@@ -191,11 +200,11 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
                   <div className="text-sm text-slate-700">{user.email}</div>
                 </div>
                 <button
-                  onClick={() => handleInvite(user.id)}
-                  disabled={isInviting === user.id}
+                  onClick={() => handleInvite(user._id)}
+                  disabled={isInviting === user._id}
                   className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors disabled:opacity-50"
                 >
-                  {isInviting === user.id ? 'Invitation...' : 'Inviter'}
+                  {isInviting === user._id ? 'Invitation...' : 'Inviter'}
                 </button>
               </div>
             ))}
@@ -209,7 +218,7 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
 
       {/* Liste des partages existants */}
       {existingShares.length > 0 && (
-        <div className="bg-primary-color p-4 rounded-lg">
+        <div>
           <h3 className="text-lg font-semibold text-slate-900 mb-3">
             Utilisateurs invités ({existingShares.length})
           </h3>
@@ -219,7 +228,7 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
               return (
                 <div
                   key={share._id}
-                  className="flex items-center justify-between bg-secondary-color p-3 rounded"
+                  className="flex items-center justify-between bg-primary-color p-3 rounded"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2">

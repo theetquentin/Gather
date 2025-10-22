@@ -34,7 +34,7 @@ export const createUser = async (req: Request, res: Response) => {
       success: true,
       message: "User created with success",
       data: {
-        id: newUser._id,
+        _id: newUser._id,
         username: newUser.username,
         email: newUser.email,
       },
