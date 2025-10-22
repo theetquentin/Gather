@@ -7,6 +7,7 @@ import {
   getUserById,
   countUsersByName,
   countUsersByEmail,
+  searchUsers,
 } from "../repositories/userRepository";
 
 export const createNewUser = async (data: IUser) => {
@@ -43,6 +44,13 @@ export const fetchUserById = async (userId: string) => {
     throw new Error("Utilisateur non trouvé");
   }
   return user;
+};
+
+export const searchUsersByQuery = async (query: string) => {
+  if (!query || query.trim().length < 2) {
+    throw new Error("La recherche doit contenir au moins 2 caractères");
+  }
+  return await searchUsers(query.trim());
 };
 
 export async function hashPassword(password: string): Promise<string> {

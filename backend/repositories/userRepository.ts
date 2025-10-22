@@ -29,3 +29,13 @@ export const getUserByEmailWithPassword = async (mail: string) => {
   // utile pour authentification
   return await User.findOne({ email: mail }).select("+password");
 };
+
+export const searchUsers = async (query: string) => {
+  // Recherche insensible à la casse sur username ou email
+  const regex = new RegExp(query, "i");
+  return await User.find({
+    $or: [{ username: regex }, { email: regex }],
+  })
+    .select("-password")
+    .limit(10); // Limite à 10 résultats
+};

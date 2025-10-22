@@ -3,6 +3,7 @@ import {
   createNewUser,
   fetchUsers,
   fetchUserById,
+  searchUsersByQuery,
 } from "../services/userService";
 import { Request, Response } from "express";
 import { plainToInstance, instanceToPlain } from "class-transformer";
@@ -104,6 +105,41 @@ export const findUserById = async (req: Request, res: Response) => {
         });
       }
 
+      return res.status(500).json({
+        success: false,
+        errors: "Une erreur serveur est survenue",
+        data: null,
+      });
+    }
+  }
+};
+
+export const searchUsers = async (req: Request, res: Response) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || typeof q !== "string") {
+      return res.status(400).json({
+        success: false,
+        errors: "Le paramètre de recherche 'q' est requis",
+        data: null,
+      });
+    }
+
+    const users = await searchUsersByQuery(q);
+    return res.status(200).json({
+      success: true,
+      message: "Résultats de recherche",
+      data: { users },
+    });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      return res.status(400).json({
+        success: false,
+        errors: err.message,
+        data: null,
+      });
+    } else {
       return res.status(500).json({
         success: false,
         errors: "Une erreur serveur est survenue",
