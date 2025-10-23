@@ -13,9 +13,10 @@ import {
 } from "../repositories/collectionRepository";
 import { getUserById } from "../repositories/userRepository";
 import {
-  countWorksByIds,
-  getWorkTypesByIds,
-} from "../repositories/workRepository";
+  validateWorksExist,
+  validateWorksType,
+  validateAndCategorizeWorks,
+} from "./workService";
 import {
   getAcceptedShareByCollectionAndGuest,
   getAcceptedSharesByGuestId,
@@ -42,15 +43,11 @@ export const createNewCollection = async (data: ICollection) => {
     : undefined;
 
   if (uniqueWorks && uniqueWorks.length > 0) {
-    const count = await countWorksByIds(uniqueWorks);
-    if (count !== uniqueWorks.length) {
-      throw new Error("Certaines œuvres n'existent pas");
-    }
+    // Valider que toutes les œuvres existent
+    await validateWorksExist(uniqueWorks);
 
-    const types = await getWorkTypesByIds(uniqueWorks);
-    const mismatchedIds = types
-      .filter((t) => t.type !== data.type)
-      .map((t) => t._id.toString());
+    // Valider que les œuvres correspondent au type de la collection
+    const mismatchedIds = await validateWorksType(uniqueWorks, data.type);
 
     if (mismatchedIds.length > 0) {
       throw new Error(
@@ -103,16 +100,9 @@ export const addWorksToCollection = async (
     }
   }
 
-  const types = await getWorkTypesByIds(validIds);
-  const foundIdsSet = new Set(types.map((t) => t._id.toString()));
-
-  const nonexistentIds = validIds
-    .map((oid) => oid.toString())
-    .filter((id) => !foundIdsSet.has(id));
-
-  const mismatchedIds = types
-    .filter((t) => t.type !== collection.type)
-    .map((t) => t._id.toString());
+  // Valider et catégoriser les œuvres
+  const { existingIds, nonexistentIds, mismatchedIds } =
+    await validateAndCategorizeWorks(validIds, collection.type);
 
   if (mismatchedIds.length > 0) {
     throw new Error(
@@ -122,7 +112,7 @@ export const addWorksToCollection = async (
 
   const eligibleIds = validIds.filter(
     (oid) =>
-      foundIdsSet.has(oid.toString()) &&
+      existingIds.has(oid.toString()) &&
       !mismatchedIds.includes(oid.toString()),
   );
 

@@ -47,10 +47,11 @@ export const fetchUserById = async (userId: string) => {
 };
 
 export const searchUsersByQuery = async (query: string) => {
-  if (!query || query.trim().length < 2) {
-    throw new Error("La recherche doit contenir au moins 2 caractères");
+  const trimmedQuery = query ? query.trim() : "";
+  if (trimmedQuery.length < 2 || trimmedQuery.length > 50) {
+    throw new Error("La recherche doit contenir entre 2 et 50 caractères");
   }
-  return await searchUsers(query.trim());
+  return await searchUsers(trimmedQuery);
 };
 
 export async function hashPassword(password: string): Promise<string> {

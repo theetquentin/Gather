@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { IoNotificationsOutline } from "react-icons/io5";
+import { FiBell } from "react-icons/fi";
 import { notificationService } from "../services/notification.service";
 import { shareService } from "../services/share.service";
 import type { Notification } from "../types/notification.types";
@@ -127,7 +127,7 @@ export const NotificationBell = () => {
         className="relative p-2 text-slate-900 hover:text-action-color transition-colors rounded-full hover:bg-secondary-color"
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} non lues)` : ""}`}
       >
-        <IoNotificationsOutline size={24} />
+        <FiBell size={24} />
         {unreadCount > 0 && (
           <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
             {unreadCount > 9 ? "9+" : unreadCount}

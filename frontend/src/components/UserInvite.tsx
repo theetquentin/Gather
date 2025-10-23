@@ -1,63 +1,74 @@
-import { useState, useEffect, useCallback } from 'react';
-import { userService } from '../services/user.service';
-import { shareService } from '../services/share.service';
-import { ErrorMessage } from './ErrorMessage';
-import type { User } from '../types/auth.types';
-import type { Share, ShareRights } from '../types/share.types';
+import { useState, useEffect, useCallback } from "react";
+import { userService } from "../services/user.service";
+import { shareService } from "../services/share.service";
+import { useAuth } from "../hooks/useAuth";
+import { ErrorMessage } from "./ErrorMessage";
+import type { User } from "../types/auth.types";
+import type { Share, ShareRights } from "../types/share.types";
+import { FiTrash, FiMail } from "react-icons/fi";
 
 interface UserInviteProps {
   collectionId: string;
   onInviteSuccess?: () => void;
 }
 
-export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) => {
-  const [searchQuery, setSearchQuery] = useState('');
+export const UserInvite = ({
+  collectionId,
+  onInviteSuccess,
+}: UserInviteProps) => {
+  const { user: currentUser } = useAuth();
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [existingShares, setExistingShares] = useState<Share[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isInviting, setIsInviting] = useState<string | null>(null);
-  const [selectedRights, setSelectedRights] = useState<ShareRights>('read');
-  const [error, setError] = useState('');
+  const [selectedRights, setSelectedRights] = useState<ShareRights>("read");
+  const [error, setError] = useState("");
 
   const loadExistingShares = useCallback(async () => {
     try {
       const shares = await shareService.getCollectionShares(collectionId);
       setExistingShares(shares);
     } catch (err) {
-      console.error('Erreur lors du chargement des partages:', err);
+      console.error("Erreur lors du chargement des partages:", err);
     }
   }, [collectionId]);
 
   const handleSearch = useCallback(async () => {
     try {
       setIsSearching(true);
-      setError('');
+      setError("");
       const results = await userService.searchUsers(searchQuery);
 
       // Filtrer les utilisateurs déjà invités
-      const invitedUserIds = existingShares.map(share =>
-        typeof share.guestId === 'string' ? share.guestId : share.guestId._id
+      const invitedUserIds = existingShares.map((share) =>
+        typeof share.guestId === "string" ? share.guestId : share.guestId._id,
       );
 
+      // Filtrer les utilisateurs : exclure les déjà invités ET l'utilisateur connecté (propriétaire)
       const filteredResults = results.filter(
-        user => !invitedUserIds.includes(user._id)
+        (user) =>
+          !invitedUserIds.includes(user._id) &&
+          user._id !== currentUser?._id,
       );
 
       setSearchResults(filteredResults);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de la recherche');
+      setError(
+        err instanceof Error ? err.message : "Erreur lors de la recherche",
+      );
       setSearchResults([]);
     } finally {
       setIsSearching(false);
     }
-  }, [searchQuery, existingShares]);
+  }, [searchQuery, existingShares, currentUser]);
 
   // Réinitialiser l'état quand la collection change
   useEffect(() => {
-    setSearchQuery('');
+    setSearchQuery("");
     setSearchResults([]);
-    setError('');
-    setSelectedRights('read');
+    setError("");
+    setSelectedRights("read");
     setIsInviting(null);
   }, [collectionId]);
 
@@ -82,7 +93,7 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
   const handleInvite = async (userId: string) => {
     try {
       setIsInviting(userId);
-      setError('');
+      setError("");
 
       await shareService.createShare({
         collectionId,
@@ -94,13 +105,15 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
       await loadExistingShares();
 
       // Retirer l'utilisateur des résultats de recherche
-      setSearchResults(prev => prev.filter(u => u._id !== userId));
+      setSearchResults((prev) => prev.filter((u) => u._id !== userId));
 
       if (onInviteSuccess) {
         onInviteSuccess();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de l\'invitation');
+      setError(
+        err instanceof Error ? err.message : "Erreur lors de l'invitation",
+      );
     } finally {
       setIsInviting(null);
     }
@@ -108,22 +121,24 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
 
   const handleRemoveShare = async (shareId: string) => {
     try {
-      setError('');
+      setError("");
       await shareService.deleteShare(shareId);
       await loadExistingShares();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de la suppression');
+      setError(
+        err instanceof Error ? err.message : "Erreur lors de la suppression",
+      );
     }
   };
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'pending':
-        return 'En attente';
-      case 'accepted':
-        return 'Accepté';
-      case 'refused':
-        return 'Refusé';
+      case "pending":
+        return "En attente";
+      case "accepted":
+        return "Accepté";
+      case "refused":
+        return "Refusé";
       default:
         return status;
     }
@@ -131,14 +146,14 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending':
-        return 'bg-yellow-500';
-      case 'accepted':
-        return 'bg-green-500';
-      case 'refused':
-        return 'bg-red-500';
+      case "pending":
+        return "bg-yellow-500";
+      case "accepted":
+        return "bg-green-500";
+      case "refused":
+        return "bg-red-500";
       default:
-        return 'bg-slate-500';
+        return "bg-slate-500";
     }
   };
 
@@ -154,7 +169,10 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
 
         {/* Sélection des droits */}
         <div className="mb-3">
-          <label htmlFor="rights" className="block text-slate-900 font-medium mb-1 text-sm">
+          <label
+            htmlFor="rights"
+            className="block text-slate-900 font-medium mb-1 text-sm"
+          >
             Droits d'accès
           </label>
           <select
@@ -170,7 +188,10 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
 
         {/* Barre de recherche */}
         <div>
-          <label htmlFor="search" className="block text-slate-900 font-medium mb-1 text-sm">
+          <label
+            htmlFor="search"
+            className="block text-slate-900 font-medium mb-1 text-sm"
+          >
             Rechercher un utilisateur
           </label>
           <input
@@ -185,7 +206,9 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
 
         {/* Résultats de recherche */}
         {isSearching && (
-          <div className="mt-3 text-slate-700 text-sm">Recherche en cours...</div>
+          <div className="mt-3 text-slate-700 text-sm">
+            Recherche en cours...
+          </div>
         )}
 
         {searchResults.length > 0 && (
@@ -196,24 +219,31 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
                 className="flex items-center justify-between bg-secondary-color p-3 rounded"
               >
                 <div>
-                  <div className="font-medium text-slate-900">{user.username}</div>
+                  <div className="font-medium text-slate-900">
+                    {user.username}
+                  </div>
                   <div className="text-sm text-slate-700">{user.email}</div>
                 </div>
                 <button
                   onClick={() => handleInvite(user._id)}
                   disabled={isInviting === user._id}
-                  className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors disabled:opacity-50"
+                  className="cursor-pointer flex items-center gap-2 px-4 py-1.5 bg-action-color hover:bg-action-color-hover text-slate-100  rounded text-sm font-medium transition-colors disabled:opacity-50"
                 >
-                  {isInviting === user._id ? 'Invitation...' : 'Inviter'}
+                  {isInviting === user._id ? "Invitation..." : "Inviter"}{" "}
+                  <FiMail className="mt-0.5" />
                 </button>
               </div>
             ))}
           </div>
         )}
 
-        {!isSearching && searchQuery.trim().length >= 2 && searchResults.length === 0 && (
-          <div className="mt-3 text-slate-700 text-sm">Aucun utilisateur trouvé</div>
-        )}
+        {!isSearching &&
+          searchQuery.trim().length >= 2 &&
+          searchResults.length === 0 && (
+            <div className="mt-3 text-slate-700 text-sm">
+              Aucun utilisateur trouvé
+            </div>
+          )}
       </div>
 
       {/* Liste des partages existants */}
@@ -224,16 +254,22 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
           </h3>
           <div className="space-y-2">
             {existingShares.map((share) => {
-              const guest = typeof share.guestId === 'string' ? null : share.guestId;
+              const guest =
+                typeof share.guestId === "string" ? null : share.guestId;
               return (
                 <div
                   key={share._id}
                   className="flex items-center justify-between bg-primary-color p-3 rounded"
                 >
                   <div className="flex-1">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col items-start sm:flex-row gap-2">
                       <span className="font-medium text-slate-900">
-                        {guest?.username || 'Utilisateur'}
+                        {guest?.username || "Utilisateur"}
+                        {guest?.email && (
+                          <div className="text-sm text-slate-700 mt-1">
+                            {guest.email}
+                          </div>
+                        )}
                       </span>
                       <span
                         className={`px-2 py-0.5 ${getStatusColor(share.status)} text-slate-100 text-xs font-medium rounded`}
@@ -241,18 +277,15 @@ export const UserInvite = ({ collectionId, onInviteSuccess }: UserInviteProps) =
                         {getStatusLabel(share.status)}
                       </span>
                       <span className="px-2 py-0.5 bg-slate-600 text-slate-100 text-xs font-medium rounded">
-                        {share.rights === 'read' ? 'Lecture' : 'Édition'}
+                        {share.rights === "read" ? "Lecture" : "Édition"}
                       </span>
                     </div>
-                    {guest?.email && (
-                      <div className="text-sm text-slate-700 mt-1">{guest.email}</div>
-                    )}
                   </div>
                   <button
+                    className="cursor-pointer p-2 mx-6 transition-colors rounded-full hover:bg-secondary-color text-red-600 hover:text-red-800 text-2xl"
                     onClick={() => handleRemoveShare(share._id)}
-                    className="text-red-600 hover:text-red-800 text-sm font-medium transition-colors"
                   >
-                    Retirer
+                    <FiTrash />
                   </button>
                 </div>
               );

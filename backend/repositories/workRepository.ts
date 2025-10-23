@@ -25,6 +25,12 @@ export const getWorkTypesByIds = async (ids: Types.ObjectId[]) => {
   return docs as { _id: Types.ObjectId; type: string }[];
 };
 
+/**
+ * Récupère toutes les œuvres avec filtres et recherche (SANITIZÉS par le service)
+ * @param limit - Nombre maximum d'œuvres à retourner
+ * @param type - Type d'œuvre à filtrer
+ * @param search - Terme de recherche DÉJÀ SANITIZÉ (caractères regex échappés)
+ */
 export const getAllWorks = async (
   limit?: number,
   type?: string,
@@ -37,11 +43,10 @@ export const getAllWorks = async (
     filter.type = type;
   }
 
-  // Recherche textuelle sur titre et auteur
-  if (search && search.trim()) {
+  if (search) {
     filter.$or = [
-      { title: { $regex: search.trim(), $options: "i" } },
-      { author: { $regex: search.trim(), $options: "i" } },
+      { title: { $regex: search, $options: "i" } },
+      { author: { $regex: search, $options: "i" } },
     ];
   }
 

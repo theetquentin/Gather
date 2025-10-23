@@ -31,11 +31,14 @@ export const getUserByEmailWithPassword = async (mail: string) => {
 };
 
 export const searchUsers = async (query: string) => {
-  // Recherche insensible à la casse sur username ou email
-  const regex = new RegExp(query, "i");
+  // Sanitization: échapper tous les caractères spéciaux de regex pour éviter l'injection NoSQL
+  const sanitizedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  // Recherche insensible à la casse sur username ou email avec query sanitized
+  const regex = new RegExp(sanitizedQuery, "i");
   return await User.find({
     $or: [{ username: regex }, { email: regex }],
   })
     .select("-password")
-    .limit(10); // Limite à 10 résultats
+    .limit(10);
 };
