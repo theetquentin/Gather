@@ -37,7 +37,7 @@ export const Login = () => {
   console.log('render');
 
   return (
-    <div className="min-h-screen bg-page-background flex items-center justify-center px-4">
+    <div className="min-h-screen bg-page-background flex items-center justify-center px-4 py-8">
       <div className="bg-primary-color p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-3xl font-bold text-slate-900 mb-6 text-center">
           Connexion

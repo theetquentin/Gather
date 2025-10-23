@@ -159,32 +159,32 @@ export const CollectionDetail = () => {
         </div>
       </div>
 
-      <div className="flex my-4 gap-2 items-center">
+      <div className="flex flex-col md:flex-row my-4 gap-3 md:items-center">
         {collection.works.length > 0 && (
           <h2 className="text-lg font-semibold text-slate-900">
             Œuvres ({collection.works.length})
           </h2>
         )}
         {isAuthenticated && canEdit && (
-          <div className="flex ml-auto gap-2">
+          <div className="flex flex-col sm:flex-row md:ml-auto gap-2">
             {isOwner && (
               <button
                 onClick={() => setEditMode("info")}
-                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
               >
                 Modifier les informations
               </button>
             )}
             <button
               onClick={() => setEditMode("works")}
-              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
             >
               Modifier les œuvres
             </button>
             {isOwner && collection.visibility === "shared" && (
               <button
                 onClick={() => setEditMode("invites")}
-                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
               >
                 Gérer les invitations
               </button>
@@ -310,7 +310,7 @@ export const CollectionDetail = () => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {collection.works.map((work) => (
             <WorkCard key={work._id} work={work} />
           ))}

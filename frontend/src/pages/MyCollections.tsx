@@ -80,12 +80,12 @@ export const MyCollections = () => {
   return (
     <main className="container mx-auto px-4 py-8">
       {/* En-tête */}
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-4xl font-bold text-slate-900">Mes collections</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <h1 className="text-2xl sm:text-4xl font-bold text-slate-900">Mes collections</h1>
         {!showForm && !showInvites && (
           <button
             onClick={() => setShowForm(true)}
-            className="bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
+            className="w-full sm:w-auto bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
           >
             Créer une collection
           </button>
@@ -168,9 +168,6 @@ export const MyCollections = () => {
             const ownedCollections = collections.filter(c => c.owned !== false);
             return ownedCollections.length > 0 && (
               <div className="mb-12">
-                <h2 className="text-2xl font-semibold text-slate-900 mb-4">
-                  Mes collections
-                </h2>
                 <div className="mb-4 text-slate-700">
                   <span className="font-medium">{ownedCollections.length}</span> collection{ownedCollections.length > 1 ? 's' : ''}
                 </div>
