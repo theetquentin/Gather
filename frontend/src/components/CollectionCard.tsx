@@ -52,11 +52,6 @@ export const CollectionCard = ({
             <h3 className="text-xl font-semibold text-slate-900">
               {collection.name}
             </h3>
-            {!isOwner && (
-              <span className="inline-block px-2 py-1 bg-blue-500 text-slate-100 text-xs font-medium rounded">
-                Partagée
-              </span>
-            )}
           </div>
           <div className="flex items-center gap-3 flex-wrap">
             <span className="inline-block px-3 py-1 bg-secondary-color text-slate-900 text-sm font-medium rounded-full">

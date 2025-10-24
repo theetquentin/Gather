@@ -25,6 +25,45 @@ import {
 } from "../repositories/shareRepository";
 import { deleteNotificationsByShareId } from "../repositories/notificationRepository";
 
+/**
+ * Fonction réutilisable pour vérifier les droits d'accès d'un utilisateur sur une collection
+ * @param collectionId - L'ID de la collection
+ * @param userId - L'ID de l'utilisateur
+ * @returns Un objet contenant les informations sur les droits d'accès et la collection
+ */
+const checkCollectionAccessRights = async (
+  collectionId: string,
+  userId: string,
+) => {
+  const collection = await getCollectionById(collectionId);
+  if (!collection) throw new Error("Collection non trouvée");
+
+  const isOwner = collection.userId.toString() === userId;
+
+  // Si propriétaire, pas besoin de vérifier les partages
+  if (isOwner) {
+    return {
+      collection,
+      isOwner: true,
+      canEdit: true,
+    };
+  }
+
+  // Vérifier les droits de partage
+  const share = await getAcceptedShareByCollectionAndGuest(
+    new Types.ObjectId(collectionId),
+    new Types.ObjectId(userId),
+  );
+
+  const hasEditRights = share?.rights === "edit";
+
+  return {
+    collection,
+    isOwner: false,
+    canEdit: hasEditRights,
+  };
+};
+
 export const createNewCollection = async (data: ICollection) => {
   const { name, works, userId } = data;
 
@@ -68,24 +107,13 @@ export const addWorksToCollection = async (
     throw new Error("Identifiant de collection invalide");
   }
 
-  const collection = await getCollectionById(collectionId);
-  if (!collection) throw new Error("Collection non trouvée");
+  // Vérifier les droits d'accès avec la fonction réutilisable
+  const { collection, canEdit } = await checkCollectionAccessRights(
+    collectionId,
+    userId,
+  );
 
-  // Vérifier si l'utilisateur est le propriétaire
-  const isOwner = collection.userId.toString() === userId;
-
-  // Si pas propriétaire, vérifier les droits de partage
-  let hasEditRights = false;
-  if (!isOwner) {
-    const share = await getAcceptedShareByCollectionAndGuest(
-      new Types.ObjectId(collectionId),
-      new Types.ObjectId(userId),
-    );
-    hasEditRights = share?.rights === "edit";
-  }
-
-  // Refuser l'accès si ni propriétaire ni droits d'édition
-  if (!isOwner && !hasEditRights) {
+  if (!canEdit) {
     throw new Error("Accès refusé à cette collection");
   }
 
@@ -247,24 +275,13 @@ export const updateCollectionById = async (
     throw new Error("Identifiant de collection invalide");
   }
 
-  const collection = await getCollectionById(collectionId);
-  if (!collection) throw new Error("Collection non trouvée");
+  // Vérifier les droits d'accès avec la fonction réutilisable
+  const { collection, canEdit, isOwner } = await checkCollectionAccessRights(
+    collectionId,
+    userId,
+  );
 
-  // Vérifier si l'utilisateur est le propriétaire
-  const isOwner = collection.userId.toString() === userId;
-
-  // Si pas propriétaire, vérifier les droits de partage
-  let hasEditRights = false;
-  if (!isOwner) {
-    const share = await getAcceptedShareByCollectionAndGuest(
-      new Types.ObjectId(collectionId),
-      new Types.ObjectId(userId),
-    );
-    hasEditRights = share?.rights === "edit";
-  }
-
-  // Refuser l'accès si ni propriétaire ni droits d'édition
-  if (!isOwner && !hasEditRights) {
+  if (!canEdit) {
     throw new Error("Accès refusé à cette collection");
   }
 
@@ -323,11 +340,11 @@ export const deleteCollectionById = async (
     throw new Error("Identifiant de collection invalide");
   }
 
-  const collection = await getCollectionById(collectionId);
-  if (!collection) throw new Error("Collection non trouvée");
+  // Vérifier les droits d'accès avec la fonction réutilisable
+  const { isOwner } = await checkCollectionAccessRights(collectionId, userId);
 
-  if (collection.userId.toString() !== userId) {
-    throw new Error("Accès refusé à cette collection");
+  if (!isOwner) {
+    throw new Error("Seul le propriétaire peut supprimer cette collection");
   }
 
   const deleted = await deleteCollection(collectionId);

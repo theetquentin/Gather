@@ -186,7 +186,7 @@ export const NotificationBell = () => {
 
                                 handleAcceptShare(notification._id, shareId, e);
                               }}
-                              className="text-xs bg-action-color hover:bg-action-color-hover text-slate-100 px-2 py-1 rounded font-medium"
+                              className="cursor-pointer text-xs bg-action-color hover:bg-action-color-hover text-slate-100 px-2 py-1 rounded font-medium"
                             >
                               Accepter
                             </button>
@@ -194,7 +194,7 @@ export const NotificationBell = () => {
 
                         <button
                           onClick={(e) => handleMarkAsRead(notification._id, e)}
-                          className="text-xs text-action-color hover:text-action-color-hover font-medium ml-auto"
+                          className="cursor-pointer text-xs text-action-color hover:text-action-color-hover font-medium ml-auto"
                         >
                           Marquer comme lu
                         </button>

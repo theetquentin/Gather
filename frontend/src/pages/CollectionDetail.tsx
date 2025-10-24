@@ -87,10 +87,7 @@ export const CollectionDetail = () => {
     }
 
     // Si la collection est actuellement partagée et qu'on change vers un autre type
-    if (
-      collection?.visibility === "shared" &&
-      formVisibility !== "shared"
-    ) {
+    if (collection?.visibility === "shared" && formVisibility !== "shared") {
       const confirmed = window.confirm(
         "Attention : changer la visibilité de cette collection supprimera tous les partages existants et les invitations en attente. Voulez-vous continuer ?",
       );
@@ -136,11 +133,6 @@ export const CollectionDetail = () => {
           <h1 className="text-2xl font-bold text-slate-900">
             {collection.name}
           </h1>
-          {!isOwner && (
-            <span className="px-2 py-1 bg-blue-500 text-slate-100 text-xs font-medium rounded">
-              Partagée
-            </span>
-          )}
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2 py-0.5 bg-secondary-color text-slate-900 text-xs font-medium rounded">
