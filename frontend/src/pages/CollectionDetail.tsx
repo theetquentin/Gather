@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { collectionService } from "../services/collection.service";
 import { WorkCard } from "../components/WorkCard";
 import { WorkSelector } from "../components/WorkSelector";
+import { UserInvite } from "../components/UserInvite";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingMessage } from "../components/LoadingMessage";
 import { useAuth } from "../hooks/useAuth";
@@ -16,7 +17,7 @@ import type {
   UpdateCollectionInput,
 } from "../types/collection.types";
 
-type EditMode = "info" | "works" | null;
+type EditMode = "info" | "works" | "invites" | null;
 
 export const CollectionDetail = () => {
   const { isAuthenticated } = useAuth();
@@ -84,6 +85,17 @@ export const CollectionDetail = () => {
       setError("Le nom doit contenir au moins 3 caractères");
       return;
     }
+
+    // Si la collection est actuellement partagée et qu'on change vers un autre type
+    if (collection?.visibility === "shared" && formVisibility !== "shared") {
+      const confirmed = window.confirm(
+        "Attention : changer la visibilité de cette collection supprimera tous les partages existants et les invitations en attente. Voulez-vous continuer ?",
+      );
+      if (!confirmed) {
+        return;
+      }
+    }
+
     handleSave({ name: formName.trim(), visibility: formVisibility });
   };
 
@@ -109,47 +121,66 @@ export const CollectionDetail = () => {
     );
 
   const visibilityInfo = VISIBILITY_LABELS[collection.visibility];
+  const isOwner = collection.owned !== false;
+  const canEdit = isOwner || collection.rights === "edit";
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
       {error && <ErrorMessage message={error} className="mb-4" />}
 
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">
-          {collection.name}
-        </h1>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mb-2">
+          <h1 className="text-2xl font-bold text-slate-900">
+            {collection.name}
+          </h1>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2 py-0.5 bg-secondary-color text-slate-900 text-xs font-medium rounded">
             {COLLECTION_TYPES.find((t) => t.value === collection.type)?.label}
           </span>
           <span
-            className={`px-2 py-0.5 ${visibilityInfo.color} text-slate-100 text-xs font-medium rounded`}
+            className={`px-2 py-0.5 ${visibilityInfo.color} ${visibilityInfo.text} text-xs font-medium rounded`}
           >
             {visibilityInfo.label}
           </span>
+          {!isOwner && collection.rights && (
+            <span className="px-2 py-0.5 bg-slate-600 text-slate-100 text-xs font-medium rounded">
+              {collection.rights === "read" ? "Lecture seule" : "Édition"}
+            </span>
+          )}
         </div>
       </div>
 
-      <div className="flex my-4 gap-2 items-center">
+      <div className="flex flex-col md:flex-row my-4 gap-3 md:items-center">
         {collection.works.length > 0 && (
           <h2 className="text-lg font-semibold text-slate-900">
             Œuvres ({collection.works.length})
           </h2>
         )}
-        {isAuthenticated && (
-          <div className="flex ml-auto gap-2">
-            <button
-              onClick={() => setEditMode("info")}
-              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
-            >
-              Modifier les informations
-            </button>
+        {isAuthenticated && canEdit && (
+          <div className="flex flex-col sm:flex-row md:ml-auto gap-2">
+            {isOwner && (
+              <button
+                onClick={() => setEditMode("info")}
+                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
+              >
+                Modifier les informations
+              </button>
+            )}
             <button
               onClick={() => setEditMode("works")}
-              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
             >
               Modifier les œuvres
             </button>
+            {isOwner && collection.visibility === "shared" && (
+              <button
+                onClick={() => setEditMode("invites")}
+                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
+              >
+                Gérer les invitations
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -247,6 +278,20 @@ export const CollectionDetail = () => {
         </div>
       )}
 
+      {editMode === "invites" && collection.visibility === "shared" && (
+        <div className="mb-4">
+          <UserInvite collectionId={collection._id} />
+          <div className="flex justify-end gap-2 pt-2">
+            <button
+              onClick={() => setEditMode(null)}
+              className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium"
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
+
       {collection.works.length === 0 ? (
         <div className="p-8 text-center mt-4">
           <h2 className="text-xl font-semibold text-slate-900 mb-2">
@@ -257,7 +302,7 @@ export const CollectionDetail = () => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {collection.works.map((work) => (
             <WorkCard key={work._id} work={work} />
           ))}

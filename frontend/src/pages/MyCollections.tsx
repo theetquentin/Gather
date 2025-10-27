@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { collectionService } from '../services/collection.service';
 import { CollectionForm } from '../components/CollectionForm';
 import { CollectionCard } from '../components/CollectionCard';
+import { UserInvite } from '../components/UserInvite';
 import type { Collection, CreateCollectionInput } from '../types/collection.types';
 
 export const MyCollections = () => {
@@ -9,6 +10,8 @@ export const MyCollections = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [showInvites, setShowInvites] = useState(false);
+  const [newlyCreatedCollection, setNewlyCreatedCollection] = useState<Collection | null>(null);
   const [error, setError] = useState('');
 
   // Charger les collections au montage du composant
@@ -35,9 +38,20 @@ export const MyCollections = () => {
       const newCollection = await collectionService.createCollection(data);
       setCollections([newCollection, ...collections]);
       setShowForm(false);
+
+      // Si la collection est partagée, afficher l'interface d'invitation
+      if (data.visibility === 'shared') {
+        setNewlyCreatedCollection(newCollection);
+        setShowInvites(true);
+      }
     } finally {
       setIsCreating(false);
     }
+  };
+
+  const handleCloseInvites = () => {
+    setShowInvites(false);
+    setNewlyCreatedCollection(null);
   };
 
   const handleDeleteCollection = async (id: string) => {
@@ -66,12 +80,12 @@ export const MyCollections = () => {
   return (
     <main className="container mx-auto px-4 py-8">
       {/* En-tête */}
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-4xl font-bold text-slate-900">Mes collections</h1>
-        {!showForm && (
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <h1 className="text-2xl sm:text-4xl font-bold text-slate-900">Mes collections</h1>
+        {!showForm && !showInvites && (
           <button
             onClick={() => setShowForm(true)}
-            className="bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
+            className="w-full sm:w-auto bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
           >
             Créer une collection
           </button>
@@ -101,6 +115,34 @@ export const MyCollections = () => {
         </div>
       )}
 
+      {/* Interface d'invitation après création */}
+      {showInvites && newlyCreatedCollection && (
+        <div className="bg-primary-color p-6 rounded-xl mb-8">
+          <div className="mb-4">
+            <h2 className="text-2xl font-semibold text-slate-900 mb-2">
+              Collection créée avec succès !
+            </h2>
+            <p className="text-slate-700 mb-1">
+              <span className="font-medium">{newlyCreatedCollection.name}</span>
+            </p>
+            <p className="text-slate-700 text-sm">
+              Vous pouvez maintenant inviter des utilisateurs à cette collection.
+            </p>
+          </div>
+
+          <UserInvite collectionId={newlyCreatedCollection._id} />
+
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              onClick={handleCloseInvites}
+              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
+            >
+              Terminer
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Liste des collections */}
       {collections.length === 0 ? (
         <div className="bg-primary-color p-12 rounded-xl text-center">
@@ -121,19 +163,52 @@ export const MyCollections = () => {
         </div>
       ) : (
         <>
-          <div className="mb-4 text-slate-700">
-            <span className="font-medium">{collections.length}</span> collection{collections.length > 1 ? 's' : ''}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {collections.map((collection) => (
-              <CollectionCard
-                key={collection._id}
-                collection={collection}
-                onDelete={handleDeleteCollection}
-                showActions={true}
-              />
-            ))}
-          </div>
+          {/* Mes collections personnelles */}
+          {(() => {
+            const ownedCollections = collections.filter(c => c.owned !== false);
+            return ownedCollections.length > 0 && (
+              <div className="mb-12">
+                <div className="mb-4 text-slate-700">
+                  <span className="font-medium">{ownedCollections.length}</span> collection{ownedCollections.length > 1 ? 's' : ''}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {ownedCollections.map((collection) => (
+                    <CollectionCard
+                      key={collection._id}
+                      collection={collection}
+                      onDelete={handleDeleteCollection}
+                      showActions={true}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Collections partagées avec moi */}
+          {(() => {
+            const sharedCollections = collections.filter(c => c.owned === false);
+            return sharedCollections.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-semibold text-slate-900 mb-4">
+                  Collections partagées avec moi
+                </h2>
+                <div className="mb-4 text-slate-700">
+                  <span className="font-medium">{sharedCollections.length}</span> collection{sharedCollections.length > 1 ? 's' : ''}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {sharedCollections.map((collection) => (
+                    <CollectionCard
+                      key={collection._id}
+                      collection={collection}
+                      onDelete={handleDeleteCollection}
+                      showActions={true}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </>
       )}
     </main>

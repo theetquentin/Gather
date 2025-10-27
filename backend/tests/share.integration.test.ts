@@ -79,7 +79,7 @@ describe("Tests API - POST /shares", () => {
 
     const shareData = {
       collectionId: collection._id,
-      guestId: user2.id,
+      guestId: user2._id,
       rights: "read",
     };
 
@@ -93,8 +93,8 @@ describe("Tests API - POST /shares", () => {
     expect(res.body.message).toBe("Partage créé avec succès");
     expect(res.body.data.share).toHaveProperty("_id");
     expect(res.body.data.share.collectionId).toBe(collection._id);
-    expect(res.body.data.share.guestId).toBe(user2.id);
-    expect(res.body.data.share.authorId).toBe(user1.id);
+    expect(res.body.data.share.guestId).toBe(user2._id);
+    expect(res.body.data.share.authorId).toBe(user1._id);
     expect(res.body.data.share.rights).toBe("read");
     expect(res.body.data.share.status).toBe("pending");
   });
@@ -168,7 +168,7 @@ describe("Tests API - POST /shares", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         collectionId: "123456789012345678901234",
-        guestId: guest.id,
+        guestId: guest._id,
       });
 
     expect(res.status).toBe(404);
@@ -212,7 +212,7 @@ describe("Tests API - POST /shares", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         collectionId: collection._id,
-        guestId: user.id,
+        guestId: user._id,
       });
 
     expect(res.status).toBe(400);
@@ -248,7 +248,7 @@ describe("Tests API - POST /shares", () => {
       .set("Authorization", `Bearer ${token2}`)
       .send({
         collectionId: collection._id,
-        guestId: guest.id,
+        guestId: guest._id,
       });
 
     expect(res.status).toBe(403);
@@ -278,7 +278,7 @@ describe("Tests API - POST /shares", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         collectionId: collection._id,
-        guestId: guest.id,
+        guestId: guest._id,
         rights: "edit",
       });
 
@@ -309,8 +309,8 @@ describe("Tests API - GET /shares/me", () => {
       name: "Collection 2",
     });
 
-    await createShare(owner.id, collection1._id, guest.id);
-    await createShare(owner.id, collection2._id, guest.id);
+    await createShare(owner._id, collection1._id, guest._id);
+    await createShare(owner._id, collection2._id, guest._id);
 
     const res = await request(app)
       .get("/shares/me")
@@ -356,8 +356,8 @@ describe("Tests API - GET /shares/me", () => {
       name: "Collection 2",
     });
 
-    await createShare(owner1.id, collection1._id, guest1.id);
-    await createShare(owner1.id, collection2._id, guest2.id);
+    await createShare(owner1._id, collection1._id, guest1._id);
+    await createShare(owner1._id, collection2._id, guest2._id);
 
     const res = await request(app)
       .get("/shares/me")
@@ -390,8 +390,8 @@ describe("Tests API - GET /shares/collection/:collectionId", () => {
 
     const collection = await createCollection(token);
 
-    await createShare(owner.id, collection._id, guest1.id);
-    await createShare(owner.id, collection._id, guest2.id);
+    await createShare(owner._id, collection._id, guest1._id);
+    await createShare(owner._id, collection._id, guest2._id);
 
     const res = await request(app)
       .get(`/shares/collection/${collection._id}`)
@@ -461,7 +461,7 @@ describe("Tests API - PATCH /shares/:shareId/status", () => {
     });
 
     const collection = await createCollection(ownerToken);
-    const share = await createShare(owner.id, collection._id, guest.id);
+    const share = await createShare(owner._id, collection._id, guest._id);
 
     const res = await request(app)
       .patch(`/shares/${share._id}/status`)
@@ -488,7 +488,7 @@ describe("Tests API - PATCH /shares/:shareId/status", () => {
     });
 
     const collection = await createCollection(ownerToken);
-    const share = await createShare(owner.id, collection._id, guest.id);
+    const share = await createShare(owner._id, collection._id, guest._id);
 
     const res = await request(app)
       .patch(`/shares/${share._id}/status`)
@@ -541,7 +541,7 @@ describe("Tests API - PATCH /shares/:shareId/status", () => {
     });
 
     const collection = await createCollection(ownerToken);
-    const share = await createShare(owner.id, collection._id, guest.id);
+    const share = await createShare(owner._id, collection._id, guest._id);
 
     const res = await request(app)
       .patch(`/shares/${share._id}/status`)
@@ -592,7 +592,7 @@ describe("Tests API - PATCH /shares/:shareId/status", () => {
     });
 
     const collection = await createCollection(ownerToken);
-    const share = await createShare(owner.id, collection._id, guest.id);
+    const share = await createShare(owner._id, collection._id, guest._id);
 
     const res = await request(app)
       .patch(`/shares/${share._id}/status`)
@@ -622,7 +622,7 @@ describe("Tests API - DELETE /shares/:shareId", () => {
     });
 
     const collection = await createCollection(ownerToken);
-    const share = await createShare(owner.id, collection._id, guest.id);
+    const share = await createShare(owner._id, collection._id, guest._id);
 
     const res = await request(app)
       .delete(`/shares/${share._id}`)
@@ -651,7 +651,7 @@ describe("Tests API - DELETE /shares/:shareId", () => {
     });
 
     const collection = await createCollection(ownerToken);
-    const share = await createShare(owner.id, collection._id, guest.id);
+    const share = await createShare(owner._id, collection._id, guest._id);
 
     const res = await request(app)
       .delete(`/shares/${share._id}`)
@@ -722,7 +722,7 @@ describe("Tests API - DELETE /shares/:shareId", () => {
     });
 
     const collection = await createCollection(ownerToken);
-    const share = await createShare(owner.id, collection._id, guest.id);
+    const share = await createShare(owner._id, collection._id, guest._id);
 
     const res = await request(app)
       .delete(`/shares/${share._id}`)

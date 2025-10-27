@@ -106,6 +106,11 @@ export const CollectionForm = ({ onSubmit, onCancel, isLoading = false }: Collec
             </option>
           ))}
         </select>
+        {visibility === 'shared' && (
+          <p className="mt-2 text-sm text-slate-700 bg-secondary-color p-2 rounded">
+            💡 Vous pourrez inviter des utilisateurs juste après la création.
+          </p>
+        )}
       </div>
 
       <WorkSelector

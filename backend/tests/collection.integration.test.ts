@@ -188,7 +188,7 @@ describe("Tests API - GET /collections", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBeTruthy();
-    expect(res.body.message).toBe("Liste des collections");
+    expect(res.body.message).toBe("Liste des collections publiques");
     expect(res.body.data.collections).toHaveLength(2);
     expect(res.body.data.collections).toEqual(
       expect.arrayContaining([
@@ -495,9 +495,11 @@ describe("Tests API - DELETE /collections/:collectionId", () => {
       .delete(`/collections/${collectionId}`)
       .set("Authorization", `Bearer ${token2}`);
 
-    expect(res.status).toBe(403);
+    expect(res.status).toBe(400);
     expect(res.body.success).toBeFalsy();
-    expect(res.body.errors).toBe("Accès refusé à cette collection");
+    expect(res.body.errors).toBe(
+      "Seul le propriétaire peut supprimer cette collection",
+    );
   });
 
   test("Supprimer sans authentification retourne 401", async () => {

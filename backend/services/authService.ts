@@ -36,7 +36,7 @@ export const loginAndIssueToken = async (email: string, password: string) => {
   return {
     token,
     user: {
-      id: user._id,
+      _id: user._id,
       username: user.username,
       email: user.email,
       role: user.role,

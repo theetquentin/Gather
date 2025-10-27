@@ -1,6 +1,9 @@
-import { Link } from 'react-router-dom';
-import { COLLECTION_TYPES, VISIBILITY_LABELS } from '../constants/collection.constants';
-import type { Collection } from '../types/collection.types';
+import { Link } from "react-router-dom";
+import {
+  COLLECTION_TYPES,
+  VISIBILITY_LABELS,
+} from "../constants/collection.constants";
+import type { Collection } from "../types/collection.types";
 
 interface CollectionCardProps {
   collection: Collection;
@@ -8,8 +11,13 @@ interface CollectionCardProps {
   showActions?: boolean;
 }
 
-export const CollectionCard = ({ collection, onDelete, showActions = false }: CollectionCardProps) => {
+export const CollectionCard = ({
+  collection,
+  onDelete,
+  showActions = false,
+}: CollectionCardProps) => {
   const visibilityInfo = VISIBILITY_LABELS[collection.visibility];
+  const isOwner = collection.owned !== false; // Par défaut true si non défini
 
   // Extraire les 3 premières images des œuvres
   const previewImages: string[] = [];
@@ -32,11 +40,7 @@ export const CollectionCard = ({ collection, onDelete, showActions = false }: Co
               key={index}
               className="relative bg-slate-200 overflow-hidden rounded flex-1 h-full"
             >
-              <img
-                src={image}
-                alt=""
-                className="w-full h-full object-cover"
-              />
+              <img src={image} alt="" className="w-full h-full object-cover" />
             </div>
           ))}
         </div>
@@ -44,22 +48,32 @@ export const CollectionCard = ({ collection, onDelete, showActions = false }: Co
 
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
-          <h3 className="text-xl font-semibold text-slate-900 mb-2">
-            {collection.name}
-          </h3>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 mb-2">
+            <h3 className="text-xl font-semibold text-slate-900">
+              {collection.name}
+            </h3>
+          </div>
+          <div className="flex items-center gap-3 flex-wrap">
             <span className="inline-block px-3 py-1 bg-secondary-color text-slate-900 text-sm font-medium rounded-full">
               {COLLECTION_TYPES.find((t) => t.value === collection.type)?.label}
             </span>
-            <span className={`inline-block px-3 py-1 ${visibilityInfo.color} text-slate-100 text-sm font-medium rounded-full`}>
+            <span
+              className={`inline-block px-3 py-1 ${visibilityInfo.color} ${visibilityInfo.text} text-sm font-medium rounded-full`}
+            >
               {visibilityInfo.label}
             </span>
+            {!isOwner && collection.rights && (
+              <span className="inline-block px-3 py-1 bg-slate-600 text-slate-100 text-sm font-medium rounded-full">
+                {collection.rights === "read" ? "Lecture seule" : "Édition"}
+              </span>
+            )}
           </div>
         </div>
       </div>
 
       <div className="text-slate-700 mb-4">
-        <span className="font-medium">{worksCount}</span> œuvre{worksCount > 1 ? 's' : ''}
+        <span className="font-medium">{worksCount}</span> œuvre
+        {worksCount > 1 ? "s" : ""}
       </div>
 
       <div className="flex gap-2">
@@ -71,7 +85,7 @@ export const CollectionCard = ({ collection, onDelete, showActions = false }: Co
           Voir la collection
         </Link>
 
-        {showActions && onDelete && (
+        {showActions && onDelete && isOwner && (
           <button
             onClick={() => onDelete(collection._id)}
             className="px-4 py-2 bg-red-600 hover:bg-red-700 text-slate-100 rounded-md font-medium transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"

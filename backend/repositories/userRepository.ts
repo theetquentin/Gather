@@ -29,3 +29,16 @@ export const getUserByEmailWithPassword = async (mail: string) => {
   // utile pour authentification
   return await User.findOne({ email: mail }).select("+password");
 };
+
+export const searchUsers = async (query: string) => {
+  // Sanitization: échapper tous les caractères spéciaux de regex pour éviter l'injection NoSQL
+  const sanitizedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  // Recherche insensible à la casse sur username ou email avec query sanitized
+  const regex = new RegExp(sanitizedQuery, "i");
+  return await User.find({
+    $or: [{ username: regex }, { email: regex }],
+  })
+    .select("-password")
+    .limit(10);
+};

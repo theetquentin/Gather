@@ -8,8 +8,10 @@ interface ApiResponse<T> {
 }
 
 export const collectionService = {
-  async getAllCollections(): Promise<Collection[]> {
-    const response = await apiClient.get<ApiResponse<{ collections: Collection[] }>>('/collections');
+  async getAllCollections(publicOnly: boolean = true): Promise<Collection[]> {
+    const response = await apiClient.get<ApiResponse<{ collections: Collection[] }>>(
+      `/collections?publicOnly=${publicOnly}`
+    );
     return response.data.collections;
   },
 

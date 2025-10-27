@@ -3,12 +3,11 @@ import { collectionService } from "../services/collection.service";
 import { CollectionCard } from "../components/CollectionCard";
 import type { Collection } from "../types/collection.types";
 
-export const Collections = () => {
+export const AllCollections = () => {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Charger les collections au montage du composant
   useEffect(() => {
     loadCollections();
   }, []);
@@ -17,7 +16,7 @@ export const Collections = () => {
     try {
       setIsLoading(true);
       setError("");
-      const data = await collectionService.getAllCollections(true); // Uniquement les collections publiques
+      const data = await collectionService.getAllCollections(false); // Toutes les collections
       setCollections(data);
     } catch (err) {
       setError(
@@ -39,7 +38,7 @@ export const Collections = () => {
             role="status"
             aria-live="polite"
           >
-            Chargement de vos collections...
+            Chargement des collections...
           </div>
         </div>
       </main>
@@ -49,10 +48,9 @@ export const Collections = () => {
   return (
     <main className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold text-slate-900 mb-8">
-        Collections publiques
+        Toutes les collections
       </h1>
 
-      {/* Message d'erreur global */}
       {error && (
         <div
           className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6"
@@ -66,11 +64,10 @@ export const Collections = () => {
         </div>
       )}
 
-      {/* Liste des collections */}
       {collections.length === 0 ? (
         <div className="bg-primary-color p-12 rounded-xl text-center">
           <h2 className="text-2xl font-semibold text-slate-900 mb-4">
-            Aucune collection publique
+            Aucune collection trouvée
           </h2>
         </div>
       ) : (
