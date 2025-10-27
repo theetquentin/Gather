@@ -275,7 +275,6 @@ export const updateCollectionById = async (
     throw new Error("Identifiant de collection invalide");
   }
 
-  // Vérifier les droits d'accès avec la fonction réutilisable
   const { collection, canEdit, isOwner } = await checkCollectionAccessRights(
     collectionId,
     userId,
@@ -340,7 +339,6 @@ export const deleteCollectionById = async (
     throw new Error("Identifiant de collection invalide");
   }
 
-  // Vérifier les droits d'accès avec la fonction réutilisable
   const { isOwner } = await checkCollectionAccessRights(collectionId, userId);
 
   if (!isOwner) {

@@ -89,8 +89,8 @@ describe("Tests API - GET /notifications/me", () => {
       password: "Password123!",
     });
 
-    await createNotification(user1.id, { message: "Pour user1" });
-    await createNotification(user2.id, { message: "Pour user2" });
+    await createNotification(user1._id, { message: "Pour user1" });
+    await createNotification(user2._id, { message: "Pour user2" });
 
     const res = await request(app)
       .get("/notifications/me")
@@ -211,7 +211,7 @@ describe("Tests API - PATCH /notifications/:notificationId/read", () => {
       password: "Password123!",
     });
 
-    const notification = await createNotification(user2.id);
+    const notification = await createNotification(user2._id);
 
     const res = await request(app)
       .patch(`/notifications/${notification._id}/read`)
@@ -341,7 +341,7 @@ describe("Tests API - DELETE /notifications/:notificationId", () => {
       password: "Password123!",
     });
 
-    const notification = await createNotification(user2.id);
+    const notification = await createNotification(user2._id);
 
     const res = await request(app)
       .delete(`/notifications/${notification._id}`)
