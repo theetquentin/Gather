@@ -6,10 +6,12 @@ const workSchema = new Schema<IWork>(
     title: {
       type: String,
       required: true,
+      maxLength: 255,
     },
     author: {
       type: String,
       required: true,
+      maxLength: 255,
     },
     publishedAt: {
       type: Date,
@@ -22,10 +24,12 @@ const workSchema = new Schema<IWork>(
     genre: {
       type: [],
       required: true,
+      maxLength: 50,
     },
     description: {
       type: String,
       required: false,
+      maxLength: 500,
     },
     images: [
       {

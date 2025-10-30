@@ -16,7 +16,7 @@ const collectionSchema = new Schema<ICollection>(
       type: String,
       required: true,
       minLength: 3,
-      maxLength: 50,
+      maxLength: 100,
     },
     type: {
       type: String,
