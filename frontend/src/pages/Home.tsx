@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { SEO } from "../components/SEO";
+import { StructuredData } from "../components/StructuredData";
+import { organizationSchema, websiteSchema } from "../constants/seoSchemas";
 import {
   IoFolderOutline,
   IoSearchOutline,
@@ -20,6 +23,14 @@ export const Home = () => {
 
   return (
     <main>
+      <SEO
+        title="Gather - Gérez vos collections personnelles"
+        description="Organisez, partagez et explorez vos passions culturelles avec Gather. Créez vos collections de livres, films, séries, musique et jeux."
+        keywords="collection, bibliothèque, films, livres, séries, musique, jeux, gestion, organisation, partage"
+        ogType="website"
+      />
+      <StructuredData data={organizationSchema} />
+      <StructuredData data={websiteSchema} />
       {!isAuthenticated && (
         <div className="max-w-4xl mx-auto">
           <section

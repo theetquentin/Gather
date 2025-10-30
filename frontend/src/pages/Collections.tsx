@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { collectionService } from "../services/collection.service";
 import { CollectionCard } from "../components/CollectionCard";
+import { SEO } from "../components/SEO";
 import type { Collection } from "../types/collection.types";
 
 export const Collections = () => {
@@ -33,6 +34,12 @@ export const Collections = () => {
   if (isLoading) {
     return (
       <main className="container mx-auto px-4 py-8">
+        <SEO
+          title="Collections publiques - Gather"
+          description="Parcourez les collections publiques partagées par la communauté Gather. Découvrez des collections de livres, films, séries, musique et jeux."
+          keywords="collections, collections publiques, partage, communauté, bibliothèque partagée"
+          ogType="website"
+        />
         <div className="text-center py-12">
           <div
             className="text-slate-700 text-xl"
@@ -48,6 +55,12 @@ export const Collections = () => {
 
   return (
     <main className="container mx-auto px-4 py-8">
+      <SEO
+        title="Collections publiques - Gather"
+        description="Parcourez les collections publiques partagées par la communauté Gather. Découvrez des collections de livres, films, séries, musique et jeux."
+        keywords="collections, collections publiques, partage, communauté, bibliothèque partagée"
+        ogType="website"
+      />
       <h1 className="text-4xl font-bold text-slate-900 mb-8">
         Collections publiques
       </h1>

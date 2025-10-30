@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { workService } from "../services/work.service";
 import { WorkCard } from "../components/WorkCard";
+import { SEO } from "../components/SEO";
 import type { Work } from "../types/work.types";
 
 export const Works = () => {
@@ -29,6 +30,12 @@ export const Works = () => {
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-6">
+      <SEO
+        title="Toutes les œuvres - Gather"
+        description="Découvrez toutes les œuvres disponibles sur Gather : livres, films, séries, musique, jeux et plus encore. Explorez et ajoutez à vos collections."
+        keywords="œuvres, livres, films, séries, musique, jeux, catalogue, bibliothèque"
+        ogType="website"
+      />
       <h1 className="text-4xl font-bold text-slate-900 mb-6">
         Toutes les œuvres
       </h1>
@@ -77,4 +84,3 @@ export const Works = () => {
     </main>
   );
 };
-
