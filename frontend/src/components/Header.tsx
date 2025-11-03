@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { NotificationBell } from './NotificationBell';
+import { LogoGather } from './LogoGather';
 
 export const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -24,10 +25,12 @@ export const Header = () => {
           <div className="flex items-center space-x-8">
             <Link
               to="/"
-              className="text-2xl font-bold text-slate-900 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
+              className="flex items-center gap-2 text-slate-900 focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
               onClick={closeMobileMenu}
+              aria-label="Retour à l'accueil"
             >
-              Gather
+              <LogoGather className="w-13 h-13" />
+              <span className="text-2xl font-bold">Gather</span>
             </Link>
 
             {/* Desktop Navigation - Hidden on mobile */}

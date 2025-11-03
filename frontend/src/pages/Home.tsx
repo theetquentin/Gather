@@ -39,11 +39,11 @@ export const Home = () => {
           >
             <h1
               id="welcome-heading"
-              className="text-5xl font-bold text-slate-900 mb-4"
+              className="text-5xl font-bold text-slate-900 mb-4 px-4"
             >
               Bienvenue sur Gather
             </h1>
-            <p className="text-xl text-slate-700">
+            <p className="text-xl text-slate-700 px-4">
               Organisez, partagez et explorez vos passions culturelles avec
               Gather.
             </p>
@@ -51,7 +51,7 @@ export const Home = () => {
 
           {/* Grille des fonctionnalités principales */}
           <section
-            className="grid grid-cols-2 gap-8 py-14"
+            className="grid gap-10 px-4 sm:grid-cols-2 sm:gap-8 py-14"
             aria-label="Fonctionnalités principales"
           >
             <div className="flex items-start gap-4">
@@ -122,7 +122,7 @@ export const Home = () => {
         </div>
       )}
 
-      <div className="flex justify-center">
+      <div className="flex justify-center pb-16">
         <Link
           to="/register"
           className="inline-block bg-action-color hover:bg-action-color-hover text-slate-100 px-8 py-3 rounded-lg text-lg font-medium transition-colors focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
