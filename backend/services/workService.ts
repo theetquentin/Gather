@@ -16,6 +16,8 @@ export const getWorks = async (
   limit?: number,
   type?: string,
   search?: string,
+  genre?: string[],
+  year?: string,
 ) => {
   // Validation de la limite
   if (limit !== undefined && (limit < 0 || !Number.isInteger(limit))) {
@@ -42,7 +44,7 @@ export const getWorks = async (
     sanitizedSearch = trimmedSearch.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
 
-  return await getAllWorks(finalLimit, type, sanitizedSearch);
+  return await getAllWorks(finalLimit, type, sanitizedSearch, genre, year);
 };
 
 /**

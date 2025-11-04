@@ -1,11 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
 @import "tailwindcss";
 
 @theme {
-  --color-page-background: #F7FBFC;
-  --color-primary-color: #D6E6F2;
-  --color-secondary-color: #B9D7EA;
-  --color-action-color: #33538A;
-  --color-action-color-hover: #26416D;
+  --font-sans: Roboto, ui-sans-serif;
+  --color-page-background: #f7fbfc;
+  --color-primary-color: #d6e6f2;
+  --color-secondary-color: #b9d7ea;
+  --color-action-color: #33538a;
+  --color-action-color-hover: #26416d;
 }
 
 /* Utilitaires pour le line-clamp */
