@@ -6,6 +6,12 @@ import { WorkSelector } from "../components/WorkSelector";
 import { UserInvite } from "../components/UserInvite";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingMessage } from "../components/LoadingMessage";
+import { SEO } from "../components/SEO";
+import { StructuredData } from "../components/StructuredData";
+import {
+  createCollectionSchema,
+  createBreadcrumbSchema,
+} from "../constants/seoSchemas";
 import { useAuth } from "../hooks/useAuth";
 import {
   COLLECTION_TYPES,
@@ -124,8 +130,41 @@ export const CollectionDetail = () => {
   const isOwner = collection.owned !== false;
   const canEdit = isOwner || collection.rights === "edit";
 
+  // SEO dynamique basé sur la collection
+  const collectionTypeLabel =
+    COLLECTION_TYPES.find((t) => t.value === collection.type)?.label ||
+    collection.type;
+  const seoTitle = `${collection.name} - Collection ${collectionTypeLabel} - Gather`;
+  const seoDescription = `Découvrez la collection "${collection.name}" sur Gather. ${collection.works.length} œuvre${collection.works.length > 1 ? "s" : ""} de type ${collectionTypeLabel}.`;
+  const currentUrl = `${window.location.origin}/collections/${collection._id}`;
+
+  // Structured data pour la collection
+  const collectionSchema = createCollectionSchema({
+    name: collection.name,
+    type: collectionTypeLabel,
+    url: currentUrl,
+  });
+
+  // Breadcrumb schema
+  const breadcrumbSchema = createBreadcrumbSchema([
+    { name: "Accueil", url: window.location.origin },
+    { name: "Collections", url: `${window.location.origin}/collections` },
+    { name: collection.name, url: currentUrl },
+  ]);
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        keywords={`collection, ${collectionTypeLabel}, ${collection.name}`}
+        ogType="article"
+        canonical={currentUrl}
+        noindex={collection.visibility === "private"}
+      />
+      <StructuredData data={collectionSchema} />
+      <StructuredData data={breadcrumbSchema} />
+
       {error && <ErrorMessage message={error} className="mb-4" />}
 
       <div className="mb-6">

@@ -1,0 +1,26 @@
+# robots.txt pour Gather
+# https://gather.quentintheet.fr
+
+# Autoriser tous les robots par défaut
+User-agent: *
+Allow: /
+
+# Bloquer les pages d'administration et privées
+Disallow: /admin
+Disallow: /my-collections
+Disallow: /notifications
+
+# Bloquer les routes d'authentification (pas d'indexation)
+Disallow: /login
+Disallow: /register
+
+# Autoriser les pages publiques importantes
+Allow: /
+Allow: /works
+Allow: /collections
+
+# Sitemap
+Sitemap: https://gather.quentintheet.fr/sitemap.xml
+
+# Temps d'attente entre les requêtes (en secondes)
+Crawl-delay: 1

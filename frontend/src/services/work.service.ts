@@ -2,7 +2,13 @@ import { apiClient } from './api.service';
 import type { WorksResponse } from '../types/work.types';
 
 export const workService = {
-  async getWorks(params?: { limit?: number; type?: string; search?: string }): Promise<WorksResponse> {
+  async getWorks(params?: {
+    limit?: number;
+    type?: string;
+    search?: string;
+    genres?: string[];
+    year?: string;
+  }): Promise<WorksResponse> {
     const queryParams = new URLSearchParams();
 
     if (params?.limit) {
@@ -13,6 +19,14 @@ export const workService = {
     }
     if (params?.search) {
       queryParams.append('search', params.search);
+    }
+    if (params?.genres && params.genres.length > 0) {
+      params.genres.forEach(genre => {
+        queryParams.append('genre', genre);
+      });
+    }
+    if (params?.year) {
+      queryParams.append('year', params.year);
     }
 
     const endpoint = queryParams.toString() ? `/works?${queryParams.toString()}` : '/works';

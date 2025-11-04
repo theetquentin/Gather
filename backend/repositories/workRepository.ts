@@ -30,17 +30,44 @@ export const getWorkTypesByIds = async (ids: Types.ObjectId[]) => {
  * @param limit - Nombre maximum d'œuvres à retourner
  * @param type - Type d'œuvre à filtrer
  * @param search - Terme de recherche DÉJÀ SANITIZÉ (caractères regex échappés)
+ * @param genre - Liste de genres à filtrer (ET logique - l'œuvre doit contenir TOUS les genres)
+ * @param year - Année à filtrer (peut être une année ou "before-1900")
  */
 export const getAllWorks = async (
   limit?: number,
   type?: string,
   search?: string,
+  genre?: string[],
+  year?: string,
 ) => {
   const filter: Record<string, unknown> = {};
 
   // Filtre par type
   if (type) {
     filter.type = type;
+  }
+
+  // Filtre par genres (genre est un tableau dans le modèle)
+  // Cherche les œuvres qui contiennent TOUS les genres sélectionnés (ET logique)
+  if (genre && genre.length > 0) {
+    filter.genre = { $all: genre };
+  }
+
+  // Filtre par année
+  if (year) {
+    if (year === "before-1900") {
+      // Œuvres publiées avant le 1er janvier 1900
+      filter.publishedAt = { $lt: new Date("1900-01-01") };
+    } else {
+      const yearNum = parseInt(year, 10);
+      if (!isNaN(yearNum)) {
+        // Œuvres publiées dans l'année spécifique
+        filter.publishedAt = {
+          $gte: new Date(`${yearNum}-01-01`),
+          $lt: new Date(`${yearNum + 1}-01-01`),
+        };
+      }
+    }
   }
 
   if (search) {

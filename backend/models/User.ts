@@ -15,11 +15,13 @@ const userSchema = new Schema<IUser>(
       unique: true, // évite les doublons
       lowercase: true,
       trim: true,
+      maxLength: 100,
     },
     password: {
       type: String,
       required: true,
       minLength: 8,
+      maxLength: 255,
     },
     role: {
       type: String,

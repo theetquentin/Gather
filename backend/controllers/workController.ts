@@ -3,7 +3,7 @@ import { getWorks } from "../services/workService";
 
 export const getAllWorks = async (req: Request, res: Response) => {
   try {
-    const { limit, type, search } = req.query;
+    const { limit, type, search, genre, year } = req.query;
     let limitValue: number | undefined;
 
     if (limit !== undefined) {
@@ -21,7 +21,24 @@ export const getAllWorks = async (req: Request, res: Response) => {
     const typeValue = type ? String(type) : undefined;
     const searchValue = search ? String(search) : undefined;
 
-    const works = await getWorks(limitValue, typeValue, searchValue);
+    // Genre peut être un tableau (sélection multiple)
+    let genreValue: string[] | undefined;
+    if (genre) {
+      genreValue = Array.isArray(genre)
+        ? genre.map((g) => String(g))
+        : [String(genre)];
+    }
+
+    // Year est une sélection unique (peut être une année ou "before-1900")
+    const yearValue = year ? String(year) : undefined;
+
+    const works = await getWorks(
+      limitValue,
+      typeValue,
+      searchValue,
+      genreValue,
+      yearValue,
+    );
 
     return res.status(200).json({
       success: true,

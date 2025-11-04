@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { workService } from '../services/work.service';
-import type { Work } from '../types/work.types';
-import type { CollectionType } from '../types/collection.types';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { workService } from "../services/work.service";
+import { TYPE_MAPPING } from "../constants/work.constants";
+import type { Work } from "../types/work.types";
+import type { CollectionType } from "../types/collection.types";
 
 interface WorkSelectorProps {
   collectionType: CollectionType;
@@ -9,43 +10,41 @@ interface WorkSelectorProps {
   onWorksChange: (workIds: string[]) => void;
 }
 
-const TYPE_MAPPING: Record<CollectionType, string> = {
-  book: 'book',
-  movie: 'movie',
-  series: 'series',
-  music: 'music',
-  game: 'game',
-  other: 'other',
-};
-
-export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }: WorkSelectorProps) => {
+export const WorkSelector = ({
+  collectionType,
+  selectedWorkIds,
+  onWorksChange,
+}: WorkSelectorProps) => {
   const [works, setWorks] = useState<Work[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const debounceTimerRef = useRef<number | null>(null);
 
   // Charger les œuvres selon le type et la recherche
-  const loadWorks = useCallback(async (search?: string) => {
-    try {
-      setIsLoading(true);
-      const workType = TYPE_MAPPING[collectionType];
-      const response = await workService.getWorks({
-        limit: 20,
-        type: workType,
-        search: search?.trim() || undefined,
-      });
-      setWorks(response.data.works);
-    } catch (err) {
-      console.error('Erreur lors du chargement des œuvres:', err);
-      setWorks([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [collectionType]);
+  const loadWorks = useCallback(
+    async (search?: string) => {
+      try {
+        setIsLoading(true);
+        const workType = TYPE_MAPPING[collectionType];
+        const response = await workService.getWorks({
+          limit: 20,
+          type: workType,
+          search: search?.trim() || undefined,
+        });
+        setWorks(response.data.works);
+      } catch (err) {
+        console.error("Erreur lors du chargement des œuvres:", err);
+        setWorks([]);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [collectionType],
+  );
 
   // Charger les œuvres quand le type change
   useEffect(() => {
-    setSearchQuery(''); // Réinitialiser la recherche
+    setSearchQuery(""); // Réinitialiser la recherche
     loadWorks();
   }, [collectionType, loadWorks]);
 
@@ -77,14 +76,14 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
 
   const handleToggleWork = (workId: string) => {
     if (selectedWorkIds.includes(workId)) {
-      onWorksChange(selectedWorkIds.filter(id => id !== workId));
+      onWorksChange(selectedWorkIds.filter((id) => id !== workId));
     } else {
       onWorksChange([...selectedWorkIds, workId]);
     }
   };
 
   const handleSelectAll = () => {
-    const allIds = works.map(work => work._id);
+    const allIds = works.map((work) => work._id);
     onWorksChange(allIds);
   };
 
@@ -139,7 +138,9 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
       {/* Compteur de sélection */}
       {selectedWorkIds.length > 0 && (
         <div className="text-sm text-slate-700">
-          <span className="font-medium">{selectedWorkIds.length}</span> œuvre{selectedWorkIds.length > 1 ? 's' : ''} sélectionnée{selectedWorkIds.length > 1 ? 's' : ''}
+          <span className="font-medium">{selectedWorkIds.length}</span> œuvre
+          {selectedWorkIds.length > 1 ? "s" : ""} sélectionnée
+          {selectedWorkIds.length > 1 ? "s" : ""}
         </div>
       )}
 
@@ -148,7 +149,7 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
         <div className="bg-primary-color p-6 rounded-lg text-center text-slate-700">
           {searchQuery.trim()
             ? `Aucune œuvre trouvée pour "${searchQuery}"`
-            : 'Aucune œuvre disponible pour ce type de collection'}
+            : "Aucune œuvre disponible pour ce type de collection"}
         </div>
       ) : (
         <div className="bg-primary-color rounded-lg border border-slate-400 max-h-64 overflow-y-auto">
@@ -157,7 +158,7 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
               key={work._id}
               htmlFor={`work-checkbox-${work._id}`}
               className={`flex items-start p-3 border-b border-slate-400 last:border-b-0 cursor-pointer hover:bg-secondary-color transition-colors ${
-                selectedWorkIds.includes(work._id) ? 'bg-secondary-color' : ''
+                selectedWorkIds.includes(work._id) ? "bg-secondary-color" : ""
               }`}
             >
               <input
@@ -173,7 +174,7 @@ export const WorkSelector = ({ collectionType, selectedWorkIds, onWorksChange }:
                 <div className="text-sm text-slate-700">{work.author}</div>
                 {work.genre && work.genre.length > 0 && (
                   <div className="text-xs text-slate-600 mt-1">
-                    {work.genre.join(', ')}
+                    {work.genre.join(", ")}
                   </div>
                 )}
               </div>

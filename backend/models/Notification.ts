@@ -32,6 +32,7 @@ const notificationSchema = new Schema<INotification>(
     message: {
       type: String,
       required: true,
+      maxLength: 255,
     },
     readAt: {
       type: Date,

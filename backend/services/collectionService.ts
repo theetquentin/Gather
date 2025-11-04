@@ -174,14 +174,15 @@ export const fetchCollections = async (publicOnly?: boolean) => {
 };
 
 const fetchSharedCollectionsByUser = async (userId: string) => {
+  // getAcceptedSharesByGuestId retourne des shares avec collectionId populé (via .populate())
   const shares = await getAcceptedSharesByGuestId(userId);
 
   // Transformer les shares en collections enrichies avec les métadonnées de partage
   return shares
     .filter((share) => share.collectionId) // Filtrer les shares où la collection existe encore
     .map((share) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const collection = share.collectionId as any; // Collection populée par Mongoose (déjà en plain object via .lean())
+      // collectionId est une Collection complète (populée par Mongoose, déjà en plain object via .lean())
+      const collection = share.collectionId as unknown as ICollection;
       return {
         ...collection, // Pas besoin de .toObject() car .lean() retourne déjà un plain object
         owned: false, // Ces collections ne sont pas possédées par l'utilisateur
