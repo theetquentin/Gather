@@ -88,20 +88,40 @@ export const NotificationBell = () => {
 
   const handleAcceptShare = async (
     notificationId: string,
-    shareId: string,
+    shareId: Notification["shareId"],
     event: React.MouseEvent,
   ) => {
     event.preventDefault();
     event.stopPropagation();
     try {
       // Accepter le partage
-      await shareService.updateShareStatus(shareId, { status: "accepted" });
+      await shareService.updateShareStatus(shareId!, { status: "accepted" });
 
       // Marquer la notification comme lue (le backend le fait automatiquement mais on le fait aussi côté client)
       setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
       setUnreadCount((prev) => Math.max(0, prev - 1));
     } catch (err) {
       console.error("Erreur lors de l'acceptation:", err);
+    }
+  };
+
+  const handleRefuseShare = async (
+    notificationId: string,
+    shareId: Notification["shareId"],
+    event: React.MouseEvent,
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    try {
+      // Refuser le partage
+      await shareService.updateShareStatus(shareId!, { status: "refused" });
+      // Supprimer la notification côté backend
+      await notificationService.deleteNotification(notificationId);
+      // Retirer de la liste
+      setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
+      setUnreadCount((prev) => Math.max(0, prev - 1));
+    } catch (err) {
+      console.error("Erreur lors du refus:", err);
     }
   };
 
@@ -124,7 +144,7 @@ export const NotificationBell = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-slate-900 hover:text-action-color transition-colors rounded-full hover:bg-secondary-color"
+        className="cursor-pointer relative p-2 text-slate-900 hover:text-action-color transition-colors rounded-full hover:bg-secondary-color"
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} non lues)` : ""}`}
       >
         <FiBell size={24} />
@@ -136,7 +156,7 @@ export const NotificationBell = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-primary-color border border-slate-300 rounded-lg shadow-lg z-50">
+        <div className="absolute right-0 mt-2 w-60 sm:w-80 bg-primary-color border border-slate-300 rounded-lg shadow-lg z-50">
           <div className="p-3 border-b border-slate-300">
             <h3 className="font-semibold text-slate-900">Notifications</h3>
             {unreadCount > 0 && (
@@ -164,7 +184,7 @@ export const NotificationBell = () => {
                 >
                   <div className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-action-color rounded-full mt-2 flex-shrink-0"></span>
-                    <div className="flex-1 min-w-0">
+                    <div className="">
                       <p className="text-sm text-slate-900">
                         {notification.message}
                       </p>
@@ -174,27 +194,37 @@ export const NotificationBell = () => {
                         </span>
                         {notification.type === "share" &&
                           notification.shareId && (
-                            <button
-                              onClick={(e) => {
-                                const shareId =
-                                  typeof notification.shareId === "object" &&
-                                  notification.shareId !== null &&
-                                  "_id" in notification.shareId
-                                    ? (notification.shareId as { _id: string })
-                                        ._id
-                                    : (notification.shareId as string);
-
-                                handleAcceptShare(notification._id, shareId, e);
-                              }}
-                              className="cursor-pointer text-xs bg-action-color hover:bg-action-color-hover text-slate-100 px-2 py-1 rounded font-medium"
-                            >
-                              Accepter
-                            </button>
+                            <>
+                              <button
+                                onClick={(e) =>
+                                  handleAcceptShare(
+                                    notification._id,
+                                    notification.shareId,
+                                    e,
+                                  )
+                                }
+                                className="cursor-pointer text-xs bg-action-color hover:bg-action-color-hover text-slate-100 px-2 py-1 rounded font-medium"
+                              >
+                                Accepter
+                              </button>
+                              <button
+                                onClick={(e) =>
+                                  handleRefuseShare(
+                                    notification._id,
+                                    notification.shareId,
+                                    e,
+                                  )
+                                }
+                                className="cursor-pointer text-xs text-red-600 hover:text-red-800 px-2 py-1 rounded font-medium"
+                              >
+                                Refuser
+                              </button>
+                            </>
                           )}
 
                         <button
                           onClick={(e) => handleMarkAsRead(notification._id, e)}
-                          className="cursor-pointer text-xs text-action-color hover:text-action-color-hover font-medium ml-auto"
+                          className="cursor-pointer text-xs text-action-color hover:text-action-color-hover font-medium mr-auto sm:ml-auto"
                         >
                           Marquer comme lu
                         </button>

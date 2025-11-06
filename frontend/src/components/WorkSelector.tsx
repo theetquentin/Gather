@@ -102,7 +102,7 @@ export const WorkSelector = ({
             <button
               type="button"
               onClick={handleSelectAll}
-              className="text-sm text-action-color hover:text-action-color-hover font-medium"
+              className="cursor-pointer text-sm text-action-color hover:text-action-color-hover font-medium"
             >
               Tout sélectionner
             </button>
@@ -110,7 +110,7 @@ export const WorkSelector = ({
               <button
                 type="button"
                 onClick={handleDeselectAll}
-                className="text-sm text-slate-700 hover:text-slate-900 font-medium"
+                className="cursor-pointer text-sm text-slate-700 hover:text-slate-900 font-medium"
               >
                 Tout désélectionner
               </button>

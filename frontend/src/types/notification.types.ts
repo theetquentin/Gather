@@ -1,4 +1,5 @@
 import type { User } from './auth.types';
+import type { Share } from './share.types';
 
 export type NotificationType = 'review' | 'share' | 'alert';
 
@@ -8,7 +9,7 @@ export interface Notification {
   senderId?: string | User;
   collectionId?: string;
   workId?: string;
-  shareId?: string;
+  shareId?: string | Share;
   type: NotificationType;
   message: string;
   readAt?: string | null;

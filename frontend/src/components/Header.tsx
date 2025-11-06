@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { NotificationBell } from './NotificationBell';
-import { LogoGather } from './LogoGather';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { NotificationBell } from "./NotificationBell";
+import { LogoGather } from "./LogoGather";
 
 export const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -14,13 +14,16 @@ export const Header = () => {
   const handleLogout = () => {
     logout();
     closeMobileMenu();
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <header className="bg-primary-color">
       <div className="max-w-6xl mx-auto py-4 px-4">
-        <nav className="flex items-center justify-between min-h-[44px]" aria-label="Navigation principale">
+        <nav
+          className="flex items-center justify-between min-h-[44px]"
+          aria-label="Navigation principale"
+        >
           {/* Logo et liens - groupés à gauche */}
           <div className="flex items-center space-x-8">
             <Link
@@ -77,14 +80,16 @@ export const Header = () => {
                 </Link>
               )}
 
-              {isAuthenticated && user && ["admin", "moderator"].includes(user.role) && (
-                <Link
-                  to="/all-collections"
-                  className="text-slate-900 hover:text-action-color-hover transition-colors font-medium focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
-                >
-                  Toutes les collections
-                </Link>
-              )}
+              {isAuthenticated &&
+                user &&
+                ["admin", "moderator"].includes(user.role) && (
+                  <Link
+                    to="/all-collections"
+                    className="text-slate-900 hover:text-action-color-hover transition-colors font-medium focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2 rounded px-2"
+                  >
+                    Toutes les collections
+                  </Link>
+                )}
             </div>
           </div>
 
@@ -93,11 +98,14 @@ export const Header = () => {
             <div className="hidden lg:flex items-center space-x-4">
               <NotificationBell />
               <span className="text-slate-700">
-                Bonjour, <span className="font-medium text-slate-900">{user?.username}</span>
+                Bonjour,{" "}
+                <span className="font-medium text-slate-900">
+                  {user?.username}
+                </span>
               </span>
               <button
                 onClick={handleLogout}
-                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md transition-colors font-medium"
+                className="cursor-pointer bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md transition-colors font-medium"
                 aria-label="Se déconnecter de votre compte"
               >
                 Déconnexion
@@ -110,17 +118,39 @@ export const Header = () => {
             {isAuthenticated && <NotificationBell />}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-slate-900 p-2 rounded-md hover:bg-secondary-color focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
-              aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              className="cursor-pointer text-slate-900 p-2 rounded-md hover:bg-secondary-color focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+              aria-label={
+                isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"
+              }
               aria-expanded={isMobileMenuOpen}
             >
               {isMobileMenuOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               )}
             </button>
@@ -186,11 +216,14 @@ export const Header = () => {
 
                 <div className="border-t border-slate-400 pt-3 mt-3">
                   <span className="block text-slate-700 px-2 py-2">
-                    Bonjour, <span className="font-medium text-slate-900">{user?.username}</span>
+                    Bonjour,{" "}
+                    <span className="font-medium text-slate-900">
+                      {user?.username}
+                    </span>
                   </span>
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md transition-colors font-medium mt-2"
+                    className="cursor-pointer w-full text-left bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md transition-colors font-medium mt-2"
                     aria-label="Se déconnecter de votre compte"
                   >
                     Déconnexion
@@ -204,4 +237,3 @@ export const Header = () => {
     </header>
   );
 };
-

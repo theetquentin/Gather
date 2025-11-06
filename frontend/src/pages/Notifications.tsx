@@ -73,17 +73,31 @@ export const Notifications = () => {
     }
   };
 
-  const handleAcceptShare = async (notificationId: string, shareId: string) => {
+  const handleAcceptShare = async (notificationId: string, shareId: Notification["shareId"]) => {
     try {
       setError("");
       // Accepter le partage
-      await shareService.updateShareStatus(shareId, { status: "accepted" });
+      await shareService.updateShareStatus(shareId!, { status: "accepted" });
       // Supprimer la notification de la liste
       setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Erreur lors de l'acceptation",
       );
+    }
+  };
+
+  const handleRefuseShare = async (notificationId: string, shareId: Notification["shareId"]) => {
+    try {
+      setError("");
+      // Refuser le partage
+      await shareService.updateShareStatus(shareId!, { status: "refused" });
+      // Supprimer la notification côté backend
+      await notificationService.deleteNotification(notificationId);
+      // Supprimer la notification de la liste
+      setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur lors du refus");
     }
   };
 
@@ -118,7 +132,7 @@ export const Notifications = () => {
 
   return (
     <main className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
           <h1 className="text-4xl font-bold text-slate-900">Notifications</h1>
           {unreadCount > 0 && (
@@ -131,7 +145,7 @@ export const Notifications = () => {
         {unreadCount > 0 && (
           <button
             onClick={handleMarkAllAsRead}
-            className="text-sm text-action-color hover:text-action-color-hover font-medium"
+            className="cursor-pointer text-sm text-start mt-4 sm:mt-0 sm:text-center text-action-color hover:text-action-color-hover font-medium"
           >
             Tout marquer comme lu
           </button>
@@ -143,7 +157,7 @@ export const Notifications = () => {
       <div className="flex gap-2 mb-6">
         <button
           onClick={() => setFilter("all")}
-          className={`px-4 py-2 rounded-md font-medium transition-colors ${
+          className={`cursor-pointer px-4 py-2 rounded-md font-medium transition-colors ${
             filter === "all"
               ? "bg-action-color text-slate-100"
               : "bg-secondary-color text-slate-900 hover:bg-primary-color"
@@ -153,7 +167,7 @@ export const Notifications = () => {
         </button>
         <button
           onClick={() => setFilter("unread")}
-          className={`px-4 py-2 rounded-md font-medium transition-colors ${
+          className={`cursor-pointer px-4 py-2 rounded-md font-medium transition-colors ${
             filter === "unread"
               ? "bg-action-color text-slate-100"
               : "bg-secondary-color text-slate-900 hover:bg-primary-color"
@@ -206,35 +220,41 @@ export const Notifications = () => {
                     {formatDate(notification.createdAt)}
                   </p>
                   <div className="flex gap-3 mt-3">
-                    {notification.type === "share" &&
-                      notification.shareId &&
-                      !notification.readAt && (
-                        <button
-                          onClick={() =>
-                            handleAcceptShare(
-                              notification._id,
-                              notification.shareId as string,
-                            )
-                          }
-                          className="text-sm bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded font-medium"
-                        >
-                          Accepter l'invitation
-                        </button>
-                      )}
+                    {notification.type === "share" && notification.shareId && (
+                      <button
+                        onClick={() =>
+                          handleAcceptShare(notification._id, notification.shareId)
+                        }
+                        className="cursor-pointer text-sm bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded font-medium"
+                      >
+                        Accepter l'invitation
+                      </button>
+                    )}
                     {!notification.readAt && (
                       <button
                         onClick={() => handleMarkAsRead(notification._id)}
-                        className="text-sm text-action-color hover:text-action-color-hover font-medium"
+                        className="cursor-pointer text-sm text-action-color hover:text-action-color-hover font-medium"
                       >
                         Marquer comme lu
                       </button>
                     )}
-                    <button
-                      onClick={() => handleDelete(notification._id)}
-                      className="text-sm text-red-600 hover:text-red-800 font-medium"
-                    >
-                      Supprimer
-                    </button>
+                    {notification.type === "share" && notification.shareId ? (
+                      <button
+                        onClick={() =>
+                          handleRefuseShare(notification._id, notification.shareId)
+                        }
+                        className="cursor-pointer text-sm text-red-600 hover:text-red-800 font-medium"
+                      >
+                        Refuser
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleDelete(notification._id)}
+                        className="cursor-pointer text-sm text-red-600 hover:text-red-800 font-medium"
+                      >
+                        Supprimer
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

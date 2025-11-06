@@ -16,9 +16,21 @@ export const VISIBILITY_LABELS: Record<
   string,
   { label: string; color: string; text: string }
 > = {
-  private: { label: "Privée", color: "bg-[#B9EBC6]", text: "text-[#145214]" },
-  public: { label: "Publique", color: "bg-[#F9E1B6]", text: "text-[#703E00]" },
-  shared: { label: "Partagée", color: "bg-[#E1B9C6]", text: "text-[#4B1021]" },
+  private: {
+    label: "Privée",
+    color: "bg-private-tag",
+    text: "text-private-tag-txt",
+  },
+  public: {
+    label: "Publique",
+    color: "bg-public-tag",
+    text: "text-public-tag-txt",
+  },
+  shared: {
+    label: "Partagée",
+    color: "bg-shared-tag",
+    text: "text-shared-tag-txt",
+  },
 };
 
 export const VISIBILITY_OPTIONS: {

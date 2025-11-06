@@ -201,21 +201,21 @@ export const CollectionDetail = () => {
             {isOwner && (
               <button
                 onClick={() => setEditMode("info")}
-                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
+                className="cursor-pointer bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
               >
                 Modifier les informations
               </button>
             )}
             <button
               onClick={() => setEditMode("works")}
-              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
+              className="cursor-pointer bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
             >
               Modifier les œuvres
             </button>
             {isOwner && collection.visibility === "shared" && (
               <button
                 onClick={() => setEditMode("invites")}
-                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
+                className="cursor-pointer bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap"
               >
                 Gérer les invitations
               </button>
@@ -275,14 +275,14 @@ export const CollectionDetail = () => {
                 type="button"
                 onClick={handleCancelEdit}
                 disabled={isSaving}
-                className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium"
+                className="cursor-pointer bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium"
               >
                 Annuler
               </button>
               <button
                 type="submit"
                 disabled={isSaving}
-                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium"
+                className="cursor-pointer bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium"
               >
                 {isSaving ? "Sauvegarde..." : "Enregistrer"}
               </button>
@@ -302,14 +302,14 @@ export const CollectionDetail = () => {
             <button
               onClick={handleCancelEdit}
               disabled={isSaving}
-              className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium"
+              className="cursor-pointer bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium"
             >
               Annuler
             </button>
             <button
               onClick={handleSaveWorks}
               disabled={isSaving}
-              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium"
+              className="cursor-pointer bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded text-sm font-medium"
             >
               {isSaving ? "Sauvegarde..." : "Enregistrer"}
             </button>
@@ -323,7 +323,7 @@ export const CollectionDetail = () => {
           <div className="flex justify-end gap-2 pt-2">
             <button
               onClick={() => setEditMode(null)}
-              className="bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium"
+              className="cursor-pointer bg-secondary-color hover:bg-primary-color text-slate-900 px-4 py-2 rounded text-sm font-medium"
             >
               Fermer
             </button>

@@ -31,7 +31,7 @@ export const CollectionCard = ({
   const worksCount = collection.works.length;
 
   return (
-    <div className="bg-primary-color p-6 rounded-xl shadow hover:shadow-lg transition-shadow">
+    <div className="bg-primary-color p-4 sm:p-6 rounded-xl shadow hover:shadow-lg transition-shadow flex flex-col h-full">
       {/* Miniature des images */}
       {previewImages.length > 0 && (
         <div className="mb-4 h-32 rounded-lg overflow-hidden flex items-center justify-center gap-1 p-1">
@@ -49,21 +49,21 @@ export const CollectionCard = ({
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-xl font-semibold text-slate-900">
+            <h3 className="text-lg sm:text-xl font-semibold text-slate-900">
               {collection.name}
             </h3>
           </div>
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="inline-block px-3 py-1 bg-secondary-color text-slate-900 text-sm font-medium rounded-full">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span className="inline-block px-2 py-0.5 sm:px-3 sm:py-1 bg-secondary-color text-slate-900 text-xs sm:text-sm font-medium rounded-full">
               {COLLECTION_TYPES.find((t) => t.value === collection.type)?.label}
             </span>
             <span
-              className={`inline-block px-3 py-1 ${visibilityInfo.color} ${visibilityInfo.text} text-sm font-medium rounded-full`}
+              className={`inline-block px-2 py-0.5 sm:px-3 sm:py-1 ${visibilityInfo.color} ${visibilityInfo.text} text-xs sm:text-sm font-medium rounded-full`}
             >
               {visibilityInfo.label}
             </span>
             {!isOwner && collection.rights && (
-              <span className="inline-block px-3 py-1 bg-slate-600 text-slate-100 text-sm font-medium rounded-full">
+              <span className="inline-block px-2 py-0.5 sm:px-3 sm:py-1 bg-slate-600 text-slate-100 text-xs sm:text-sm font-medium rounded-full">
                 {collection.rights === "read" ? "Lecture seule" : "Édition"}
               </span>
             )}
@@ -76,10 +76,10 @@ export const CollectionCard = ({
         {worksCount > 1 ? "s" : ""}
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 mt-auto">
         <Link
           to={`/collections/${collection._id}`}
-          className="flex-1 text-center bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md font-medium transition-colors focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
+          className="flex-1 text-center bg-action-color hover:bg-action-color-hover text-slate-100 px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-sm sm:text-base font-medium transition-colors focus-visible:ring-2 focus-visible:ring-action-color focus-visible:ring-offset-2"
           aria-label={`Voir les détails de la collection ${collection.name}`}
         >
           Voir la collection
@@ -88,7 +88,7 @@ export const CollectionCard = ({
         {showActions && onDelete && isOwner && (
           <button
             onClick={() => onDelete(collection._id)}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-slate-100 rounded-md font-medium transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+            className="cursor-pointer px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 hover:bg-red-700 text-slate-100 rounded-md text-sm sm:text-base font-medium transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
             aria-label={`Supprimer la collection ${collection.name}`}
           >
             Supprimer
