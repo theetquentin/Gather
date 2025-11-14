@@ -9,6 +9,7 @@ import {
   countUsersByEmail,
   searchUsers,
   updateUser,
+  getUserByIdWithPassword,
 } from "../repositories/userRepository";
 
 export const createNewUser = async (data: IUser) => {
@@ -57,10 +58,11 @@ export const searchUsersByQuery = async (query: string) => {
 
 export const updateUserProfile = async (
   userId: string,
+  currentPassword: string,
   updateData: {
     username?: string;
     email?: string;
-    password?: string;
+    newPassword?: string;
     profilePicture?: string;
   },
 ) => {
@@ -72,7 +74,23 @@ export const updateUserProfile = async (
     throw new Error("Format de l'id invalide");
   }
 
-  // Vérifier que l'utilisateur existe
+  // Récupérer l'utilisateur avec son mot de passe pour vérification
+  const userWithPassword = await getUserByIdWithPassword(userId);
+  if (!userWithPassword) {
+    throw new Error("Utilisateur non trouvé");
+  }
+
+  // Vérifier le mot de passe actuel avec argon2
+  const isPasswordValid = await argon2.verify(
+    userWithPassword.password,
+    currentPassword,
+  );
+
+  if (!isPasswordValid) {
+    throw new Error("Mot de passe actuel incorrect");
+  }
+
+  // Récupérer les infos utilisateur sans le mot de passe
   const existingUser = await getUserById(userId);
   if (!existingUser) {
     throw new Error("Utilisateur non trouvé");
@@ -100,8 +118,8 @@ export const updateUserProfile = async (
   }
 
   // Hasher le nouveau mot de passe si fourni
-  if (updateData.password) {
-    const hpwd = await hashPassword(updateData.password);
+  if (updateData.newPassword) {
+    const hpwd = await hashPassword(updateData.newPassword);
     dataToUpdate.password = hpwd;
   }
 

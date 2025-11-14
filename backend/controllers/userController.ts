@@ -189,28 +189,28 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
       return res.status(400).json({ success: false, errors: firstMessage });
     }
 
-    // Filtrer uniquement les champs autorisés (évite l'injection de champs dangereux)
-    const allowedFields: (keyof UpdateUserDto)[] = [
-      "username",
-      "email",
-      "password",
-      "profilePicture",
-    ];
+    // Extraire le mot de passe actuel
+    const { currentPassword } = updateDto;
 
-    const updateData: Partial<{
+    // Filtrer uniquement les champs autorisés (évite l'injection de champs dangereux)
+    const updateData: {
       username?: string;
       email?: string;
-      password?: string;
+      newPassword?: string;
       profilePicture?: string;
-    }> = {};
+    } = {};
 
-    for (const field of allowedFields) {
-      if (updateDto[field] !== undefined) {
-        updateData[field] = updateDto[field];
-      }
-    }
+    if (updateDto.username) updateData.username = updateDto.username;
+    if (updateDto.email) updateData.email = updateDto.email;
+    if (updateDto.newPassword) updateData.newPassword = updateDto.newPassword;
+    if (updateDto.profilePicture !== undefined)
+      updateData.profilePicture = updateDto.profilePicture;
 
-    const updatedUser = await updateUserProfile(userId, updateData);
+    const updatedUser = await updateUserProfile(
+      userId,
+      currentPassword,
+      updateData,
+    );
 
     return res.status(200).json({
       success: true,
@@ -232,7 +232,8 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
         err.message === "Format de l'id invalide" ||
         err.message === "Ce pseudonyme existe déjà" ||
         err.message === "Ce mail est déjà attribué" ||
-        err.message === "Aucune donnée à mettre à jour"
+        err.message === "Aucune donnée à mettre à jour" ||
+        err.message === "Mot de passe actuel incorrect"
       ) {
         return res.status(400).json({
           success: false,

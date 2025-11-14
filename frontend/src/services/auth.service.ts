@@ -107,5 +107,10 @@ export const authService = {
 
   getCurrentUserData(): User | null {
     return currentUser;
+  },
+
+  // Alias pour rafraîchir les données utilisateur
+  async refreshUserData(): Promise<void> {
+    return this.getCurrentUser();
   }
 };

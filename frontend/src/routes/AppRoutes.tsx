@@ -10,6 +10,8 @@ import { AllCollections } from "../pages/AllCollections";
 import { MyCollections } from "../pages/MyCollections";
 import { CollectionDetail } from "../pages/CollectionDetail";
 import { Notifications } from "../pages/Notifications";
+import { ProfileEdit } from "../pages/ProfileEdit";
+import { RoleManagement } from "../pages/RoleManagement";
 
 // Configuration des routes de l'application
 export const AppRoutes = () => {
@@ -68,6 +70,22 @@ export const AppRoutes = () => {
               <AllCollections />
             ) : (
               <Navigate to="/collections" />
+            )
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            isAuthenticated ? <ProfileEdit /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/admin/roles"
+          element={
+            isAuthenticated && user && user.role === "admin" ? (
+              <RoleManagement />
+            ) : (
+              <Navigate to="/" />
             )
           }
         />

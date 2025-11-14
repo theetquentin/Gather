@@ -30,6 +30,11 @@ export const getUserByEmailWithPassword = async (mail: string) => {
   return await User.findOne({ email: mail }).select("+password");
 };
 
+export const getUserByIdWithPassword = async (userId: string) => {
+  // utile pour vérification du mot de passe actuel
+  return await User.findById(userId).select("+password");
+};
+
 export const searchUsers = async (query: string) => {
   // Sanitization: échapper tous les caractères spéciaux de regex pour éviter l'injection NoSQL
   const sanitizedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

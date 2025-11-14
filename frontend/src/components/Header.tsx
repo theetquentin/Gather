@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FiUser, FiShield, FiLogOut } from "react-icons/fi";
 import { useAuth } from "../hooks/useAuth";
 import { NotificationBell } from "./NotificationBell";
 import { LogoGather } from "./LogoGather";
+import { UserMenu } from "./UserMenu";
 
 export const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -97,19 +99,7 @@ export const Header = () => {
           {isAuthenticated && (
             <div className="hidden lg:flex items-center space-x-4">
               <NotificationBell />
-              <span className="text-slate-700">
-                Bonjour,{" "}
-                <span className="font-medium text-slate-900">
-                  {user?.username}
-                </span>
-              </span>
-              <button
-                onClick={handleLogout}
-                className="cursor-pointer bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md transition-colors font-medium"
-                aria-label="Se déconnecter de votre compte"
-              >
-                Déconnexion
-              </button>
+              <UserMenu />
             </div>
           )}
 
@@ -188,7 +178,7 @@ export const Header = () => {
 
             <Link
               to="/collections"
-              className="block text-slate-900 hover:text-action-color-hover transition-colors font-medium px-2 py-2 rounded hover:bg-secondary-color"
+              className="block text-slate-900 transition-colors font-medium px-2 py-2 rounded hover:bg-secondary-color"
               onClick={closeMobileMenu}
             >
               Collections publiques
@@ -198,7 +188,7 @@ export const Header = () => {
               <>
                 <Link
                   to="/my-collections"
-                  className="block text-slate-900 hover:text-action-color-hover transition-colors font-medium px-2 py-2 rounded hover:bg-secondary-color"
+                  className="block text-slate-900 transition-colors font-medium px-2 py-2 rounded hover:bg-secondary-color"
                   onClick={closeMobileMenu}
                 >
                   Mes collections
@@ -207,7 +197,7 @@ export const Header = () => {
                 {user && ["admin", "moderator"].includes(user.role) && (
                   <Link
                     to="/all-collections"
-                    className="block text-slate-900 hover:text-action-color-hover transition-colors font-medium px-2 py-2 rounded hover:bg-secondary-color"
+                    className="block text-slate-900 transition-colors font-medium px-2 py-2 rounded hover:bg-secondary-color"
                     onClick={closeMobileMenu}
                   >
                     Toutes les collections
@@ -215,18 +205,47 @@ export const Header = () => {
                 )}
 
                 <div className="border-t border-slate-400 pt-3 mt-3">
-                  <span className="block text-slate-700 px-2 py-2">
+                  <span className="block text-slate-700 px-2 py-2 mb-2">
                     Bonjour,{" "}
                     <span className="font-medium text-slate-900">
                       {user?.username}
                     </span>
                   </span>
+
+                  {/* Mon profil */}
+                  <button
+                    onClick={() => {
+                      closeMobileMenu();
+                      navigate("/profile/edit");
+                    }}
+                    className="cursor-pointer w-full flex items-center gap-3 px-4 py-3 text-slate-900 hover:bg-secondary-color transition-colors text-left rounded-md"
+                  >
+                    <FiUser size={18} className="text-slate-700" />
+                    <span className="font-medium">Mon profil</span>
+                  </button>
+
+                  {/* Gérer les rôles (admin uniquement) */}
+                  {user && user.role === "admin" && (
+                    <button
+                      onClick={() => {
+                        closeMobileMenu();
+                        navigate("/admin/roles");
+                      }}
+                      className="cursor-pointer w-full flex items-center gap-3 px-4 py-3 text-slate-900 hover:bg-secondary-color transition-colors text-left rounded-md"
+                    >
+                      <FiShield size={18} className="text-slate-700" />
+                      <span className="font-medium">Gérer les rôles</span>
+                    </button>
+                  )}
+
+                  {/* Déconnexion */}
                   <button
                     onClick={handleLogout}
-                    className="cursor-pointer w-full text-left bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md transition-colors font-medium mt-2"
+                    className="cursor-pointer w-full flex items-center gap-3 px-4 py-3 text-slate-900 hover:bg-secondary-color transition-colors text-left rounded-md"
                     aria-label="Se déconnecter de votre compte"
                   >
-                    Déconnexion
+                    <FiLogOut size={18} className="text-slate-700" />
+                    <span className="font-medium">Déconnexion</span>
                   </button>
                 </div>
               </>

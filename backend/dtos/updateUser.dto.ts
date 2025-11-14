@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsNotEmpty,
   IsOptional,
   IsString,
   Length,
@@ -7,6 +8,12 @@ import {
 } from "class-validator";
 
 export class UpdateUserDto {
+  @IsNotEmpty({ message: "Le mot de passe actuel est requis." })
+  @IsString({
+    message: "Le mot de passe actuel doit être une chaîne de caractères.",
+  })
+  currentPassword!: string;
+
   @IsOptional()
   @IsString({
     message: "Le nom d'utilisateur doit être une chaîne de caractères.",
@@ -21,18 +28,20 @@ export class UpdateUserDto {
   email?: string;
 
   @IsOptional()
-  @IsString({ message: "Le mot de passe doit être une chaîne de caractères." })
+  @IsString({
+    message: "Le nouveau mot de passe doit être une chaîne de caractères.",
+  })
   @Length(8, 30, {
-    message: "Le mot de passe doit contenir entre 8 et 30 caractères.",
+    message: "Le nouveau mot de passe doit contenir entre 8 et 30 caractères.",
   })
   @Matches(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
     {
       message:
-        "Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial.",
+        "Le nouveau mot de passe doit contenir au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial.",
     },
   )
-  password?: string;
+  newPassword?: string;
 
   @IsOptional()
   @IsString({
