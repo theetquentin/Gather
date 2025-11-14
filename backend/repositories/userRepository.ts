@@ -42,3 +42,14 @@ export const searchUsers = async (query: string) => {
     .select("-password")
     .limit(10);
 };
+
+export const updateUser = async (
+  userId: string,
+  updateData: Partial<IUser>,
+) => {
+  return await User.findByIdAndUpdate(
+    userId,
+    { $set: updateData },
+    { new: true, runValidators: true },
+  ).select("_id username email profilePicture");
+};

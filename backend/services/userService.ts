@@ -8,6 +8,7 @@ import {
   countUsersByName,
   countUsersByEmail,
   searchUsers,
+  updateUser,
 } from "../repositories/userRepository";
 
 export const createNewUser = async (data: IUser) => {
@@ -52,6 +53,91 @@ export const searchUsersByQuery = async (query: string) => {
     throw new Error("La recherche doit contenir entre 2 et 50 caractères");
   }
   return await searchUsers(trimmedQuery);
+};
+
+export const updateUserProfile = async (
+  userId: string,
+  updateData: {
+    username?: string;
+    email?: string;
+    password?: string;
+    profilePicture?: string;
+  },
+) => {
+  if (!userId) {
+    throw new Error("Il manque l'id");
+  }
+
+  if (!Types.ObjectId.isValid(userId)) {
+    throw new Error("Format de l'id invalide");
+  }
+
+  // Vérifier que l'utilisateur existe
+  const existingUser = await getUserById(userId);
+  if (!existingUser) {
+    throw new Error("Utilisateur non trouvé");
+  }
+
+  // Préparer les données à mettre à jour
+  const dataToUpdate: Partial<IUser> = {};
+
+  // Vérifier si le username est déjà pris par un autre utilisateur
+  if (updateData.username && updateData.username !== existingUser.username) {
+    const usernameCount = await countUsersByName(updateData.username);
+    if (usernameCount > 0) {
+      throw new Error("Ce pseudonyme existe déjà");
+    }
+    dataToUpdate.username = updateData.username;
+  }
+
+  // Vérifier si l'email est déjà pris par un autre utilisateur
+  if (updateData.email && updateData.email !== existingUser.email) {
+    const emailCount = await countUsersByEmail(updateData.email);
+    if (emailCount > 0) {
+      throw new Error("Ce mail est déjà attribué");
+    }
+    dataToUpdate.email = updateData.email;
+  }
+
+  // Hasher le nouveau mot de passe si fourni
+  if (updateData.password) {
+    const hpwd = await hashPassword(updateData.password);
+    dataToUpdate.password = hpwd;
+  }
+
+  // Mettre à jour la photo de profil si fournie
+  if (updateData.profilePicture !== undefined) {
+    dataToUpdate.profilePicture = updateData.profilePicture;
+  }
+
+  // Si aucune donnée à mettre à jour
+  if (Object.keys(dataToUpdate).length === 0) {
+    throw new Error("Aucune donnée à mettre à jour");
+  }
+
+  return await updateUser(userId, dataToUpdate);
+};
+
+export const updateUserRole = async (
+  userId: string,
+  role: "admin" | "user" | "moderator",
+) => {
+  if (!userId) {
+    throw new Error("Il manque l'id");
+  }
+
+  if (!Types.ObjectId.isValid(userId)) {
+    throw new Error("Format de l'id invalide");
+  }
+
+  // Vérifier que l'utilisateur existe
+  const existingUser = await getUserById(userId);
+  if (!existingUser) {
+    throw new Error("Utilisateur non trouvé");
+  }
+
+  // Mettre à jour le rôle
+  return await updateUser(userId, { role });
 };
 
 export async function hashPassword(password: string): Promise<string> {

@@ -38,7 +38,6 @@ const seedData = {
       password: "Admin123!",
       role: "admin",
       collections: ["65b4f6b283d7a8e7d23f0101"],
-      shared: [],
     },
     {
       _id: "65b4f6b283d7a8e7d23f00a2",
@@ -47,7 +46,6 @@ const seedData = {
       password: "Alice123!",
       role: "user",
       collections: ["65b4f6b283d7a8e7d23f0102", "65b4f6b283d7a8e7d23f0103"],
-      shared: ["65b4f6b283d7a8e7d23f0201"],
     },
     {
       _id: "65b4f6b283d7a8e7d23f00a3",
@@ -56,7 +54,6 @@ const seedData = {
       password: "Bobmoderator123!",
       role: "moderator",
       collections: ["65b4f6b283d7a8e7d23f0104"],
-      shared: ["65b4f6b283d7a8e7d23f0202", "65b4f6b283d7a8e7d23f0201"],
     },
   ],
 
@@ -159,7 +156,6 @@ const importData = async () => {
         visibility: "public",
         userId: "65b4f6b283d7a8e7d23f00a1",
         works: worksByType["book"]?.slice(0, 5) || [],
-        shared: [],
       },
       {
         _id: "65b4f6b283d7a8e7d23f0102",
@@ -168,7 +164,6 @@ const importData = async () => {
         visibility: "private",
         userId: "65b4f6b283d7a8e7d23f00a2",
         works: worksByType["music"]?.slice(0, 4) || [],
-        shared: ["65b4f6b283d7a8e7d23f0201"],
       },
       {
         _id: "65b4f6b283d7a8e7d23f0103",
@@ -177,7 +172,6 @@ const importData = async () => {
         visibility: "shared",
         userId: "65b4f6b283d7a8e7d23f00a2",
         works: worksByType["movie"]?.slice(0, 6) || [],
-        shared: ["65b4f6b283d7a8e7d23f0202"],
       },
       {
         _id: "65b4f6b283d7a8e7d23f0104",
@@ -186,7 +180,6 @@ const importData = async () => {
         visibility: "private",
         userId: "65b4f6b283d7a8e7d23f00a3",
         works: worksByType["movie"]?.slice(6, 10) || [],
-        shared: [],
       },
     ];
     await Collection.insertMany(collectionsToInsert);
