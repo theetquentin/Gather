@@ -9,20 +9,20 @@ export const createShare = async (data: IShare) => {
 export const getShareById = async (shareId: string) => {
   return await Share.findById(shareId)
     .populate("collectionId", "name type visibility")
-    .populate("guestId", "username email")
-    .populate("authorId", "username email");
+    .populate("guestId", "username email profilePicture")
+    .populate("authorId", "username email profilePicture");
 };
 
 export const getSharesByCollectionId = async (collectionId: string) => {
   return await Share.find({ collectionId })
-    .populate("guestId", "username email")
-    .populate("authorId", "username email");
+    .populate("guestId", "username email profilePicture")
+    .populate("authorId", "username email profilePicture");
 };
 
 export const getSharesByGuestId = async (guestId: string) => {
   return await Share.find({ guestId })
     .populate("collectionId", "name type visibility")
-    .populate("authorId", "username email");
+    .populate("authorId", "username email profilePicture");
 };
 
 export const getAcceptedSharesByGuestId = async (guestId: string) => {
@@ -31,7 +31,7 @@ export const getAcceptedSharesByGuestId = async (guestId: string) => {
       path: "collectionId",
       populate: { path: "works" },
     })
-    .populate("authorId", "username email")
+    .populate("authorId", "username email profilePicture")
     .lean();
 };
 

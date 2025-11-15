@@ -4,6 +4,8 @@ import {
   getUsers,
   findUserById,
   searchUsers,
+  updateUser,
+  updateUserRole,
 } from "../controllers/userController";
 import { requireAuth, requireRole } from "../middleswares/authMiddleware";
 
@@ -14,5 +16,12 @@ userRouter.get("/search", requireAuth, searchUsers);
 userRouter.get("/:userId", requireAuth, findUserById);
 userRouter.get("/", requireAuth, requireRole(["admin", "moderator"]), getUsers);
 userRouter.post("/", createUser);
+userRouter.patch("/:userId", requireAuth, updateUser);
+userRouter.patch(
+  "/:userId/role",
+  requireAuth,
+  requireRole(["admin"]),
+  updateUserRole,
+);
 
 export default userRouter;

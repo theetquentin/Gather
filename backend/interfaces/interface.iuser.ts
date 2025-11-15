@@ -7,7 +7,6 @@ export interface IUser {
   role?: "admin" | "user" | "moderator";
   profilePicture?: string;
   collections?: Types.ObjectId[];
-  shared?: Types.ObjectId[];
   createdAt?: Date;
   updatedAt?: Date;
 }

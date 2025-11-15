@@ -9,6 +9,12 @@
   --color-secondary-color: #b9d7ea;
   --color-action-color: #33538a;
   --color-action-color-hover: #26416d;
+  --color-private-tag: #b9ebc6;
+  --color-private-tag-txt: #145214;
+  --color-public-tag: #f9e1b6;
+  --color-public-tag-txt: #703e00;
+  --color-shared-tag: #e1b9c6;
+  --color-shared-tag-txt: #4b1021;
 }
 
 /* Utilitaires pour le line-clamp */

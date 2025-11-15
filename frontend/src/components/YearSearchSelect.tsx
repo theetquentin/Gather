@@ -33,9 +33,8 @@ export const YearSearchSelect = ({
   }, []);
 
   // Filtrer les options selon la recherche
-  const filteredOptions = yearOptions.filter(
-    (option) =>
-      option.label.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredOptions = yearOptions.filter((option) =>
+    option.label.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   // Gérer le clic en dehors du composant
@@ -62,7 +61,10 @@ export const YearSearchSelect = ({
   };
 
   // Afficher la valeur sélectionnée dans l'input
-  const displayValue = searchQuery || yearOptions.find(opt => opt.value === selectedYear)?.label || "";
+  const displayValue =
+    searchQuery ||
+    yearOptions.find((opt) => opt.value === selectedYear)?.label ||
+    "";
 
   return (
     <div ref={dropdownRef} className="relative">
@@ -89,7 +91,9 @@ export const YearSearchSelect = ({
               key={option.value}
               onClick={() => handleSelect(option.value)}
               className={`w-full text-left px-4 py-2 text-slate-900 hover:bg-secondary-color transition-colors ${
-                option.value === selectedYear ? "bg-secondary-color font-medium" : ""
+                option.value === selectedYear
+                  ? "bg-secondary-color font-medium"
+                  : ""
               }`}
             >
               {option.label}

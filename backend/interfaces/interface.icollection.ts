@@ -6,7 +6,6 @@ export interface ICollection {
   visibility?: "public" | "private" | "shared";
   userId: Types.ObjectId;
   works?: Types.ObjectId[];
-  shared?: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }

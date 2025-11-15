@@ -47,11 +47,12 @@ export const shareService = {
    * Mettre à jour le status du partage
    */
   async updateShareStatus(
-    shareId: string,
+    shareId: string | Share,
     data: UpdateShareStatusInput
   ): Promise<Share> {
+    const id = typeof shareId === 'string' ? shareId : shareId._id;
     const response = await apiClient.patch<ShareResponse>(
-      `/shares/${shareId}/status`,
+      `/shares/${id}/status`,
       data
     );
     if (!response.data?.share) {
@@ -63,7 +64,8 @@ export const shareService = {
   /**
    * Supprimer un partage
    */
-  async deleteShare(shareId: string): Promise<void> {
-    await apiClient.delete(`/shares/${shareId}`);
+  async deleteShare(shareId: string | Share): Promise<void> {
+    const id = typeof shareId === 'string' ? shareId : shareId._id;
+    await apiClient.delete(`/shares/${id}`);
   },
 };

@@ -39,12 +39,6 @@ const collectionSchema = new Schema<ICollection>(
         ref: "Work",
       },
     ],
-    shared: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Share",
-      },
-    ],
   },
   {
     timestamps: true,

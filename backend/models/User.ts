@@ -38,12 +38,6 @@ const userSchema = new Schema<IUser>(
         ref: "Collection",
       },
     ],
-    shared: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Share",
-      },
-    ],
   },
   {
     timestamps: true,

@@ -30,6 +30,11 @@ export const getUserByEmailWithPassword = async (mail: string) => {
   return await User.findOne({ email: mail }).select("+password");
 };
 
+export const getUserByIdWithPassword = async (userId: string) => {
+  // utile pour vérification du mot de passe actuel
+  return await User.findById(userId).select("+password");
+};
+
 export const searchUsers = async (query: string) => {
   // Sanitization: échapper tous les caractères spéciaux de regex pour éviter l'injection NoSQL
   const sanitizedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -39,6 +44,17 @@ export const searchUsers = async (query: string) => {
   return await User.find({
     $or: [{ username: regex }, { email: regex }],
   })
-    .select("-password")
+    .select("_id username email profilePicture role")
     .limit(10);
+};
+
+export const updateUser = async (
+  userId: string,
+  updateData: Partial<IUser>,
+) => {
+  return await User.findByIdAndUpdate(
+    userId,
+    { $set: updateData },
+    { new: true, runValidators: true },
+  ).select("_id username email profilePicture");
 };

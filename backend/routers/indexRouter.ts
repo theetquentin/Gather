@@ -5,6 +5,7 @@ import collectionRouter from "./collectionRouter";
 import workRouter from "./workRouter";
 import notificationRouter from "./notificationRouter";
 import shareRouter from "./shareRouter";
+import uploadRouter from "./uploadRouter";
 const router = Router();
 
 router.use("/auth", authRouter);
@@ -13,5 +14,6 @@ router.use("/collections", collectionRouter);
 router.use("/works", workRouter);
 router.use("/notifications", notificationRouter);
 router.use("/shares", shareRouter);
+router.use("/upload", uploadRouter);
 
 export default router;

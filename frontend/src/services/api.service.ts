@@ -6,13 +6,17 @@ const API_BASE_URL = APP_ENV === "dev" ? `http://localhost:${BACKEND_PORT}` : `h
 export const apiClient = {
   async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    skipContentType = false
   ): Promise<T> {
     const token = localStorage.getItem('token');
-    
-    const headers = new Headers({
-      'Content-Type': 'application/json',
-    });
+
+    const headers = new Headers();
+
+    // Ne pas ajouter Content-Type pour FormData (le navigateur le fait automatiquement)
+    if (!skipContentType) {
+      headers.set('Content-Type', 'application/json');
+    }
 
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
@@ -59,6 +63,14 @@ export const apiClient = {
 
   delete<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, { method: 'DELETE' });
+  },
+
+  // Méthode spéciale pour les uploads de fichiers
+  upload<T>(endpoint: string, formData: FormData): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'POST',
+      body: formData,
+    }, true); // skipContentType = true pour FormData
   },
 };
 
