@@ -57,10 +57,18 @@ export const UserMenu = () => {
         aria-label="Menu utilisateur"
         aria-expanded={isOpen}
       >
-        {/* Icône ronde avec initiale */}
-        <div className="w-8 h-8 rounded-full bg-action-color text-slate-100 flex items-center justify-center font-semibold text-sm">
-          {initial}
-        </div>
+        {/* Avatar ou initiale */}
+        {user.profilePicture ? (
+          <img
+            src={user.profilePicture}
+            alt={user.username}
+            className="w-8 h-8 rounded-full object-cover"
+          />
+        ) : (
+          <div className="w-8 h-8 rounded-full bg-action-color text-slate-100 flex items-center justify-center font-semibold text-sm">
+            {initial}
+          </div>
+        )}
 
         {/* Pseudo */}
         <span className="text-slate-900 font-medium hidden sm:inline">
@@ -76,7 +84,7 @@ export const UserMenu = () => {
 
       {/* Menu déroulant */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 bg-primary-color rounded-lg shadow-lg border border-slate-400 py-1 z-50">
+        <div className="absolute right-0 mt-2 w-48 bg-primary-color rounded-lg shadow-lg border border-slate-400 py-1 z-50">
           {/* Option: Modifier le profil */}
           <button
             onClick={handleProfileClick}

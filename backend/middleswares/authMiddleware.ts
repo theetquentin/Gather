@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 export interface AuthenticatedRequest extends Request {
   user?: { id: string; role: string };
+  file?: Express.Multer.File;
 }
 
 export const requireAuth = (

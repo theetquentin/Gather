@@ -24,7 +24,15 @@ interface UpdateProfileData {
   username?: string;
   email?: string;
   newPassword?: string;
-  profilePicture?: string;
+}
+
+interface UploadAvatarResponse {
+  success: boolean;
+  errors: string | null;
+  data: {
+    avatarUrl: string;
+    publicId: string;
+  } | null;
 }
 
 export const userService = {
@@ -77,5 +85,37 @@ export const userService = {
     }
 
     return response.data.user;
+  },
+
+  /**
+   * Upload user avatar
+   */
+  async uploadAvatar(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    const response = await apiClient.upload<UploadAvatarResponse>(
+      '/upload/avatar',
+      formData
+    );
+
+    if (!response.data?.avatarUrl) {
+      throw new Error(response.errors || 'Erreur lors de l\'upload de l\'avatar');
+    }
+
+    return response.data.avatarUrl;
+  },
+
+  /**
+   * Delete user avatar
+   */
+  async deleteAvatar(): Promise<void> {
+    const response = await apiClient.delete<{ success: boolean; errors: string | null }>(
+      '/upload/avatar'
+    );
+
+    if (!response.success) {
+      throw new Error(response.errors || 'Erreur lors de la suppression de l\'avatar');
+    }
   },
 };

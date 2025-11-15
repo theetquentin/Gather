@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import { ErrorMessage } from "./ErrorMessage";
 import type { User } from "../types/auth.types";
 import type { Share, ShareRights } from "../types/share.types";
-import { FiTrash, FiMail } from "react-icons/fi";
+import { FiTrash, FiMail, FiSearch } from "react-icons/fi";
 
 interface UserInviteProps {
   collectionId: string;
@@ -194,14 +194,20 @@ export const UserInvite = ({
           >
             Rechercher un utilisateur
           </label>
-          <input
-            type="text"
-            id="search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Email ou nom d'utilisateur..."
-            className="w-full px-3 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900 text-sm"
-          />
+          <div className="relative">
+            <FiSearch
+              size={18}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-700"
+            />
+            <input
+              type="text"
+              id="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Email ou nom d'utilisateur..."
+              className="w-full pl-10 pr-3 py-2 bg-secondary-color border border-slate-400 rounded-md focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900 text-sm"
+            />
+          </div>
         </div>
 
         {/* Résultats de recherche */}
@@ -218,11 +224,24 @@ export const UserInvite = ({
                 key={user._id}
                 className="flex items-center justify-between bg-secondary-color p-3 rounded"
               >
-                <div>
-                  <div className="font-medium text-slate-900">
-                    {user.username}
+                <div className="flex items-center gap-3">
+                  {user.profilePicture ? (
+                    <img
+                      src={user.profilePicture}
+                      alt={user.username}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-action-color text-slate-100 flex items-center justify-center font-semibold">
+                      {user.username.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div>
+                    <div className="font-medium text-slate-900">
+                      {user.username}
+                    </div>
+                    <div className="text-sm text-slate-700">{user.email}</div>
                   </div>
-                  <div className="text-sm text-slate-700">{user.email}</div>
                 </div>
                 <button
                   onClick={() => handleInvite(user._id)}
@@ -261,16 +280,28 @@ export const UserInvite = ({
                   key={share._id}
                   className="flex items-center justify-between bg-primary-color p-3 rounded"
                 >
-                  <div className="flex-1">
-                    <div className="flex flex-col items-start sm:flex-row gap-2">
-                      <span className="font-medium text-slate-900">
-                        {guest?.username || "Utilisateur"}
-                        {guest?.email && (
-                          <div className="text-sm text-slate-700 mt-1">
-                            {guest.email}
-                          </div>
-                        )}
-                      </span>
+                  <div className="flex-1 flex items-center gap-3">
+                    {guest?.profilePicture ? (
+                      <img
+                        src={guest.profilePicture}
+                        alt={guest.username}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-action-color text-slate-100 flex items-center justify-center font-semibold">
+                        {guest?.username?.charAt(0).toUpperCase() || "?"}
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <div className="flex flex-col items-start sm:flex-row gap-2">
+                        <span className="font-medium text-slate-900">
+                          {guest?.username || "Utilisateur"}
+                          {guest?.email && (
+                            <div className="text-sm text-slate-700 mt-1">
+                              {guest.email}
+                            </div>
+                          )}
+                        </span>
                       <span
                         className={`px-2 py-0.5 ${getStatusColor(share.status)} text-slate-100 text-xs font-medium rounded`}
                       >
@@ -278,7 +309,8 @@ export const UserInvite = ({
                       </span>
                       <span className="px-2 py-0.5 bg-slate-600 text-slate-100 text-xs font-medium rounded">
                         {share.rights === "read" ? "Lecture" : "Édition"}
-                      </span>
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <button

@@ -197,14 +197,11 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
       username?: string;
       email?: string;
       newPassword?: string;
-      profilePicture?: string;
     } = {};
 
     if (updateDto.username) updateData.username = updateDto.username;
     if (updateDto.email) updateData.email = updateDto.email;
     if (updateDto.newPassword) updateData.newPassword = updateDto.newPassword;
-    if (updateDto.profilePicture !== undefined)
-      updateData.profilePicture = updateDto.profilePicture;
 
     const updatedUser = await updateUserProfile(
       userId,

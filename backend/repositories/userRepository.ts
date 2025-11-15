@@ -44,7 +44,7 @@ export const searchUsers = async (query: string) => {
   return await User.find({
     $or: [{ username: regex }, { email: regex }],
   })
-    .select("-password")
+    .select("_id username email profilePicture role")
     .limit(10);
 };
 

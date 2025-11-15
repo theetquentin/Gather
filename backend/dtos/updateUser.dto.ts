@@ -42,10 +42,4 @@ export class UpdateUserDto {
     },
   )
   newPassword?: string;
-
-  @IsOptional()
-  @IsString({
-    message: "L'URL de la photo de profil doit être une chaîne de caractères.",
-  })
-  profilePicture?: string;
 }

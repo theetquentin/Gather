@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { userService } from "../services/user.service";
 import { authService } from "../services/auth.service";
 import { PasswordConfirmModal } from "../components/PasswordConfirmModal";
+import { AvatarUpload } from "../components/AvatarUpload";
 
 export const ProfileEdit = () => {
   const { user } = useAuth();
@@ -39,7 +40,10 @@ export const ProfileEdit = () => {
     }
 
     // Vérifier si le nouveau mot de passe et la confirmation correspondent
-    if (formData.newPassword && formData.newPassword !== formData.confirmPassword) {
+    if (
+      formData.newPassword &&
+      formData.newPassword !== formData.confirmPassword
+    ) {
       setError("Les mots de passe ne correspondent pas");
       return;
     }
@@ -121,10 +125,22 @@ export const ProfileEdit = () => {
     navigate(-1);
   };
 
+  const handleAvatarChange = async (newAvatarUrl: string | null) => {
+    // Rafraîchir les données utilisateur pour mettre à jour l'avatar
+    await authService.refreshUserData();
+    setSuccess(
+      newAvatarUrl
+        ? "Avatar mis à jour avec succès !"
+        : "Avatar supprimé avec succès !",
+    );
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen bg-page-background flex items-center justify-center">
-        <p className="text-slate-900">Vous devez être connecté pour accéder à cette page.</p>
+        <p className="text-slate-900">
+          Vous devez être connecté pour accéder à cette page.
+        </p>
       </div>
     );
   }
@@ -148,6 +164,17 @@ export const ProfileEdit = () => {
               {success}
             </div>
           )}
+
+          {/* Avatar Upload Section */}
+          <div className="mb-6 pb-6 border-b border-slate-300">
+            <h2 className="text-lg font-semibold text-slate-900 mb-4">
+              Photo de profil
+            </h2>
+            <AvatarUpload
+              currentAvatarUrl={user.profilePicture}
+              onAvatarChange={handleAvatarChange}
+            />
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Username */}

@@ -14,12 +14,16 @@ export const useAuth = () => {
       setIsLoading(false);
     });
 
-    // Vérifier l'état initial
+    // Vérifier l'état initial et rafraîchir les données depuis le serveur
     if (authService.isAuthenticated()) {
-      setUser(authService.getCurrentUserData());
+      authService.refreshUserData().then(() => {
+        setIsLoading(false);
+      }).catch(() => {
+        setIsLoading(false);
+      });
+    } else {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-
 
     return unsubscribe;
   }, []);
