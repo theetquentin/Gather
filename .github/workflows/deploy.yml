@@ -3,7 +3,7 @@ name: CD - Deploy to Production
 on:
   push:
     branches: [dev]
-  workflow_dispatch: # Allow manual deployment trigger
+  workflow_dispatch: # Permet le déclenchement manuel du déploiement
 
 jobs:
   run-tests:
@@ -14,7 +14,7 @@ jobs:
     name: Create PR and auto-merge
     runs-on: ubuntu-latest
     needs: [run-tests]
-    # Only run on push to dev, not on manual trigger
+    # S'exécute uniquement sur push vers dev, pas lors d'un déclenchement manuel
     if: github.event_name == 'push' && github.ref == 'refs/heads/dev' && github.repository == 'theetquentin/Gather'
     permissions:
       contents: write
@@ -29,18 +29,18 @@ jobs:
       - name: Check if there are changes to deploy
         id: check-changes
         run: |
-          # Fetch latest changes from both branches
+          # Récupération des dernières modifications des deux branches
           git fetch origin main
           git fetch origin dev
 
-          # Compare dev and main
+          # Comparaison entre dev et main
           DIFF_COUNT=$(git rev-list --count origin/main..origin/dev)
 
           if [ "$DIFF_COUNT" -eq "0" ]; then
-            echo "ℹ️ No commits to deploy (dev and main are in sync)"
+            echo "Aucun commit à déployer (dev et main sont synchronisés)"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
-            echo "✅ Found $DIFF_COUNT commit(s) to deploy"
+            echo "Trouvé $DIFF_COUNT commit(s) à déployer"
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
@@ -49,31 +49,31 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GATHER_TOKEN }}
         run: |
-          # Check if PR already exists
+          # Vérifier si une PR existe déjà
           PR_NUMBER=$(gh pr list --base main --head dev --json number --jq '.[0].number')
 
           if [ -z "$PR_NUMBER" ]; then
-            # Create new PR
+            # Créer une nouvelle PR
             PR_NUMBER=$(gh pr create \
               --base main \
               --head dev \
-              --title "🚀 Auto-deploy: dev → main" \
-              --body "✅ All tests passed successfully on dev branch
+              --title "Auto-deploy: dev → main" \
+              --body "Tous les tests sont passés avec succès sur la branche dev
 
-          This PR was automatically created by GitHub Actions.
-          It will be automatically merged once all required checks pass." | grep -oP '(?<=/pull/)\d+')
-            echo "Created PR #$PR_NUMBER"
+          Cette PR a été automatiquement créée par GitHub Actions.
+          Elle sera automatiquement fusionnée une fois que toutes les vérifications requises auront réussi." | grep -oP '(?<=/pull/)\d+')
+            echo "PR créée #$PR_NUMBER"
           else
-            echo "PR #$PR_NUMBER already exists"
+            echo "La PR #$PR_NUMBER existe déjà"
           fi
 
-          # Enable auto-merge (retry with sleep if PR is not ready)
+          # Activer l'auto-merge (réessayer avec un délai si la PR n'est pas prête)
           for i in {1..5}; do
             if gh pr merge $PR_NUMBER --auto --merge --delete-branch=false; then
-              echo "Auto-merge enabled for PR #$PR_NUMBER"
+              echo "Auto-merge activé pour la PR #$PR_NUMBER"
               break
             else
-              echo "Attempt $i failed, waiting 10 seconds..."
+              echo "Tentative $i échouée, attente de 10 secondes..."
               sleep 10
             fi
           done
@@ -82,7 +82,7 @@ jobs:
     name: Deploy to Production Server
     runs-on: self-hosted
     needs: [create-pr]
-    # Run only after PR creation succeeds (skip if no changes or manual trigger)
+    # S'exécute uniquement après la réussite de la création de la PR (ignore si aucun changement ou déclenchement manuel)
     if: |
       github.repository == 'theetquentin/Gather' &&
       needs.create-pr.result == 'success'
@@ -90,7 +90,7 @@ jobs:
     steps:
       - name: Clean workspace before checkout
         run: |
-          # Fix permissions on certbot files created by Docker as root
+          # Correction des permissions sur les fichiers certbot créés par Docker en tant que root
           sudo chown -R $USER:$USER . || true
           rm -rf * .git .github || true
 
@@ -103,7 +103,7 @@ jobs:
           git checkout main
           git reset --hard origin/main
 
-          # Clean untracked files that might cause conflicts
+          # Nettoyage des fichiers non suivis qui pourraient causer des conflits
           rm -f nginx/conf.d/certbot.conf
 
       - name: Create backend .env file from secrets
@@ -116,6 +116,9 @@ jobs:
           DOMAIN=${{ secrets.DOMAIN }}
           API_DOMAIN=${{ secrets.API_DOMAIN }}
           MAIL=${{ secrets.MAIL }}
+          CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}
           EOF
 
       - name: Create frontend .env file from secrets
@@ -134,16 +137,16 @@ jobs:
 
           # Copier les certificats depuis le stockage permanent s'ils existent
           if [ -d "$HOME/gather-ssl-certs/conf/live" ]; then
-            echo "📦 Restauration des certificats SSL existants..."
+            echo "Restauration des certificats SSL existants..."
             sudo cp -r $HOME/gather-ssl-certs/conf/* certbot/conf/ || true
             sudo chown -R $USER:$USER certbot/
           else
-            echo "ℹ️ Aucun certificat existant trouvé, première génération"
+            echo "Aucun certificat existant trouvé, première génération"
           fi
 
       - name: Deploy to production
         run: |
-          # Run production deployment script
+          # Exécution du script de déploiement en production
           ./scripts/prod.sh
 
       - name: Backup SSL certificates to persistent storage
@@ -154,7 +157,7 @@ jobs:
 
           # Sauvegarder les certificats si ils existent
           if [ -d "certbot/conf/live" ]; then
-            echo "💾 Sauvegarde des certificats SSL..."
+            echo "Sauvegarde des certificats SSL..."
             sudo cp -r certbot/conf $HOME/gather-ssl-certs/ || true
           fi
 
@@ -172,25 +175,25 @@ jobs:
           sleep 10
           response=$(curl -s -o /dev/null -w "%{http_code}" https://${{ secrets.API_DOMAIN }}/health || echo "000")
           if [ "$response" = "200" ] || [ "$response" = "404" ]; then
-            echo "✅ Backend is responding"
+            echo "Le backend répond correctement"
           else
-            echo "⚠️ Backend health check returned: $response"
+            echo "Le health check du backend a retourné: $response"
           fi
 
       - name: Check Frontend Health
         run: |
           response=$(curl -s -o /dev/null -w "%{http_code}" https://${{ secrets.DOMAIN }} || echo "000")
           if [ "$response" = "200" ]; then
-            echo "✅ Frontend is accessible"
+            echo "Le frontend est accessible"
           else
-            echo "⚠️ Frontend health check returned: $response"
+            echo "Le health check du frontend a retourné: $response"
           fi
 
   sync-dev:
     name: Sync dev with main
     runs-on: ubuntu-latest
     needs: [verify-deployment]
-    # Only run after successful deployment
+    # S'exécute uniquement après un déploiement réussi
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/dev' &&
@@ -213,15 +216,15 @@ jobs:
 
       - name: Sync dev branch with main
         run: |
-          # Fetch latest changes
+          # Récupération des dernières modifications
           git fetch origin main
           git fetch origin dev
 
-          # Switch to dev and merge main
+          # Basculer sur dev et fusionner main
           git checkout dev
           git merge origin/main --no-edit -m "chore: sync dev with main after successful deployment [skip ci]"
 
-          # Push updated dev
+          # Pousser dev mis à jour
           git push origin dev
 
-          echo "✅ Dev branch synchronized with main"
+          echo "Branche dev synchronisée avec main"

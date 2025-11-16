@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getWorks } from "../services/workService";
+import { getWorks, getWork } from "../services/workService";
 
 export const getAllWorks = async (req: Request, res: Response) => {
   try {
@@ -58,6 +58,40 @@ export const getAllWorks = async (req: Request, res: Response) => {
       msg.startsWith("La limite ne peut pas dépasser")
     ) {
       status = 400;
+    }
+
+    return res.status(status).json({ success: false, errors: msg, data: null });
+  }
+};
+
+export const getWorkById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        errors: "L'ID de l'œuvre est requis",
+        data: null,
+      });
+    }
+
+    const work = await getWork(id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Œuvre récupérée avec succès",
+      data: work,
+    });
+  } catch (err: unknown) {
+    const msg =
+      err instanceof Error ? err.message : "Une erreur serveur est survenue";
+    let status = 500;
+
+    if (msg === "ID invalide") {
+      status = 400;
+    } else if (msg === "Œuvre introuvable") {
+      status = 404;
     }
 
     return res.status(status).json({ success: false, errors: msg, data: null });

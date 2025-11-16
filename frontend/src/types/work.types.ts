@@ -5,6 +5,7 @@ export interface Work {
   publishedAt: string;
   type: string;
   genre: string[];
+  description?: string;
   images?: string[];
   reviews?: string[];
   createdAt: string;

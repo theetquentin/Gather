@@ -2,14 +2,17 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { FiX, FiSearch } from "react-icons/fi";
 import { workService } from "../services/work.service";
 import { WorkCard } from "../components/WorkCard";
+import { AddToCollectionModal } from "../components/AddToCollectionModal";
 import { SEO } from "../components/SEO";
 import { GenreSearchSelect } from "../components/GenreSearchSelect";
 import { YearSearchSelect } from "../components/YearSearchSelect";
 import { TypeSearchSelect } from "../components/TypeSearchSelect";
 import { WORK_GENRES } from "../constants/work.constants";
+import { useAuth } from "../hooks/useAuth";
 import type { Work } from "../types/work.types";
 
 export const Works = () => {
+  const { isAuthenticated } = useAuth();
   const [works, setWorks] = useState<Work[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -18,6 +21,11 @@ export const Works = () => {
   const [selectedType, setSelectedType] = useState("");
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState("");
+
+  // État pour la modale d'ajout à collection
+  const [selectedWorkForAdd, setSelectedWorkForAdd] = useState<Work | null>(
+    null,
+  );
 
   const debounceTimerRef = useRef<number | null>(null);
   const isFirstRender = useRef(true);
@@ -191,7 +199,11 @@ export const Works = () => {
 
       {isLoading ? (
         <div className="flex justify-center items-center py-12">
-          <div className="w-12 h-12 border-4 border-action-color border-t-transparent rounded-full animate-spin" role="status" aria-label="Chargement des œuvres"></div>
+          <div
+            className="w-12 h-12 border-4 border-action-color border-t-transparent rounded-full animate-spin"
+            role="status"
+            aria-label="Chargement des œuvres"
+          ></div>
         </div>
       ) : error ? (
         <div
@@ -216,14 +228,28 @@ export const Works = () => {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center xl:justify-items-start">
               {works.map((work) => (
-                <WorkCard key={work._id} work={work} />
+                <WorkCard
+                  key={work._id}
+                  work={work}
+                  onAddToCollection={setSelectedWorkForAdd}
+                  isAuthenticated={isAuthenticated}
+                />
               ))}
             </div>
           )}
         </>
       )}
+
+      {/* Modale d'ajout à collection */}
+      <AddToCollectionModal
+        work={selectedWorkForAdd}
+        onClose={() => setSelectedWorkForAdd(null)}
+        onSuccess={() => {
+          // Optionnel : recharger les œuvres ou afficher un message
+        }}
+      />
     </main>
   );
 };

@@ -107,6 +107,30 @@ export const CollectionDetail = () => {
 
   const handleSaveWorks = () => handleSave({ works: selectedWorkIds });
 
+  const handleRemoveWork = async (workId: string) => {
+    if (!id || !collection) return;
+
+    const confirmed = window.confirm(
+      "Êtes-vous sûr de vouloir retirer cette œuvre de la collection ?",
+    );
+    if (!confirmed) return;
+
+    try {
+      setError("");
+      const updatedWorkIds = collection.works
+        .map((w) => w._id)
+        .filter((wId) => wId !== workId);
+      await collectionService.updateCollection(id, { works: updatedWorkIds });
+      await loadCollection();
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la suppression de l'œuvre",
+      );
+    }
+  };
+
   const handleCancelEdit = () => {
     if (collection) {
       setFormName(collection.name);
@@ -190,14 +214,15 @@ export const CollectionDetail = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row my-4 gap-3 md:items-center">
+      {/* Section Titre et Actions */}
+      <div className="mb-6">
         {collection.works.length > 0 && (
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-slate-900 mb-3">
             Œuvres ({collection.works.length})
           </h2>
         )}
         {isAuthenticated && canEdit && (
-          <div className="flex flex-col sm:flex-row md:ml-auto gap-2">
+          <div className="flex flex-wrap flex-col sm:flex-row gap-2 justify-center w-full sm:justify-start">
             {isOwner && (
               <button
                 onClick={() => setEditMode("info")}
@@ -225,7 +250,7 @@ export const CollectionDetail = () => {
       </div>
 
       {editMode === "info" && (
-        <div className="mb-4">
+        <div className="mb-6">
           <form onSubmit={handleSaveInfo} className="space-y-3">
             <div>
               <label
@@ -292,7 +317,7 @@ export const CollectionDetail = () => {
       )}
 
       {editMode === "works" && (
-        <div className="mb-4">
+        <div className="mb-6">
           <WorkSelector
             collectionType={collection.type}
             selectedWorkIds={selectedWorkIds}
@@ -318,7 +343,7 @@ export const CollectionDetail = () => {
       )}
 
       {editMode === "invites" && collection.visibility === "shared" && (
-        <div className="mb-4">
+        <div className="mb-6">
           <UserInvite collectionId={collection._id} />
           <div className="flex justify-end gap-2 pt-2">
             <button
@@ -331,8 +356,9 @@ export const CollectionDetail = () => {
         </div>
       )}
 
+      {/* Section Œuvres */}
       {collection.works.length === 0 ? (
-        <div className="p-8 text-center mt-4">
+        <div className="p-8 text-center bg-primary-color rounded-lg">
           <h2 className="text-xl font-semibold text-slate-900 mb-2">
             Collection vide
           </h2>
@@ -341,9 +367,14 @@ export const CollectionDetail = () => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 justify-items-center sm:justify-items-start">
           {collection.works.map((work) => (
-            <WorkCard key={work._id} work={work} />
+            <WorkCard
+              key={work._id}
+              work={work}
+              onRemove={canEdit ? handleRemoveWork : undefined}
+              width="w-72 sm:w-34"
+            />
           ))}
         </div>
       )}

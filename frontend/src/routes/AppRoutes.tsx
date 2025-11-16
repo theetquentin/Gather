@@ -5,6 +5,7 @@ import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Works } from "../pages/Works";
+import { WorkDetail } from "../pages/WorkDetail";
 import { Collections } from "../pages/Collections";
 import { AllCollections } from "../pages/AllCollections";
 import { MyCollections } from "../pages/MyCollections";
@@ -43,6 +44,7 @@ export const AppRoutes = () => {
         {/* Pages publiques */}
         <Route path="/" element={<Home />} />
         <Route path="/works" element={<Works />} />
+        <Route path="/works/:id/:slug" element={<WorkDetail />} />
         <Route path="/collections" element={<Collections />} />
 
         {/* Pages privées - redirigent vers /login si non connecté */}
