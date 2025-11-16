@@ -4,6 +4,7 @@ import {
   getAllWorks,
   countWorksByIds,
   getWorkTypesByIds,
+  getWorkById,
 } from "../repositories/workRepository";
 
 const DEFAULT_LIMIT = 20;
@@ -45,6 +46,25 @@ export const getWorks = async (
   }
 
   return await getAllWorks(finalLimit, type, sanitizedSearch, genre, year);
+};
+
+/**
+ * Récupère une œuvre par son ID
+ * @param id - ID de l'œuvre
+ * @throws Error si l'ID n'est pas valide ou si l'œuvre n'existe pas
+ */
+export const getWork = async (id: string) => {
+  // Validation de l'ID
+  if (!Types.ObjectId.isValid(id)) {
+    throw new Error("ID invalide");
+  }
+
+  const work = await getWorkById(new Types.ObjectId(id));
+  if (!work) {
+    throw new Error("Œuvre introuvable");
+  }
+
+  return work;
 };
 
 /**

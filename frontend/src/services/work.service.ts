@@ -1,5 +1,11 @@
 import { apiClient } from './api.service';
-import type { WorksResponse } from '../types/work.types';
+import type { WorksResponse, Work } from '../types/work.types';
+
+interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  errors: string | null;
+}
 
 export const workService = {
   async getWorks(params?: {
@@ -31,6 +37,10 @@ export const workService = {
 
     const endpoint = queryParams.toString() ? `/works?${queryParams.toString()}` : '/works';
     return apiClient.get<WorksResponse>(endpoint);
+  },
+
+  async getWorkById(id: string): Promise<ApiResponse<Work>> {
+    return apiClient.get<ApiResponse<Work>>(`/works/${id}`);
   },
 };
 

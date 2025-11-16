@@ -25,6 +25,10 @@ export const getWorkTypesByIds = async (ids: Types.ObjectId[]) => {
   return docs as { _id: Types.ObjectId; type: string }[];
 };
 
+export const getWorkById = async (id: Types.ObjectId) => {
+  return await Work.findById(id).lean();
+};
+
 /**
  * Récupère toutes les œuvres avec filtres et recherche (SANITIZÉS par le service)
  * @param limit - Nombre maximum d'œuvres à retourner

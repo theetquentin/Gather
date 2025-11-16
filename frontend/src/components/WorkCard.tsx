@@ -1,61 +1,96 @@
-import type { Work } from '../types/work.types';
+import { FiPlus, FiX } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import type { Work } from "../types/work.types";
 
 interface WorkCardProps {
   work: Work;
+  onAddToCollection?: (work: Work) => void;
+  onRemove?: (workId: string) => void;
+  isAuthenticated?: boolean;
+  width?: string;
 }
 
-export const WorkCard = ({ work }: WorkCardProps) => {
+export const WorkCard = ({ work, onAddToCollection, onRemove, isAuthenticated = false, width = "w-56" }: WorkCardProps) => {
+  const navigate = useNavigate();
+
+  const slugifyTitle = (title: string) => {
+    return title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // Supprime les accents
+      .replace(/[^\w\s-]/g, "") // Supprime les caractères spéciaux
+      .replace(/\s+/g, "-") // Remplace les espaces par des tirets
+      .replace(/-+/g, "-") // Remplace plusieurs tirets par un seul
+      .trim();
+  };
+
   return (
-    <div className="bg-primary-color hover:bg-secondary-color transition-all duration-200 rounded-lg shadow-sm hover:shadow-md overflow-hidden group">
-      {work.images && work.images.length > 0 ? (
-        <div className="relative w-full h-48 overflow-hidden bg-slate-100">
-          <img
-            src={work.images[0]}
-            alt={`Couverture de ${work.title}`}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-          <div className="absolute top-2 right-2">
-            {work.images.length > 1 && (
-              <span className="bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded-full font-medium">
-                +{work.images.length - 1}
-              </span>
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="w-full h-48 bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
-          <div className="text-center">
-            <svg className="w-12 h-12 mx-auto text-slate-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-label="Icône image manquante">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span className="text-slate-700 text-xs font-medium">Aucune image</span>
-          </div>
-        </div>
+    <div className={`group relative ${width} mb-4`}>
+      {/* Bouton + pour ajouter à collection - seulement pour les utilisateurs connectés */}
+      {isAuthenticated && onAddToCollection && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onAddToCollection(work);
+          }}
+          className="cursor-pointer absolute top-2 right-2 z-10 bg-action-color hover:bg-action-color-hover text-slate-100 rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          aria-label="Ajouter à une collection"
+        >
+          <FiPlus className="w-5 h-5" />
+        </button>
       )}
 
-      <div className="p-3">
-        <h3 className="text-base font-bold text-slate-900 mb-1 line-clamp-2">{work.title}</h3>
-        <p className="text-slate-700 text-sm mb-2">{work.author}</p>
-        {work.genre && work.genre.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-2">
-            {work.genre.slice(0, 2).map((g, idx) => (
-              <span
-                key={idx}
-                className="bg-action-color text-slate-100 text-xs px-2 py-0.5 rounded"
+      {/* Bouton X pour retirer de la collection */}
+      {onRemove && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove(work._id);
+          }}
+          className="cursor-pointer absolute top-2 right-2 z-10 bg-red-500 hover:bg-red-700 text-slate-100 rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          aria-label="Retirer de la collection"
+        >
+          <FiX className="w-5 h-5" />
+        </button>
+      )}
+
+      {/* Zone cliquable */}
+      <div
+        onClick={() =>
+          navigate(`/works/${work._id}/${slugifyTitle(work.title)}`)
+        }
+        className="cursor-pointer"
+      >
+        <div className="overflow-hidden rounded-lg aspect-[2/3]">
+          {work.images && work.images.length > 0 ? (
+            <img
+              src={work.images[0]}
+              alt={work.title}
+              className="w-full h-full object-cover rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full bg-slate-100 rounded-lg flex items-center justify-center shadow-sm">
+              <svg
+                className="w-12 h-12 text-slate-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                {g}
-              </span>
-            ))}
-            {work.genre.length > 2 && (
-              <span className="text-slate-600 text-xs">+{work.genre.length - 2}</span>
-            )}
-          </div>
-        )}
-        <p className="text-slate-600 text-xs">
-          {new Date(work.publishedAt).getFullYear()}
-        </p>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+          )}
+        </div>
+
+        <h3 className="mt-2 text-sm font-semibold text-slate-900 group-hover:text-action-color-hover line-clamp-2 transition-colors duration-200">
+          {work.title}
+        </h3>
       </div>
     </div>
   );
