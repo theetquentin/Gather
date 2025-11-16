@@ -24,6 +24,9 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
 
+    # Limite de taille pour les uploads (10MB pour les images)
+    client_max_body_size 10M;
+
     location / {
         proxy_pass http://backend:3000;
         proxy_http_version 1.1;
@@ -34,5 +37,10 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Timeouts augmentés pour les uploads vers Cloudinary
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
     }
 }
