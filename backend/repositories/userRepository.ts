@@ -56,5 +56,5 @@ export const updateUser = async (
     userId,
     { $set: updateData },
     { new: true, runValidators: true },
-  ).select("_id username email profilePicture");
+  ).select("_id username email role profilePicture");
 };
