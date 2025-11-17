@@ -4,12 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { SEO } from "../components/SEO";
 import { StructuredData } from "../components/StructuredData";
 import { organizationSchema, websiteSchema } from "../constants/seoSchemas";
-import {
-  IoFolderOutline,
-  IoSearchOutline,
-  IoShareSocialOutline,
-  IoStarOutline,
-} from "react-icons/io5";
+import { FiFolder, FiSearch, FiShare2, FiStar } from "react-icons/fi";
 
 export const Home = () => {
   const { isAuthenticated } = useAuth();
@@ -55,7 +50,7 @@ export const Home = () => {
             aria-label="Fonctionnalités principales"
           >
             <div className="flex items-start gap-4">
-              <IoFolderOutline
+              <FiFolder
                 className="w-10 h-10 text-action-color flex-shrink-0 mt-1"
                 aria-hidden="true"
               />
@@ -71,7 +66,7 @@ export const Home = () => {
             </div>
 
             <div className="flex items-start gap-4">
-              <IoSearchOutline
+              <FiSearch
                 className="w-10 h-10 text-action-color flex-shrink-0 mt-1"
                 aria-hidden="true"
               />
@@ -88,7 +83,7 @@ export const Home = () => {
             </div>
 
             <div className="flex items-start gap-4">
-              <IoShareSocialOutline
+              <FiShare2
                 className="w-10 h-10 text-action-color flex-shrink-0 mt-1"
                 aria-hidden="true"
               />
@@ -104,7 +99,7 @@ export const Home = () => {
             </div>
 
             <div className="flex items-start gap-4">
-              <IoStarOutline
+              <FiStar
                 className="w-10 h-10 text-action-color flex-shrink-0 mt-1"
                 aria-hidden="true"
               />

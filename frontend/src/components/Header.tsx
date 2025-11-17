@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiUser, FiShield, FiLogOut } from "react-icons/fi";
+import { FiUser, FiShield, FiLogOut, FiMenu, FiX } from "react-icons/fi";
 import { useAuth } from "../hooks/useAuth";
 import { NotificationBell } from "./NotificationBell";
 import { LogoGather } from "./LogoGather";
@@ -115,33 +115,9 @@ export const Header = () => {
               aria-expanded={isMobileMenuOpen}
             >
               {isMobileMenuOpen ? (
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <FiX className="w-6 h-6" />
               ) : (
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
+                <FiMenu className="w-6 h-6" />
               )}
             </button>
           </div>
