@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
 import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
@@ -34,7 +35,7 @@ export const AppRoutes = () => {
   }
 
   return (
-    <div className="min-h-screen bg-page-background">
+    <div className="min-h-screen bg-page-background flex flex-col">
       <Header />
       <Routes>
         {/* Pages d'authentification (sans Header) */}
@@ -92,6 +93,7 @@ export const AppRoutes = () => {
           }
         />
       </Routes>
+      <Footer />
     </div>
   );
 };
