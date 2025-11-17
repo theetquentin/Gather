@@ -1,8 +1,8 @@
-# 📚 Gather
+# 📚 Gather : **https://gather.quentintheet.fr**
 
 **Gather** est une application fullstack permettant de gérer ses collections personnelles (livres, films, musiques, etc.).  
-Le projet est développé en **TypeScript**, avec **Express + MongoDB** pour le backend et **React + TailwindCSS** pour le frontend.  
-L’objectif est de proposer une plateforme claire et organisée, déployée via **Docker** sur **Fly.io**.
+Le projet est développé en **TypeScript**, avec **Express + MongoDB(mongoose)** pour le backend et **React + TailwindCSS** pour le frontend.  
+L’objectif est de proposer une plateforme claire et organisée, déployée via **Docker** sur **AWS EC2**.
 
 ---
 
@@ -29,6 +29,69 @@ L’objectif est de proposer une plateforme claire et organisée, déployée via
 
 ## 📂 Structure du projet
 
+```
+gather/
+├── backend/                    # API Express + MongoDB
+│   ├── config/                # Configuration (DB, env)
+│   ├── controllers/           # Gestion des requêtes HTTP
+│   ├── dtos/                  # Data Transfer Objects (validation)
+│   ├── interfaces/            # Interfaces TypeScript
+│   ├── mappers/               # Transformation entités ↔ DTOs
+│   ├── middleswares/          # Middlewares Express (auth, errors)
+│   ├── models/                # Schémas Mongoose
+│   ├── repositories/          # Accès aux données (MongoDB)
+│   ├── routers/               # Définition des routes
+│   ├── services/              # Logique métier
+│   ├── tests/                 # Tests Jest (unit + integration)
+│   ├── index.ts               # Point d'entrée du serveur
+│   └── package.json
+│
+├── frontend/                  # Application React
+│   ├── public/               # Assets statiques
+│   ├── src/
+│   │   ├── components/       # Composants réutilisables
+│   │   ├── hooks/            # Custom hooks (useAuth, etc.)
+│   │   ├── pages/            # Pages principales
+│   │   ├── routes/           # Configuration React Router
+│   │   ├── services/         # Appels API
+│   │   ├── styles/           # CSS global
+│   │   ├── types/            # Types TypeScript
+│   │   ├── App.tsx           # Composant racine
+│   │   └── main.tsx          # Point d'entrée
+│   └── package.json
+│
+├── nginx/                     # Configuration reverse proxy
+│   ├── nginx.http            # Config HTTP (génération SSL)
+│   └── nginx.https           # Config HTTPS (production)
+│
+├── scripts/                   # Scripts de déploiement
+│   ├── dev.sh                # Démarrage environnement dev
+│   └── prod.sh               # Déploiement production + SSL
+│
+├── .github/workflows/         # GitHub Actions CI/CD
+│   ├── ci.yml                # Tests sur PR
+│   ├── deploy.yml            # Pipeline complet dev → prod
+│   └── tests.yml             # Workflow réutilisable
+│
+├── docker-compose.yml         # Config production
+├── docker-compose.dev.yml     # Overlay développement
+└── README.md                  # Documentation projet
+```
+
+### Architecture Backend (En couches)
+
+**Flux des données :**
+`Router → Controller → Service → Repository → Model`
+
+**Entités principales :**
+- **User** : Authentification JWT, rôles (admin/user/moderator)
+- **Collection** : Collections typées (book/movie/series/music/game) avec visibilité (public/private/shared)
+- **Work** : Œuvres individuelles dans les collections
+- **Share** : Partage de collections entre utilisateurs (avec droits read/edit)
+- **Review** : Avis et notes sur les œuvres
+- **Notification** : Notifications système (invitations, etc.)
+
+---
 
 ## 🚀 Pipeline CI/CD
 
@@ -105,6 +168,9 @@ Le serveur de production doit disposer de :
 - `MAIL` (pour Let's Encrypt)
 - `VITE_BACKEND_PORT`, `VITE_FRONTEND_PORT`, `VITE_API_DOMAIN`
 - `GATHER_TOKEN` (Personal Access Token avec permissions repo + pull requests)
+- `CLOUDINARY_CLOUD_NAME` les secrets cloudinary sont utilisés pour les photos de profil
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
 
 ### 🧾 Script de production (`scripts/prod.sh`)
 Le script gère :
