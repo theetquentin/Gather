@@ -6,8 +6,8 @@ export const Footer = () => {
 
   return (
     <footer className="bg-secondary-color mt-auto">
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
+      <div className="max-w-sm mx-auto px-4 py-8">
+        <div className="grid grid-cols-2 gap-12">
           {/* Liens rapides */}
           <div>
             <h3 className="text-slate-900 font-semibold mb-3">Liens rapides</h3>
