@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+// import { FiSearch } from "react-icons/fi";
 import { collectionService } from "../services/collection.service";
 import { CollectionForm } from "../components/CollectionForm";
 import { CollectionCard } from "../components/CollectionCard";
@@ -28,7 +29,7 @@ export const MyCollections = () => {
       setIsLoading(true);
       setError("");
       const data = await collectionService.getUserCollections();
-      setCollections(data);
+      setCollections(data.collections);
     } catch (err) {
       setError(
         err instanceof Error
@@ -102,7 +103,7 @@ export const MyCollections = () => {
         <h1 className="text-2xl sm:text-4xl font-bold text-slate-900">
           Mes collections
         </h1>
-        {!showForm && !showInvites && (
+        {!showForm && !showInvites && collections.length > 0 && (
           <button
             onClick={() => setShowForm(true)}
             className="w-full sm:w-auto bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
@@ -125,6 +126,22 @@ export const MyCollections = () => {
           {error}
         </div>
       )}
+      {/* <div>
+        <label className="block font-medium text-slate-900 mb-1">
+          Recherche
+        </label>
+        <div className="relative">
+          <label htmlFor="search">
+            <FiSearch size={18} className="absolute top-3 left-3  " />
+          </label>
+          <input
+            type="text"
+            id="search"
+            className="w-72 py-2 pl-11 pr-4 bg-primary-color text-slate-900 rounded-lg border border-slate-400"
+            placeholder="Rechercher par titre ou utilisateur"
+          />
+        </div>
+      </div> */}
 
       {/* Formulaire de création */}
       {showForm && (
@@ -171,7 +188,7 @@ export const MyCollections = () => {
 
       {/* Liste des collections */}
       {collections.length === 0 ? (
-        <div className="bg-primary-color p-12 rounded-xl text-center">
+        <div className="p-12 text-center">
           <h2 className="text-2xl font-semibold text-slate-900 mb-4">
             Aucune collection
           </h2>
@@ -182,7 +199,7 @@ export const MyCollections = () => {
           {!showForm && (
             <button
               onClick={() => setShowForm(true)}
-              className="bg-action-color hover:bg-action-color-hover text-slate-100 px-8 py-3 rounded-md font-medium transition-colors"
+              className="cursor-pointer bg-action-color hover:bg-action-color-hover text-slate-100 px-8 py-3 rounded-md font-medium transition-colors"
             >
               Créer ma première collection
             </button>

@@ -32,7 +32,7 @@ export class CreateCollectionDto {
   @IsMongoId({
     message: "L'identifiant utilisateur doit être un ObjectId valide.",
   })
-  userId!: string;
+  authorId!: string;
 
   @IsOptional()
   @IsArray({ message: "works doit être un tableau" })

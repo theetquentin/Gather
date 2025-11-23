@@ -1,24 +1,7 @@
-import type { CollectionType } from "../types/collection.types";
-
-export const TYPE_MAPPING: Record<CollectionType, string> = {
-  book: "book",
-  movie: "movie",
-  series: "series",
-  music: "music",
-  game: "game",
-  other: "other",
-};
-
-export const WORK_TYPES = [
-  { value: "", label: "Tous les types" },
-  { value: "book", label: "Livre" },
-  { value: "movie", label: "Film" },
-  { value: "series", label: "Série" },
-  { value: "music", label: "Musique" },
-  { value: "game", label: "Jeu" },
-  { value: "other", label: "Autre" },
-];
-
+/**
+ * Genres disponibles pour les œuvres
+ * Couvre films, livres, séries, musique, etc.
+ */
 export const WORK_GENRES = [
   { value: "", label: "Tous les genres" },
   // Genres Films/Livres

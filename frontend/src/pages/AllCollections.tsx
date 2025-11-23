@@ -16,8 +16,10 @@ export const AllCollections = () => {
     try {
       setIsLoading(true);
       setError("");
-      const data = await collectionService.getAllCollections(false); // Toutes les collections
-      setCollections(data);
+      const data = await collectionService.getAllCollections({
+        publicOnly: false,
+      }); // Toutes les collections
+      setCollections(data.collections);
     } catch (err) {
       setError(
         err instanceof Error

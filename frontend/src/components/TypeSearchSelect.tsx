@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
-import { WORK_TYPES } from "../constants/work.constants";
+import { TYPES_WITH_ALL } from "../constants/types.constants";
 
 interface TypeSearchSelectProps {
   selectedType: string;
@@ -36,7 +36,7 @@ export const TypeSearchSelect = ({
 
   // Afficher la valeur sélectionnée
   const displayValue =
-    WORK_TYPES.find((opt) => opt.value === selectedType)?.label || "";
+    TYPES_WITH_ALL.find((opt) => opt.value === selectedType)?.label || "";
 
   return (
     <div ref={dropdownRef} className="relative">
@@ -53,7 +53,7 @@ export const TypeSearchSelect = ({
       {/* Dropdown */}
       {isOpen && (
         <div className="absolute z-10 w-full mt-1 bg-primary-color border border-slate-400 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-          {WORK_TYPES.map((option) => (
+          {TYPES_WITH_ALL.map((option) => (
             <button
               key={option.value}
               onClick={() => handleSelect(option.value)}

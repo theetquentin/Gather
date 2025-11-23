@@ -22,6 +22,9 @@ const collectionErrorMap: Record<string, number> = {
   "Vous avez déjà nommé une de vos collections ainsi": 400,
   "Vous avez déjà une collection avec ce nom": 400,
   "Certaines œuvres n'existent pas": 400,
+  "Cette œuvre est déjà présente dans cette collection": 400,
+  "Certaines œuvres sont déjà présentes dans cette collection": 400,
+  "La limite doit être un entier positif": 400,
   "Collection non trouvée": 404,
   "Utilisateur non trouvé": 404,
   "Accès refusé à cette collection": 403,
@@ -40,7 +43,7 @@ export const createCollection = async (
 
     const dto = plainToInstance(CreateCollectionDto, {
       ...req.body,
-      userId: req.user.id,
+      authorId: req.user.id,
     });
     const errors = await validate(dto);
 
@@ -65,7 +68,7 @@ export const createCollection = async (
         name: result.name,
         type: result.type,
         visibility: result.visibility,
-        userId: result.userId,
+        authorId: result.authorId,
         works: result.works,
       },
     });
@@ -132,7 +135,7 @@ export const addWorks = async (req: AuthenticatedRequest, res: Response) => {
           name: result.updatedCollection.name,
           type: result.updatedCollection.type,
           visibility: result.updatedCollection.visibility,
-          userId: result.updatedCollection.userId,
+          authorId: result.updatedCollection.authorId,
           works: result.updatedCollection.works,
         },
       },
@@ -186,14 +189,22 @@ export const getAllCollections = async (
       publicOnly = false;
     }
 
-    const collections = await fetchCollections(publicOnly);
+    const { limit, page, type, search } = req.query;
+
+    const result = await fetchCollections(
+      publicOnly,
+      limit ? parseInt(limit as string, 10) : 20,
+      page ? parseInt(page as string, 10) : 1,
+      type as string | undefined,
+      search as string | undefined,
+    );
 
     return res.status(200).json({
       success: true,
       message: publicOnly
         ? "Liste des collections publiques"
         : "Liste de toutes les collections",
-      data: { collections },
+      data: result,
     });
   } catch (err: unknown) {
     return handleServiceError(err, res, collectionErrorMap);
@@ -211,12 +222,27 @@ export const getUserCollections = async (
         .json({ success: false, errors: "Non authentifié", data: null });
     }
 
-    const collections = await fetchCollectionsByUser(req.user.id);
+    const { limit, page, type, search, visibility } = req.query;
+
+    const result = await fetchCollectionsByUser(
+      req.user.id,
+      limit ? parseInt(limit as string, 10) : 20,
+      page ? parseInt(page as string, 10) : 1,
+      type as string | undefined,
+      search as string | undefined,
+      visibility as
+        | "owned"
+        | "private"
+        | "public"
+        | "shared"
+        | "shared-with-me"
+        | undefined,
+    );
 
     return res.status(200).json({
       success: true,
       message: "Vos collections",
-      data: { collections },
+      data: result,
     });
   } catch (err: unknown) {
     return handleServiceError(err, res, collectionErrorMap);
@@ -285,7 +311,7 @@ export const updateCollection = async (
           name: updated.name,
           type: updated.type,
           visibility: updated.visibility,
-          userId: updated.userId,
+          authorId: updated.authorId,
           works: updated.works,
         },
       },

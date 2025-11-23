@@ -7,7 +7,8 @@ import type {
   CollectionType,
   CollectionVisibility,
 } from "../types/collection.types";
-
+import { TYPES } from "../constants/types.constants";
+import { VISIBILITY_CONFIG } from "../constants/collection.constants";
 interface AddToCollectionModalProps {
   work: Work | null;
   onClose: () => void;
@@ -40,8 +41,8 @@ export const AddToCollectionModal = ({
   const loadUserCollections = async () => {
     try {
       setIsLoading(true);
-      const userCollections = await collectionService.getUserCollections();
-      setCollections(userCollections);
+      const response = await collectionService.getUserCollections();
+      setCollections(response.collections);
     } catch (err) {
       setError(
         err instanceof Error
@@ -184,14 +185,19 @@ export const AddToCollectionModal = ({
                       <button
                         key={collection._id}
                         onClick={() => handleAddToCollection(collection._id)}
-                        className="w-full p-4 bg-primary-color hover:bg-secondary-color rounded-lg text-left transition-colors flex items-center justify-between group"
+                        className="cursor-pointer w-full p-4 bg-primary-color hover:bg-secondary-color rounded-lg text-left transition-colors flex items-center justify-between group"
                       >
                         <div>
                           <p className="font-semibold text-slate-900">
                             {collection.name}
                           </p>
                           <p className="text-sm text-slate-700">
-                            {collection.type} • {collection.works.length} œuvre
+                            {
+                              TYPES.find(
+                                (type) => type.value === collection.type,
+                              )?.label
+                            }{" "}
+                            • {collection.works.length} œuvre
                             {collection.works.length > 1 ? "s" : ""}
                           </p>
                         </div>
@@ -249,12 +255,11 @@ export const AddToCollectionModal = ({
                       }
                       className="w-full px-4 py-2 bg-primary-color border border-slate-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900"
                     >
-                      <option value="book">Livre</option>
-                      <option value="movie">Film</option>
-                      <option value="series">Série</option>
-                      <option value="music">Musique</option>
-                      <option value="game">Jeu</option>
-                      <option value="other">Autre</option>
+                      {TYPES.map((type) => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -275,8 +280,13 @@ export const AddToCollectionModal = ({
                       }
                       className="w-full px-4 py-2 bg-primary-color border border-slate-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-action-color text-slate-900"
                     >
-                      <option value="private">Privée</option>
-                      <option value="public">Publique</option>
+                      {Object.values(VISIBILITY_CONFIG)
+                        .filter((v) => v.value !== "shared")
+                        .map((visibility) => (
+                          <option key={visibility.value} value={visibility.value}>
+                            {visibility.label}
+                          </option>
+                        ))}
                     </select>
                   </div>
 

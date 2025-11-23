@@ -1,10 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { WorkSelector } from "./WorkSelector";
 import { ErrorMessage } from "./ErrorMessage";
-import {
-  COLLECTION_TYPES,
-  VISIBILITY_OPTIONS,
-} from "../constants/collection.constants";
+import { VISIBILITY_CONFIG } from "../constants/collection.constants";
+import { TYPES } from "../constants/types.constants";
 import type {
   CollectionType,
   CollectionVisibility,
@@ -99,7 +97,7 @@ export const CollectionForm = ({
           required
           disabled={isLoading}
         >
-          {COLLECTION_TYPES.map((option) => (
+          {TYPES.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
@@ -124,7 +122,7 @@ export const CollectionForm = ({
           required
           disabled={isLoading}
         >
-          {VISIBILITY_OPTIONS.map((option) => (
+          {Object.values(VISIBILITY_CONFIG).map((option) => (
             <option key={option.value} value={option.value}>
               {option.label} - {option.description}
             </option>
