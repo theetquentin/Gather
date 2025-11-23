@@ -7,14 +7,15 @@ import {
   getWorkById,
 } from "../repositories/workRepository";
 
-const DEFAULT_LIMIT = 20;
-const MAX_LIMIT = 100;
+const DEFAULT_LIMIT = 100;
+const MAX_LIMIT = 500;
 
 /**
- * Récupère la liste des œuvres avec validation, sanitization et filtres
+ * Récupère la liste des œuvres avec validation, sanitization, filtres et pagination
  */
 export const getWorks = async (
   limit?: number,
+  page?: number,
   type?: string,
   search?: string,
   genre?: string[],
@@ -30,6 +31,12 @@ export const getWorks = async (
   }
 
   const finalLimit = limit ?? DEFAULT_LIMIT;
+  const finalPage = page ?? 1;
+
+  // Validation de la page
+  if (finalPage < 1 || !Number.isInteger(finalPage)) {
+    throw new Error("La page doit être un entier positif");
+  }
 
   // Validation et sanitization de la recherche
   let sanitizedSearch: string | undefined = undefined;
@@ -45,7 +52,30 @@ export const getWorks = async (
     sanitizedSearch = trimmedSearch.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
 
-  return await getAllWorks(finalLimit, type, sanitizedSearch, genre, year);
+  // Récupérer toutes les works (avec filtres)
+  const allWorks = await getAllWorks(
+    undefined,
+    type,
+    sanitizedSearch,
+    genre,
+    year,
+  );
+
+  // Appliquer la pagination
+  const skip = (finalPage - 1) * finalLimit;
+  const paginatedWorks = allWorks.slice(skip, skip + finalLimit);
+  const total = allWorks.length;
+  const totalPages = Math.ceil(total / finalLimit);
+
+  return {
+    works: paginatedWorks,
+    total,
+    page: finalPage,
+    limit: finalLimit,
+    totalPages,
+    hasNextPage: finalPage < totalPages,
+    hasPrevPage: finalPage > 1,
+  };
 };
 
 /**

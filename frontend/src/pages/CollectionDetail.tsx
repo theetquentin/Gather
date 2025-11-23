@@ -13,11 +13,8 @@ import {
   createBreadcrumbSchema,
 } from "../constants/seoSchemas";
 import { useAuth } from "../hooks/useAuth";
-import {
-  COLLECTION_TYPES,
-  VISIBILITY_LABELS,
-  VISIBILITY_OPTIONS,
-} from "../constants/collection.constants";
+import { VISIBILITY_CONFIG } from "../constants/collection.constants";
+import { TYPES } from "../constants/types.constants";
 import type {
   Collection,
   UpdateCollectionInput,
@@ -150,13 +147,13 @@ export const CollectionDetail = () => {
       </div>
     );
 
-  const visibilityInfo = VISIBILITY_LABELS[collection.visibility];
+  const visibilityInfo = VISIBILITY_CONFIG[collection.visibility];
   const isOwner = collection.owned !== false;
   const canEdit = isOwner || collection.rights === "edit";
 
   // SEO dynamique basé sur la collection
   const collectionTypeLabel =
-    COLLECTION_TYPES.find((t) => t.value === collection.type)?.label ||
+    TYPES.find((t) => t.value === collection.type)?.label ||
     collection.type;
   const seoTitle = `${collection.name} - Collection ${collectionTypeLabel} - Gather`;
   const seoDescription = `Découvrez la collection "${collection.name}" sur Gather. ${collection.works.length} œuvre${collection.works.length > 1 ? "s" : ""} de type ${collectionTypeLabel}.`;
@@ -199,7 +196,7 @@ export const CollectionDetail = () => {
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2 py-0.5 bg-secondary-color text-slate-900 text-xs font-medium rounded">
-            {COLLECTION_TYPES.find((t) => t.value === collection.type)?.label}
+            {TYPES.find((t) => t.value === collection.type)?.label}
           </span>
           <span
             className={`px-2 py-0.5 ${visibilityInfo.color} ${visibilityInfo.text} text-xs font-medium rounded`}
@@ -288,7 +285,7 @@ export const CollectionDetail = () => {
                 required
                 disabled={isSaving}
               >
-                {VISIBILITY_OPTIONS.map((option) => (
+                {Object.values(VISIBILITY_CONFIG).map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label} - {option.description}
                   </option>

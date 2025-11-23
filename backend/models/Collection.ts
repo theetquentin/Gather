@@ -28,7 +28,7 @@ const collectionSchema = new Schema<ICollection>(
       enum: ["public", "private", "shared"],
       default: "private",
     },
-    userId: {
+    authorId: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "User",

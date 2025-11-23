@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { workService } from "../services/work.service";
-import { TYPE_MAPPING } from "../constants/work.constants";
 import type { Work } from "../types/work.types";
 import type { CollectionType } from "../types/collection.types";
 
@@ -25,10 +24,9 @@ export const WorkSelector = ({
     async (search?: string) => {
       try {
         setIsLoading(true);
-        const workType = TYPE_MAPPING[collectionType];
         const response = await workService.getWorks({
           limit: 20,
-          type: workType,
+          type: collectionType,
           search: search?.trim() || undefined,
         });
         setWorks(response.data.works);

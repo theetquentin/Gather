@@ -18,8 +18,8 @@ export const Collections = () => {
     try {
       setIsLoading(true);
       setError("");
-      const data = await collectionService.getAllCollections(true); // Uniquement les collections publiques
-      setCollections(data);
+      const data = await collectionService.getAllCollections({ publicOnly: true }); // Uniquement les collections publiques
+      setCollections(data.collections);
     } catch (err) {
       setError(
         err instanceof Error

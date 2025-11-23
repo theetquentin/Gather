@@ -44,7 +44,7 @@ export const createNewShare = async (data: IShare) => {
   if (!author) throw new Error("Auteur non trouvé");
 
   // Vérifier que l'auteur est le propriétaire de la collection
-  if (collection.userId.toString() !== authorId.toString()) {
+  if (collection.authorId.toString() !== authorId.toString()) {
     throw new Error("Seul le propriétaire peut partager cette collection");
   }
 

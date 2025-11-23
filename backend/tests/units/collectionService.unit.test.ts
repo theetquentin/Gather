@@ -44,7 +44,7 @@ type MockUser = Pick<IUser, "username" | "email" | "password"> & {
   __v?: number;
 };
 
-type MockCollection = Pick<ICollection, "name" | "type" | "userId"> & {
+type MockCollection = Pick<ICollection, "name" | "type" | "authorId"> & {
   _id: Types.ObjectId;
   visibility?: ICollection["visibility"];
   works?: Types.ObjectId[];
@@ -104,7 +104,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Ma collection unique",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -121,7 +121,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: collectionData.name,
         type: collectionData.type,
         visibility: collectionData.visibility,
-        userId: collectionData.userId,
+        authorId: collectionData.authorId,
       };
 
       mockCollectionRepository.countCollectionByNameByUser.mockResolvedValue(0);
@@ -143,7 +143,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection existante",
         type: "movie",
         visibility: "private",
-        userId,
+        authorId: userId,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -164,7 +164,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Nouvelle collection",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -188,7 +188,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection avec doublons",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         works: [workId1, workId2, workId1, workId2],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -206,7 +206,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: collectionData.name,
         type: collectionData.type,
         visibility: collectionData.visibility,
-        userId: collectionData.userId,
+        authorId: collectionData.authorId,
         works: [workId1, workId2],
       };
 
@@ -233,7 +233,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection avec œuvres",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         works: [workId],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -251,7 +251,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: collectionData.name,
         type: collectionData.type,
         visibility: collectionData.visibility,
-        userId: collectionData.userId,
+        authorId: collectionData.authorId,
       };
 
       mockCollectionRepository.countCollectionByNameByUser.mockResolvedValue(0);
@@ -277,7 +277,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection de livres",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         works: [workId],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -311,7 +311,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection publique",
         type: "book",
         visibility: "public",
-        userId: new Types.ObjectId(),
+        authorId: new Types.ObjectId(),
         toObject: jest.fn().mockReturnValue({
           _id: collectionId,
           name: "Collection publique",
@@ -340,7 +340,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection privée",
         type: "book",
         visibility: "private",
-        userId: new Types.ObjectId(),
+        authorId: new Types.ObjectId(),
         toObject: jest.fn(),
       };
 
@@ -361,13 +361,13 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Ma collection publique",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         toObject: jest.fn().mockReturnValue({
           _id: collectionId,
           name: "Ma collection publique",
           type: "book",
           visibility: "public",
-          userId,
+          authorId: userId,
         }),
       };
 
@@ -390,7 +390,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection privée",
         type: "book",
         visibility: "private",
-        userId: ownerId,
+        authorId: ownerId,
         toObject: jest.fn(),
       };
 
@@ -423,13 +423,13 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection partagée",
         type: "book",
         visibility: "shared",
-        userId: ownerId,
+        authorId: ownerId,
         toObject: jest.fn().mockReturnValue({
           _id: collectionId,
           name: "Collection partagée",
           type: "book",
           visibility: "shared",
-          userId: ownerId,
+          authorId: ownerId,
         }),
       };
 
@@ -469,7 +469,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Ancien nom",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         toObject: jest.fn(),
       };
 
@@ -506,7 +506,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection",
         type: "book",
         visibility: "shared",
-        userId: ownerId,
+        authorId: ownerId,
         toObject: jest.fn(),
       };
 
@@ -546,7 +546,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Ancien nom",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         toObject: jest.fn(),
       };
 
@@ -576,7 +576,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection",
         type: "book",
         visibility: "shared",
-        userId,
+        authorId: userId,
         toObject: jest.fn(),
       };
 
@@ -651,7 +651,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Ma collection",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         toObject: jest.fn(),
       };
 
@@ -682,7 +682,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection",
         type: "book",
         visibility: "shared",
-        userId: ownerId,
+        authorId: ownerId,
         toObject: jest.fn(),
       };
 
@@ -723,7 +723,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Ma collection",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         toObject: jest.fn(),
       };
 
@@ -765,7 +765,7 @@ describe("collectionService - Tests unitaires avec mocks", () => {
         name: "Collection de livres",
         type: "book",
         visibility: "public",
-        userId,
+        authorId: userId,
         toObject: jest.fn(),
       };
 

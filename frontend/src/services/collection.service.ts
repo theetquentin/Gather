@@ -7,17 +7,58 @@ interface ApiResponse<T> {
   errors: string | null;
 }
 
+export interface PaginatedCollectionsResponse {
+  collections: Collection[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
+export interface GetUserCollectionsParams {
+  limit?: number;
+  page?: number;
+  type?: string;
+  search?: string;
+  visibility?: "owned" | "private" | "public" | "shared" | "shared-with-me";
+}
+
 export const collectionService = {
-  async getAllCollections(publicOnly: boolean = true): Promise<Collection[]> {
-    const response = await apiClient.get<ApiResponse<{ collections: Collection[] }>>(
-      `/collections?publicOnly=${publicOnly}`
+  async getAllCollections(params?: {
+    publicOnly?: boolean;
+    limit?: number;
+    page?: number;
+    type?: string;
+    search?: string;
+  }): Promise<PaginatedCollectionsResponse> {
+    const queryParams = new URLSearchParams();
+
+    queryParams.append('publicOnly', params?.publicOnly !== false ? 'true' : 'false');
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+    if (params?.page) queryParams.append('page', params.page.toString());
+    if (params?.type) queryParams.append('type', params.type);
+    if (params?.search) queryParams.append('search', params.search);
+
+    const response = await apiClient.get<ApiResponse<PaginatedCollectionsResponse>>(
+      `/collections?${queryParams.toString()}`
     );
-    return response.data.collections;
+    return response.data;
   },
 
-  async getUserCollections(): Promise<Collection[]> {
-    const response = await apiClient.get<ApiResponse<{ collections: Collection[] }>>('/collections/me');
-    return response.data.collections;
+  async getUserCollections(params?: GetUserCollectionsParams): Promise<PaginatedCollectionsResponse> {
+    const queryParams = new URLSearchParams();
+
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+    if (params?.page) queryParams.append('page', params.page.toString());
+    if (params?.type) queryParams.append('type', params.type);
+    if (params?.search) queryParams.append('search', params.search);
+    if (params?.visibility) queryParams.append('visibility', params.visibility);
+
+    const url = `/collections/me${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+    const response = await apiClient.get<ApiResponse<PaginatedCollectionsResponse>>(url);
+    return response.data;
   },
 
   async getCollectionById(id: string): Promise<Collection> {

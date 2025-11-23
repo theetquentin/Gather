@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import {
-  COLLECTION_TYPES,
-  VISIBILITY_LABELS,
-} from "../constants/collection.constants";
+import { VISIBILITY_CONFIG } from "../constants/collection.constants";
+import { TYPES } from "../constants/types.constants";
 import type { Collection } from "../types/collection.types";
 
 interface CollectionCardProps {
@@ -16,7 +14,7 @@ export const CollectionCard = ({
   onDelete,
   showActions = false,
 }: CollectionCardProps) => {
-  const visibilityInfo = VISIBILITY_LABELS[collection.visibility];
+  const visibilityInfo = VISIBILITY_CONFIG[collection.visibility];
   const isOwner = collection.owned !== false; // Par défaut true si non défini
 
   // Extraire les 3 premières images des œuvres
@@ -55,7 +53,7 @@ export const CollectionCard = ({
           </div>
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span className="inline-block px-2 py-0.5 sm:px-3 sm:py-1 bg-secondary-color text-slate-900 text-xs sm:text-sm font-medium rounded-full">
-              {COLLECTION_TYPES.find((t) => t.value === collection.type)?.label}
+              {TYPES.find((t) => t.value === collection.type)?.label}
             </span>
             <span
               className={`inline-block px-2 py-0.5 sm:px-3 sm:py-1 ${visibilityInfo.color} ${visibilityInfo.text} text-xs sm:text-sm font-medium rounded-full`}

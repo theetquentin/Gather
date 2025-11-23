@@ -9,7 +9,7 @@ export interface Collection {
   name: string;
   type: CollectionType;
   visibility: CollectionVisibility;
-  userId: string;
+  authorId: string | { _id: string; username: string; email: string }; // Propriétaire de la collection
   works: Work[];
   sharedWith: string[];
   createdAt: string;
@@ -17,7 +17,6 @@ export interface Collection {
   // Champs ajoutés pour les collections partagées
   owned?: boolean; // true si c'est la collection de l'utilisateur, false si partagée
   rights?: ShareRights; // Droits d'accès si collection partagée (read/edit)
-  authorId?: string | { _id: string; username: string; email: string }; // Propriétaire si collection partagée
 }
 
 export interface CreateCollectionInput {

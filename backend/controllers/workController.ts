@@ -3,8 +3,9 @@ import { getWorks, getWork } from "../services/workService";
 
 export const getAllWorks = async (req: Request, res: Response) => {
   try {
-    const { limit, type, search, genre, year } = req.query;
+    const { limit, page, type, search, genre, year } = req.query;
     let limitValue: number | undefined;
+    let pageValue: number | undefined;
 
     if (limit !== undefined) {
       const parsed = parseInt(limit as string, 10);
@@ -16,6 +17,18 @@ export const getAllWorks = async (req: Request, res: Response) => {
         });
       }
       limitValue = parsed;
+    }
+
+    if (page !== undefined) {
+      const parsed = parseInt(page as string, 10);
+      if (isNaN(parsed) || parsed < 1) {
+        return res.status(400).json({
+          success: false,
+          errors: "Le paramètre page doit être un entier positif supérieur à 0",
+          data: null,
+        });
+      }
+      pageValue = parsed;
     }
 
     const typeValue = type ? String(type) : undefined;
@@ -32,8 +45,9 @@ export const getAllWorks = async (req: Request, res: Response) => {
     // Year est une sélection unique (peut être une année ou "before-1900")
     const yearValue = year ? String(year) : undefined;
 
-    const works = await getWorks(
+    const result = await getWorks(
       limitValue,
+      pageValue,
       typeValue,
       searchValue,
       genreValue,
@@ -43,10 +57,7 @@ export const getAllWorks = async (req: Request, res: Response) => {
     return res.status(200).json({
       success: true,
       message: "Œuvres récupérées avec succès",
-      data: {
-        count: works.length,
-        works,
-      },
+      data: result,
     });
   } catch (err: unknown) {
     const msg =
@@ -55,7 +66,8 @@ export const getAllWorks = async (req: Request, res: Response) => {
 
     if (
       msg === "La limite doit être un entier positif" ||
-      msg.startsWith("La limite ne peut pas dépasser")
+      msg.startsWith("La limite ne peut pas dépasser") ||
+      msg === "La page doit être un entier positif"
     ) {
       status = 400;
     }

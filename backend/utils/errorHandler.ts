@@ -6,9 +6,18 @@ export const handleServiceError = (
   errorStatusMap?: Record<string, number>,
 ) => {
   if (err instanceof Error) {
-    const status = errorStatusMap?.[err.message] || 400;
+    let status = errorStatusMap?.[err.message];
 
-    return res.status(status).json({
+    // Si pas de correspondance exacte, vérifier les patterns
+    if (!status) {
+      if (err.message.startsWith("La limite ne peut pas dépasser")) {
+        status = 400;
+      }
+    }
+
+    const finalStatus = status || 400;
+
+    return res.status(finalStatus).json({
       success: false,
       errors: err.message,
       data: null,
