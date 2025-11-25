@@ -61,7 +61,7 @@ export const addWorksToCollectionByIds = async (
 
 export const getAllCollections = async () => {
   return await Collection.find()
-    .populate("authorId", "username email")
+    .populate("authorId", "username email profilePicture")
     .populate("works", "-reviews")
     .sort({ createdAt: -1 })
     .lean();
@@ -69,7 +69,7 @@ export const getAllCollections = async () => {
 
 export const getCollectionsByUserId = async (userId: string) => {
   return await Collection.find({ authorId: userId })
-    .populate("authorId", "username email")
+    .populate("authorId", "username email profilePicture")
     .populate("works", "-reviews")
     .sort({ createdAt: -1 })
     .lean();
@@ -77,7 +77,7 @@ export const getCollectionsByUserId = async (userId: string) => {
 
 export const getPublicCollections = async () => {
   return await Collection.find({ visibility: "public" })
-    .populate("authorId", "username email")
+    .populate("authorId", "username email profilePicture")
     .populate("works", "-reviews")
     .sort({ createdAt: -1 })
     .lean();
@@ -107,7 +107,7 @@ export const getCollectionsByUserIdWithFilters = async (
   if (visibility) filters.visibility = visibility;
 
   return await Collection.find(filters)
-    .populate("authorId", "username email")
+    .populate("authorId", "username email profilePicture")
     .populate("works", "-reviews")
     .sort({ createdAt: -1 })
     .lean();
@@ -126,7 +126,7 @@ export const getCollectionsByIds = async (
   if (visibility) filters.visibility = visibility;
 
   return await Collection.find(filters)
-    .populate("authorId", "username email")
+    .populate("authorId", "username email profilePicture")
     .populate("works", "-reviews")
     .sort({ createdAt: -1 })
     .lean();

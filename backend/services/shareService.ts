@@ -28,7 +28,10 @@ const getIdString = (
   return (field as Types.ObjectId).toString();
 };
 
-export const createNewShare = async (data: IShare) => {
+export const createNewShare = async (
+  data: IShare,
+  isStaff: boolean = false,
+) => {
   const { collectionId, guestId, authorId } = data;
 
   // Vérifier que la collection existe
@@ -43,8 +46,8 @@ export const createNewShare = async (data: IShare) => {
   const author = await getUserById(authorId.toString());
   if (!author) throw new Error("Auteur non trouvé");
 
-  // Vérifier que l'auteur est le propriétaire de la collection
-  if (collection.authorId.toString() !== authorId.toString()) {
+  // Vérifier que l'auteur est le propriétaire de la collection OU est staff
+  if (!isStaff && collection.authorId.toString() !== authorId.toString()) {
     throw new Error("Seul le propriétaire peut partager cette collection");
   }
 
@@ -61,7 +64,7 @@ export const createNewShare = async (data: IShare) => {
   // Créer automatiquement une notification pour l'invité
   await createNotification({
     userId: guestId,
-    senderId: authorId,
+    senderId: authorId, // L'ID du staff member ou du propriétaire, pour traçabilité
     collectionId: collection._id,
     shareId: newShare._id,
     type: "share",

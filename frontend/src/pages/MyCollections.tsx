@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 // import { FiSearch } from "react-icons/fi";
 import { collectionService } from "../services/collection.service";
 import { CollectionForm } from "../components/CollectionForm";
@@ -18,17 +18,13 @@ export const MyCollections = () => {
   const [newlyCreatedCollection, setNewlyCreatedCollection] =
     useState<Collection | null>(null);
   const [error, setError] = useState("");
+  const [visibilityFilter, setVisibilityFilter] = useState<"owned" | "shared-with-me">("owned");
 
-  // Charger les collections au montage du composant
-  useEffect(() => {
-    loadCollections();
-  }, []);
-
-  const loadCollections = async () => {
+  const loadCollections = useCallback(async () => {
     try {
       setIsLoading(true);
       setError("");
-      const data = await collectionService.getUserCollections();
+      const data = await collectionService.getUserCollections({ visibility: visibilityFilter });
       setCollections(data.collections);
     } catch (err) {
       setError(
@@ -39,7 +35,12 @@ export const MyCollections = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [visibilityFilter]);
+
+  // Charger les collections au montage du composant et quand le filtre ou la fonction change
+  useEffect(() => {
+    loadCollections();
+  }, [loadCollections]);
 
   const handleCreateCollection = async (data: CreateCollectionInput) => {
     setIsCreating(true);
@@ -97,20 +98,30 @@ export const MyCollections = () => {
   }
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container mx-auto px-4 py-8 mt-6">
       {/* En-tête */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <h1 className="text-2xl sm:text-4xl font-bold text-slate-900">
+      {/* Onglets de filtre */}
+      <div className="flex gap-2 mb-8 border-b border-slate-400">
+        <button
+          onClick={() => setVisibilityFilter("owned")}
+          className={`px-4 py-2 font-medium transition-colors ${
+            visibilityFilter === "owned"
+              ? "text-action-color border-b-2 border-action-color"
+              : "text-slate-700 hover:text-slate-900 hover:border-b-2 hover:border-slate-400"
+          }`}
+        >
           Mes collections
-        </h1>
-        {!showForm && !showInvites && collections.length > 0 && (
-          <button
-            onClick={() => setShowForm(true)}
-            className="w-full sm:w-auto bg-action-color hover:bg-action-color-hover text-slate-100 px-6 py-3 rounded-md font-medium transition-colors"
-          >
-            Créer une collection
-          </button>
-        )}
+        </button>
+        <button
+          onClick={() => setVisibilityFilter("shared-with-me")}
+          className={`px-4 py-2 font-medium transition-colors ${
+            visibilityFilter === "shared-with-me"
+              ? "text-action-color border-b-2 border-action-color"
+              : "text-slate-700 hover:text-slate-900 hover:border-b-2 hover:border-slate-400"
+          }`}
+        >
+          Partagées avec moi
+        </button>
       </div>
 
       {/* Message d'erreur global */}
@@ -193,10 +204,11 @@ export const MyCollections = () => {
             Aucune collection
           </h2>
           <p className="text-slate-700 mb-6">
-            Vous n'avez pas encore créé de collection. Commencez dès maintenant
-            !
+            {visibilityFilter === "owned"
+              ? "Vous n'avez pas encore créé de collection. Commencez dès maintenant !"
+              : "Aucune collection n'a été partagée avec vous pour le moment."}
           </p>
-          {!showForm && (
+          {!showForm && visibilityFilter === "owned" && (
             <button
               onClick={() => setShowForm(true)}
               className="cursor-pointer bg-action-color hover:bg-action-color-hover text-slate-100 px-8 py-3 rounded-md font-medium transition-colors"
@@ -206,68 +218,32 @@ export const MyCollections = () => {
           )}
         </div>
       ) : (
-        <>
-          {/* Mes collections personnelles */}
-          {(() => {
-            const ownedCollections = collections.filter(
-              (c) => c.owned !== false,
-            );
-            return (
-              ownedCollections.length > 0 && (
-                <div className="mb-12">
-                  <div className="mb-4 text-slate-700">
-                    <span className="font-medium">
-                      {ownedCollections.length}
-                    </span>{" "}
-                    collection{ownedCollections.length > 1 ? "s" : ""}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {ownedCollections.map((collection) => (
-                      <CollectionCard
-                        key={collection._id}
-                        collection={collection}
-                        onDelete={handleDeleteCollection}
-                        showActions={true}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )
-            );
-          })()}
-
-          {/* Collections partagées avec moi */}
-          {(() => {
-            const sharedCollections = collections.filter(
-              (c) => c.owned === false,
-            );
-            return (
-              sharedCollections.length > 0 && (
-                <div>
-                  <h2 className="text-2xl font-semibold text-slate-900 mb-4">
-                    Collections partagées avec moi
-                  </h2>
-                  <div className="mb-4 text-slate-700">
-                    <span className="font-medium">
-                      {sharedCollections.length}
-                    </span>{" "}
-                    collection{sharedCollections.length > 1 ? "s" : ""}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {sharedCollections.map((collection) => (
-                      <CollectionCard
-                        key={collection._id}
-                        collection={collection}
-                        onDelete={handleDeleteCollection}
-                        showActions={true}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )
-            );
-          })()}
-        </>
+        <div>
+          <div className="mb-4 text-slate-700 flex justify-between items-center">
+            <div>
+              <span className="font-medium">{collections.length}</span> collection
+              {collections.length > 1 ? "s" : ""}
+            </div>
+            {visibilityFilter === "owned" && !showForm && !showInvites && (
+              <button
+                onClick={() => setShowForm(true)}
+                className="bg-action-color hover:bg-action-color-hover text-slate-100 px-4 py-2 rounded-md font-medium transition-colors"
+              >
+                Créer une collection
+              </button>
+            )}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {collections.map((collection) => (
+              <CollectionCard
+                key={collection._id}
+                collection={collection}
+                onDelete={handleDeleteCollection}
+                showActions={true}
+              />
+            ))}
+          </div>
+        </div>
       )}
     </main>
   );

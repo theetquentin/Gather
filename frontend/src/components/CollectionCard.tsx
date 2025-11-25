@@ -15,7 +15,8 @@ export const CollectionCard = ({
   showActions = false,
 }: CollectionCardProps) => {
   const visibilityInfo = VISIBILITY_CONFIG[collection.visibility];
-  const isOwner = collection.owned !== false; // Par défaut true si non défini
+  // Considéré comme propriétaire si owned=true (défaut) ou isStaff=true
+  const isOwner = collection.owned !== false || collection.isStaff === true;
 
   // Extraire les 3 premières images des œuvres
   const previewImages: string[] = [];
@@ -60,12 +61,32 @@ export const CollectionCard = ({
             >
               {visibilityInfo.label}
             </span>
-            {!isOwner && collection.rights && (
+            {collection.owned === false && collection.rights && (
               <span className="inline-block px-2 py-0.5 sm:px-3 sm:py-1 bg-slate-600 text-slate-100 text-xs sm:text-sm font-medium rounded-full">
                 {collection.rights === "read" ? "Lecture seule" : "Édition"}
               </span>
             )}
           </div>
+
+          {/* Affichage de l'auteur pour les collections partagées */}
+          {collection.owned === false && typeof collection.authorId === 'object' && collection.authorId && (
+            <div className="flex items-center gap-2 mt-2">
+              {collection.authorId.profilePicture ? (
+                <img
+                  src={collection.authorId.profilePicture}
+                  alt={collection.authorId.username}
+                  className="w-6 h-6 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-slate-400 flex items-center justify-center text-white text-xs font-bold">
+                  {collection.authorId.username.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <span className="text-sm text-slate-600">
+                Partagée par <span className="font-medium">{collection.authorId.username}</span>
+              </span>
+            </div>
+          )}
         </div>
       </div>
 

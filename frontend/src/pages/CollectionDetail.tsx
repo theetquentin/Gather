@@ -148,7 +148,7 @@ export const CollectionDetail = () => {
     );
 
   const visibilityInfo = VISIBILITY_CONFIG[collection.visibility];
-  const isOwner = collection.owned !== false;
+  const isOwner = collection.owned !== false || collection.isStaff === true;
   const canEdit = isOwner || collection.rights === "edit";
 
   // SEO dynamique basé sur la collection
