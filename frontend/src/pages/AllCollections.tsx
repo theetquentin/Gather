@@ -31,6 +31,24 @@ export const AllCollections = () => {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (
+      !window.confirm("Êtes-vous sûr de vouloir supprimer cette collection ?")
+    ) {
+      return;
+    }
+    try {
+      await collectionService.deleteCollection(id);
+      setCollections(collections.filter((c) => c._id !== id));
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la suppression de la collection",
+      );
+    }
+  };
+
   if (isLoading) {
     return (
       <main className="container mx-auto px-4 py-8">
@@ -84,6 +102,7 @@ export const AllCollections = () => {
                 key={collection._id}
                 collection={collection}
                 showActions={true}
+                onDelete={handleDelete}
               />
             ))}
           </div>

@@ -169,27 +169,12 @@ export const getAllCollections = async (
 
     // Si le paramètre publicOnly est explicitement à false
     if (req.query.publicOnly === "false") {
-      // Vérifier que l'utilisateur est authentifié et a le rôle approprié
-      if (!req.user) {
-        return res.status(401).json({
-          success: false,
-          errors: "Authentification requise pour voir toutes les collections",
-          data: null,
-        });
-      }
-
-      if (!["admin", "moderator"].includes(req.user.role)) {
-        return res.status(403).json({
-          success: false,
-          errors: "Accès refusé : réservé aux modérateurs et administrateurs",
-          data: null,
-        });
-      }
-
       publicOnly = false;
     }
 
     const { limit, page, type, search } = req.query;
+
+    const isStaff = req.user && ["admin", "moderator"].includes(req.user.role);
 
     const result = await fetchCollections(
       publicOnly,
@@ -197,6 +182,8 @@ export const getAllCollections = async (
       page ? parseInt(page as string, 10) : 1,
       type as string | undefined,
       search as string | undefined,
+      isStaff,
+      req.user?.id, // Passer l'ID utilisateur pour la vérification dans le service
     );
 
     return res.status(200).json({
@@ -257,7 +244,9 @@ export const getCollectionById = async (
     const { collectionId } = req.params;
     const userId = req.user?.id;
 
-    const collection = await fetchCollectionById(collectionId, userId);
+    const isStaff = req.user && ["admin", "moderator"].includes(req.user.role);
+
+    const collection = await fetchCollectionById(collectionId, userId, isStaff);
 
     return res.status(200).json({
       success: true,
@@ -296,10 +285,13 @@ export const updateCollection = async (
       });
     }
 
+    const isStaff = req.user && ["admin", "moderator"].includes(req.user.role);
+
     const updated = await updateCollectionById(
       collectionId,
       req.user.id,
       updates,
+      isStaff,
     );
 
     return res.status(200).json({
@@ -332,8 +324,10 @@ export const deleteCollection = async (
         .json({ success: false, errors: "Non authentifié", data: null });
     }
 
+    const isStaff = req.user && ["admin", "moderator"].includes(req.user.role);
+
     const { collectionId } = req.params;
-    await deleteCollectionById(collectionId, req.user.id);
+    await deleteCollectionById(collectionId, req.user.id, isStaff);
 
     return res.status(200).json({
       success: true,

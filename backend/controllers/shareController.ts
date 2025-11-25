@@ -53,7 +53,8 @@ export const createShare = async (req: AuthenticatedRequest, res: Response) => {
     }
 
     const shareObject = instanceToPlain(dto) as unknown as IShare;
-    const result = await createNewShare(shareObject);
+    const isStaff = req.user && ["admin", "moderator"].includes(req.user.role);
+    const result = await createNewShare(shareObject, isStaff);
 
     return res.status(201).json({
       success: true,

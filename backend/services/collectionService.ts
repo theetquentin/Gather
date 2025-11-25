@@ -39,6 +39,7 @@ const MAX_COLLECTION_LIMIT = 100;
 const checkCollectionAccessRights = async (
   collectionId: string,
   userId: string,
+  isStaff: boolean = false,
 ) => {
   const collection = await getCollectionById(collectionId);
   if (!collection) throw new Error("Collection non trouvée");
@@ -50,7 +51,18 @@ const checkCollectionAccessRights = async (
     return {
       collection,
       isOwner: true,
-      canEdit: true,
+      isStaff: false,
+      rights: "edit",
+    };
+  }
+
+  // Si staff, accès complet (comme un propriétaire mais marqué comme staff)
+  if (isStaff) {
+    return {
+      collection,
+      isOwner: false,
+      isStaff: true,
+      rights: "edit",
     };
   }
 
@@ -60,12 +72,15 @@ const checkCollectionAccessRights = async (
     new Types.ObjectId(userId),
   );
 
-  const hasEditRights = share?.rights === "edit";
+  let rights: "read" | "edit" | "none" = "none";
+  if (isOwner || isStaff) rights = "edit";
+  else if (share) rights = share.rights as "read" | "edit";
 
   return {
     collection,
-    isOwner: false,
-    canEdit: hasEditRights,
+    isOwner,
+    isStaff,
+    rights,
   };
 };
 
@@ -113,12 +128,13 @@ export const addWorksToCollection = async (
   }
 
   // Vérifier les droits d'accès avec la fonction réutilisable
-  const { collection, canEdit } = await checkCollectionAccessRights(
+  const { collection, rights } = await checkCollectionAccessRights(
     collectionId,
     userId,
+    false, // isStaff non géré pour l'ajout d'œuvres pour le moment
   );
 
-  if (!canEdit) {
+  if (rights !== "edit") {
     throw new Error("Accès refusé à cette collection");
   }
 
@@ -191,7 +207,22 @@ export const fetchCollections = async (
   page: number = 1,
   type?: string,
   search?: string,
+  isStaff: boolean = false,
+  userId?: string,
 ) => {
+  // Vérification des droits si on veut voir les collections non publiques
+  if (!publicOnly) {
+    if (!userId) {
+      throw new Error(
+        "Authentification requise pour voir toutes les collections",
+      );
+    }
+    if (!isStaff) {
+      throw new Error(
+        "Accès refusé : réservé aux modérateurs et administrateurs",
+      );
+    }
+  }
   // Validation de la limite
   if (limit < 0 || !Number.isInteger(limit)) {
     throw new Error("La limite doit être un entier positif");
@@ -225,11 +256,17 @@ export const fetchCollections = async (
 
   // Paginer (les collections sont déjà triées par date dans le repository)
   const paginatedCollections = filteredCollections.slice(skip, skip + limit);
+
+  // Injecter isStaff si nécessaire
+  const finalCollections = isStaff
+    ? paginatedCollections.map((col) => ({ ...col, isStaff: true }))
+    : paginatedCollections;
+
   const total = filteredCollections.length;
   const totalPages = Math.ceil(total / limit);
 
   return {
-    collections: paginatedCollections,
+    collections: finalCollections,
     total,
     page,
     limit,
@@ -359,6 +396,7 @@ export const fetchCollectionsByUser = async (
 export const fetchCollectionById = async (
   collectionId: string,
   userId?: string,
+  isStaff: boolean = false,
 ) => {
   if (!Types.ObjectId.isValid(collectionId)) {
     throw new Error("Identifiant de collection invalide");
@@ -374,6 +412,8 @@ export const fetchCollectionById = async (
     return {
       ...collection.toObject(),
       owned,
+      isStaff,
+      rights: owned ? "edit" : "read",
     };
   }
 
@@ -382,54 +422,50 @@ export const fetchCollectionById = async (
     throw new Error("Authentification requise pour accéder à cette collection");
   }
 
-  // Vérifier si c'est le propriétaire
-  const isOwner = collection.authorId.toString() === userId;
-  if (isOwner) {
-    return {
-      ...collection.toObject(),
-      owned: true,
-    };
-  }
-
-  // Vérifier si l'utilisateur a un partage accepté pour cette collection
-  const share = await getAcceptedShareByCollectionAndGuest(
-    new Types.ObjectId(collectionId),
-    new Types.ObjectId(userId),
+  const { rights, isOwner } = await checkCollectionAccessRights(
+    collectionId,
+    userId,
+    isStaff,
   );
 
-  if (share) {
-    return {
-      ...collection.toObject(),
-      owned: false,
-      rights: share.rights,
-      authorId: share.authorId,
-    };
+  if (rights === "none") {
+    throw new Error("Accès refusé à cette collection");
   }
 
-  // Aucun accès trouvé
-  throw new Error("Accès refusé à cette collection");
+  return {
+    ...collection.toObject(),
+    owned: isOwner,
+    isStaff,
+    rights,
+  };
 };
 
 export const updateCollectionById = async (
   collectionId: string,
   userId: string,
   updates: Partial<ICollection>,
+  isStaff: boolean = false,
 ) => {
   if (!Types.ObjectId.isValid(collectionId)) {
     throw new Error("Identifiant de collection invalide");
   }
 
-  const { collection, canEdit, isOwner } = await checkCollectionAccessRights(
+  const { collection, rights, isOwner } = await checkCollectionAccessRights(
     collectionId,
     userId,
+    isStaff,
   );
 
-  if (!canEdit) {
+  if (rights !== "edit") {
     throw new Error("Accès refusé à cette collection");
   }
 
-  // Seul le propriétaire peut modifier le nom, le type et la visibilité
-  if (!isOwner && (updates.name || updates.type || updates.visibility)) {
+  // Seul le propriétaire (ou staff) peut modifier le nom, le type et la visibilité
+  if (
+    !isOwner &&
+    !isStaff &&
+    (updates.name || updates.type || updates.visibility)
+  ) {
     throw new Error(
       "Seul le propriétaire peut modifier les informations de la collection",
     );
@@ -479,14 +515,19 @@ export const updateCollectionById = async (
 export const deleteCollectionById = async (
   collectionId: string,
   userId: string,
+  isStaff: boolean = false,
 ) => {
   if (!Types.ObjectId.isValid(collectionId)) {
     throw new Error("Identifiant de collection invalide");
   }
 
-  const { isOwner } = await checkCollectionAccessRights(collectionId, userId);
+  const { isOwner } = await checkCollectionAccessRights(
+    collectionId,
+    userId,
+    isStaff,
+  );
 
-  if (!isOwner) {
+  if (!isOwner && !isStaff) {
     throw new Error("Seul le propriétaire peut supprimer cette collection");
   }
 

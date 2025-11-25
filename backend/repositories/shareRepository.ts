@@ -27,10 +27,6 @@ export const getSharesByGuestId = async (guestId: string) => {
 
 export const getAcceptedSharesByGuestId = async (guestId: string) => {
   return await Share.find({ guestId, status: "accepted" })
-    .populate({
-      path: "collectionId",
-      populate: { path: "works" },
-    })
     .populate("authorId", "username email profilePicture")
     .lean();
 };
